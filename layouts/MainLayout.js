@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -18,6 +18,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
+import { useToggleState } from '../hooks';
 import DocumentHead from '../components/DocumentHead';
 import styles from '../styles/MainLayout.style';
 
@@ -26,15 +27,7 @@ const useStyles = makeStyles(styles);
 const MainLayout = ({ children, pageTitle }) => {
   const classes = useStyles();
   const theme = useTheme();
-  const [open, setOpen] = useState(true);
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
+  const [drawerOpen, toggleDrawer] = useToggleState(true);
 
   return (
     <Fragment>
@@ -44,16 +37,16 @@ const MainLayout = ({ children, pageTitle }) => {
         <AppBar
           position="fixed"
           className={clsx(classes.appBar, {
-            [classes.appBarShift]: open,
+            [classes.appBarShift]: drawerOpen,
           })}
         >
           <Toolbar>
             <IconButton
               color="inherit"
               aria-label="open drawer"
-              onClick={handleDrawerOpen}
+              onClick={toggleDrawer}
               edge="start"
-              className={clsx(classes.menuButton, open && classes.hide)}
+              className={clsx(classes.menuButton, drawerOpen && classes.hide)}
             >
               <MenuIcon />
             </IconButton>
@@ -66,14 +59,14 @@ const MainLayout = ({ children, pageTitle }) => {
           className={classes.drawer}
           variant="persistent"
           anchor="left"
-          open={open}
+          open={drawerOpen}
           classes={{
             paper: classes.drawerPaper,
           }}
         >
           <div className={classes.drawerHeader}>
             <Typography variant="h6">getkernel.sh</Typography>
-            <IconButton onClick={handleDrawerClose}>
+            <IconButton onClick={toggleDrawer}>
               {theme.direction === 'ltr' ? (
                 <ChevronLeftIcon />
               ) : (
@@ -106,7 +99,7 @@ const MainLayout = ({ children, pageTitle }) => {
         </Drawer>
         <main
           className={clsx(classes.content, {
-            [classes.contentShift]: open,
+            [classes.contentShift]: drawerOpen,
           })}
         >
           <div className={classes.drawerHeader} />
