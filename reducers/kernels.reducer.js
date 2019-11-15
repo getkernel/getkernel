@@ -1,11 +1,9 @@
 /**
  * {
- *    index: [],
- *    kernels: [
- *      {
- *        ...
- *      }
- *    ]
+ *    index: {
+ *       entries: []
+ *     },
+ *     kernels: [],
  * }
  */
 
@@ -14,7 +12,7 @@ export default (state, action) => {
     case 'HYDRATE_INDEX_DATA':
       return {
         ...state,
-        index: action.data,
+        index: { ...action.data },
       };
 
     case 'ADD_KERNEL_DATA':

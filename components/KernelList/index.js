@@ -15,7 +15,10 @@ const useStyles = makeStyles(styles);
 const KernelList = () => {
   const classes = useStyles();
 
-  const { index, kernels } = useContext(KernelsContext);
+  const {
+    index: { entries },
+    kernels,
+  } = useContext(KernelsContext);
   const dispatch = useContext(DispatchContext);
 
   useEffect(() => {
@@ -28,8 +31,7 @@ const KernelList = () => {
       }
     };
 
-    if (!index.length) {
-      console.log('FETCH DATA');
+    if (!entries.length) {
       getInitialData();
     }
   }, []);
@@ -37,13 +39,15 @@ const KernelList = () => {
   return (
     <div className={classes.root}>
       <Grid container spacing={3}>
-        {index.map(({ version_name, version_slug, last_modified }, i) => (
+        {entries.map(({ version_name, version_slug, last_modified }, i) => (
           <Grid item xs={3} key={version_name}>
             <Paper className={classes.paper}>
               <Link href="/kernel/[version]" as={`/kernel/${version_slug}`}>
                 <a>{version_name}</a>
               </Link>
-              <em>{last_modified}</em>
+              <p>
+                <em>{last_modified}</em>
+              </p>
             </Paper>
           </Grid>
         ))}

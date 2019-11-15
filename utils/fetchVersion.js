@@ -4,21 +4,22 @@ import MarkdownIt from 'markdown-it';
 import { BASE_URL } from '../constants';
 
 const fetchVersion = async (version) => {
-  const result = {
-    success: true,
-    data: [],
-  };
-
   if (!version.includes('v')) version = `v${version}`;
   const md = new MarkdownIt();
   const kernelBaseUrl = `${BASE_URL}/${version}`;
 
-  try {
-    // Append global info to response object.
-    result.base_url = `${kernelBaseUrl}/`;
-    result.changes = `${kernelBaseUrl}/CHANGES`;
-    result.gpg_key = `${kernelBaseUrl}/CHECKSUMS.gpg`;
+  const result = {
+    success: true,
+    data: {
+      version,
+      base_url: `${kernelBaseUrl}/`,
+      changes: `${kernelBaseUrl}/CHANGES`,
+      gpg_key: `${kernelBaseUrl}/CHECKSUMS.gpg`,
+      files: [],
+    },
+  };
 
+  try {
     // Fetch README and parse as HTML.
     const response = await fetch(`${kernelBaseUrl}/README`);
     const body = await response.text();
@@ -60,7 +61,7 @@ const fetchVersion = async (version) => {
         };
       });
 
-      result.data.push({
+      result.data.files.push({
         platform,
         status,
         binaries: binariesData,
@@ -68,7 +69,7 @@ const fetchVersion = async (version) => {
       });
     });
 
-    if (!result.data.length) {
+    if (!result.data.files.length) {
       throw new Error('Unable to fetch data');
     }
   } catch (error) {

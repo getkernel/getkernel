@@ -6,7 +6,9 @@ export const KernelsContext = createContext();
 export const DispatchContext = createContext();
 
 const defaultState = {
-  index: [],
+  index: { 
+    entries: [] 
+  },
   kernels: [],
 };
 

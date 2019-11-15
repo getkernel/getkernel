@@ -6,13 +6,13 @@ import { BASE_URL } from '../constants';
 const fetchIndex = async () => {
   const result = {
     success: true,
-    data: [],
+    data: {
+      base_url: `${BASE_URL}/`,
+      entries: [],
+    },
   };
 
   try {
-    // Append global info to response object.
-    result.base_url = `${BASE_URL}/`;
-
     const response = await fetch(BASE_URL);
     const body = await response.text();
     const $ = cheerio.load(body);
@@ -43,7 +43,7 @@ const fetchIndex = async () => {
 
         if (versionSlug.includes('~kernel-ppa')) return true;
 
-        result.data.push({
+        result.data.entries.push({
           version_name: versionName,
           version_slug: versionSlug,
           last_modified: moment(lastModified),
@@ -51,7 +51,7 @@ const fetchIndex = async () => {
       });
 
     // Sort data by date - descending order
-    result.data.sort((a, b) => b.last_modified - a.last_modified);
+    result.data.entries.sort((a, b) => b.last_modified - a.last_modified);
   } catch (error) {
     result.success = false;
     result.error = error.message;
