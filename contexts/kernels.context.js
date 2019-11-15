@@ -6,8 +6,8 @@ export const KernelsContext = createContext();
 export const DispatchContext = createContext();
 
 const defaultState = {
-  index: { 
-    entries: [] 
+  index: {
+    entries: [],
   },
   kernels: [],
 };
@@ -27,3 +27,9 @@ export function KernelsProvider({ children }) {
     </KernelsContext.Provider>
   );
 }
+
+export const withKernelsProvider = (Component) => (props) => (
+  <KernelsProvider>
+    <Component {...props} />
+  </KernelsProvider>
+);
