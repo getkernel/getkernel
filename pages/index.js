@@ -1,26 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import fetch from 'isomorphic-unfetch';
 import MainLayout from '../layouts/MainLayout';
 import KernelList from '../components/KernelList';
+import { KernelsProvider } from '../contexts';
 
-const Home = ({ kernels }) => (
+const Home = () => (
   <MainLayout>
-    <KernelList kernels={kernels} />
+    <KernelsProvider>
+      <KernelList />
+    </KernelsProvider>
   </MainLayout>
 );
 
-Home.getInitialProps = async () => {
-  const res = await fetch('http://localhost:3000/api/kernels');
-  const json = await res.json();
-
-  return {
-    kernels: json,
-  };
-};
-
-Home.propTypes = {
-  kernels: PropTypes.object.isRequired,
-};
+Home.propTypes = {};
 
 export default Home;

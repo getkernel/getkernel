@@ -1,3 +1,4 @@
 import useToggleState from './useToggleState';
+import useLocalStorageReducer from './useLocalStorageReducer';
 
-export { useToggleState };
+export { useToggleState, useLocalStorageReducer };
