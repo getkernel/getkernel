@@ -27,7 +27,7 @@ import styles from './styles';
 
 const useStyles = makeStyles(styles);
 
-const MainLayout = ({ children, pageTitle }) => {
+const MainLayout = ({ children, pageTitle, contentTitle }) => {
   const classes = useStyles();
   const theme = useTheme();
   const [drawerOpen, toggleDrawer] = useToggleState(true);
@@ -54,7 +54,7 @@ const MainLayout = ({ children, pageTitle }) => {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" noWrap>
-              Avaliable Kernels
+              {contentTitle}
             </Typography>
           </Toolbar>
         </AppBar>
@@ -113,8 +113,13 @@ const MainLayout = ({ children, pageTitle }) => {
   );
 };
 
+MainLayout.defaultProps = {
+  contentTitle: 'Available Kernels',
+};
+
 MainLayout.propTypes = {
   pageTitle: PropTypes.string,
+  contentTitle: PropTypes.string,
   children: PropTypes.any.isRequired,
 };
 
