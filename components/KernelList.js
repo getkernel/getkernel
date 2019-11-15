@@ -3,8 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Link from 'next/link';
-import styles from '../styles/KernelList.style';
 import { KernelsContext, DispatchContext } from '../contexts';
+import { hydrateIndexData } from '../actions/kernels.actions';
+import styles from '../styles/KernelList.style';
 
 const useStyles = makeStyles(styles);
 
@@ -20,7 +21,7 @@ const KernelList = () => {
       const json = await res.json();
 
       if (json.success) {
-        dispatch({ type: 'HYDRATE_INDEX_DATA', data: json.data });
+        dispatch(hydrateIndexData(json.data));
       }
     };
 
