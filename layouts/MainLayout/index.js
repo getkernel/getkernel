@@ -1,3 +1,6 @@
+/**
+ * MainLayout component.
+ */
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
@@ -18,9 +21,9 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
-import { useToggleState } from '../hooks';
-import DocumentHead from '../components/DocumentHead';
-import styles from '../styles/MainLayout.style';
+import { useToggleState } from '../../hooks';
+import DocumentHead from '../../components/DocumentHead';
+import styles from './styles';
 
 const useStyles = makeStyles(styles);
 

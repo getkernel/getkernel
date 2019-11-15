@@ -1,3 +1,6 @@
+/**
+ * MainLayout styles.
+ */
 export const drawerWidth = 240;
 
 export default (theme) => ({

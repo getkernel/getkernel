@@ -1,11 +1,14 @@
+/**
+ * KernelList component.
+ */
 import React, { useContext, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Link from 'next/link';
-import { KernelsContext, DispatchContext } from '../contexts';
-import { hydrateIndexData } from '../actions/kernels.actions';
-import styles from '../styles/KernelList.style';
+import { KernelsContext, DispatchContext } from '../../contexts';
+import { hydrateIndexData } from '../../actions/kernels.actions';
+import styles from './styles';
 
 const useStyles = makeStyles(styles);
 
