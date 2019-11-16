@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
@@ -38,7 +37,6 @@ const MainLayout = ({ children, pageTitle, contentTitle }) => {
     <Fragment>
       <DocumentHead pageTitle={pageTitle} />
       <div className={classes.root}>
-        <CssBaseline />
         <AppBar
           position="fixed"
           className={clsx(classes.appBar, {
