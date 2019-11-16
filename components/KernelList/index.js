@@ -42,7 +42,7 @@ const KernelList = () => {
         {entries
           .filter((e) => e.version_name.startsWith('v5'))
           .map(({ version_name, version_slug, last_modified }) => (
-            <Grid item xs={3} key={version_name}>
+            <Grid item xs={4} md={3} lg={2} key={version_name}>
               <Paper className={classes.paper}>
                 <Link href="/kernel/[version]" as={`/kernel/${version_slug}`}>
                   <a>{version_name}</a>
