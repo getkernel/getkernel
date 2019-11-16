@@ -23,7 +23,8 @@ const KernelListItem = ({ version_name, version_slug, last_modified }) => {
   const classes = useStyles();
 
   const [versionFriendly, rcText] = version_name.replace('v', '').split('-');
-  const dateFriendly = moment(last_modified).toLocaleString();
+  const dateFriendly = moment(last_modified).format('L');
+  const timeFriendly = moment(last_modified).format('LT');
 
   return (
     <Grid item xs={6} md={4} lg={3} xl={2}>
@@ -32,7 +33,7 @@ const KernelListItem = ({ version_name, version_slug, last_modified }) => {
           <CardActionArea title={version_name}>
             <div className={classes.card}>
               <div className={classes.details}>
-                <CardContent className={classes.content}>
+                <CardContent className={classes.topArea}>
                   <Typography className={classes.versionName} variant="h5">
                     <span>{versionFriendly}</span>
                     {rcText && (
@@ -45,9 +46,14 @@ const KernelListItem = ({ version_name, version_slug, last_modified }) => {
                     )}
                   </Typography>
                 </CardContent>
-                <div className={classes.controls}>
-                  <Typography variant="body2" color="textSecondary">
-                    {dateFriendly}
+                <div className={classes.bottomArea}>
+                  <Typography
+                    variant="caption"
+                    color="textSecondary"
+                    title="Last modified"
+                  >
+                    <span>{dateFriendly}</span>
+                    <span>{timeFriendly}</span>
                   </Typography>
                 </div>
               </div>

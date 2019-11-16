@@ -3,7 +3,8 @@
  */
 export default (theme) => ({
   card: {
-    display: 'flex',
+    display: 'grid',
+    gridTemplateColumns: 'repeat(2, 50%)',
   },
   paper: {
     padding: theme.spacing(2),
@@ -17,7 +18,7 @@ export default (theme) => ({
     display: 'flex',
     flexDirection: 'column',
   },
-  content: {
+  topArea: {
     flex: '1 0 auto',
   },
   versionName: {
@@ -37,7 +38,7 @@ export default (theme) => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    width: '100%',
+    width: 120,
     maxHeight: 120,
     paddingLeft: theme.spacing(1),
     paddingRight: theme.spacing(1),
@@ -46,10 +47,14 @@ export default (theme) => ({
       height: 'auto',
     },
   },
-  controls: {
+  bottomArea: {
     display: 'flex',
     alignItems: 'center',
-    paddingLeft: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
+    paddingLeft: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
+    '& span': {
+      display: 'block',
+      fontSize: '0.8rem',
+    },
   },
 });
