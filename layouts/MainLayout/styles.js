@@ -43,6 +43,10 @@ export default (theme) => ({
     justifyContent: 'space-between',
     marginLeft: theme.spacing(1),
   },
+  appTitle: {
+    letterSpacing: '2px',
+    fontWeight: 400,
+  },
   content: {
     flexGrow: 1,
     padding: theme.spacing(3),

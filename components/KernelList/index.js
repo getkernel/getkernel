@@ -3,9 +3,8 @@
  */
 import React, { useContext, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import Link from 'next/link';
+import KernelListItem from '../KernelListItem';
 import { KernelsContext, DispatchContext } from '../../contexts';
 import { hydrateIndexData } from '../../actions';
 import styles from './styles';
@@ -41,17 +40,8 @@ const KernelList = () => {
       <Grid container spacing={3}>
         {entries
           .filter((e) => e.version_name.startsWith('v5'))
-          .map(({ version_name, version_slug, last_modified }) => (
-            <Grid item xs={4} md={3} lg={2} key={version_name}>
-              <Paper className={classes.paper}>
-                <Link href="/kernel/[version]" as={`/kernel/${version_slug}`}>
-                  <a>{version_name}</a>
-                </Link>
-                <p>
-                  <em>{last_modified}</em>
-                </p>
-              </Paper>
-            </Grid>
+          .map((entry) => (
+            <KernelListItem key={entry.version_slug} {...entry} />
           ))}
       </Grid>
     </div>

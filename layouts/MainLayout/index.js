@@ -83,7 +83,9 @@ const MainLayout = ({ children, pageTitle, contentTitle }) => {
           }}
         >
           <div className={classes.drawerHeader}>
-            <Typography variant="h6">getkernel.sh</Typography>
+            <Typography variant="h6" className={classes.appTitle}>
+              getkernel.sh
+            </Typography>
             <IconButton onClick={toggleDrawer}>
               {theme.direction === 'ltr' ? (
                 <ChevronLeftIcon />

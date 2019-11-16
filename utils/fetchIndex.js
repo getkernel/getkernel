@@ -46,7 +46,7 @@ const fetchIndex = async () => {
         result.data.entries.push({
           version_name: versionName,
           version_slug: versionSlug,
-          last_modified: moment(lastModified),
+          last_modified: moment(lastModified, 'YYYY-MM-DD HH:mm'),
         });
       });
 
