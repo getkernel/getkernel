@@ -1,13 +1,13 @@
 import React, { useContext, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import fetch from 'isomorphic-unfetch';
-import MainLayout from '../../layouts/MainLayout';
+import MainLayout from '../../src/layouts/MainLayout';
 import {
   KernelsContext,
   DispatchContext,
   withKernelsProvider,
-} from '../../contexts';
-import { addKernelData } from '../../actions';
+} from '../../src/contexts';
+import { addKernelData } from '../../src/actions';
 
 const KernelVersion = (props) => {
   const {

@@ -1,19 +1,18 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { Fragment } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import MainLayout from '../layouts/MainLayout';
-import KernelList from '../components/KernelList';
-import { KernelsProvider } from '../contexts';
+import MainLayout from '../src/layouts/MainLayout';
+import KernelList from '../src/components/KernelList';
+import { KernelsProvider } from '../src/contexts';
 
 const Home = () => (
-  <MainLayout>
+  <Fragment>
     <CssBaseline />
-    <KernelsProvider>
-      <KernelList />
-    </KernelsProvider>
-  </MainLayout>
+    <MainLayout>
+      <KernelsProvider>
+        <KernelList />
+      </KernelsProvider>
+    </MainLayout>
+  </Fragment>
 );
-
-Home.propTypes = {};
 
 export default Home;
