@@ -31,6 +31,7 @@ import {
   setReleaseType,
 } from '../../actions';
 import { releaseTypes } from '../../reducers/filters.defaultState';
+import { versionsFilter, releaseTypeFilter } from '../../selectors';
 import styles from './styles';
 
 const useStyles = makeStyles(styles);
@@ -74,32 +75,9 @@ const KernelList = () => {
     }
   }, [availableVersions]);
 
-  const filteredEntries = entries.filter(({ version_slug }) => {
-    const [major, minor] = version_slug.split('.');
-    let majorMinorString;
-    if (minor && minor.includes('-')) {
-      majorMinorString = `${major}.${minor.split('-')[0]}`;
-    } else {
-      majorMinorString = `${major}.${minor}`;
-    }
-
-    let showRc = true;
-    switch (releaseType) {
-      case 'all':
-        showRc = true;
-        break;
-
-      case 'stable':
-        showRc = !version_slug.includes('-rc');
-        break;
-
-      case 'rc':
-        showRc = version_slug.includes('-rc');
-        break;
-    }
-
-    return selectedVersions.includes(majorMinorString) && showRc;
-  });
+  const filteredEntries = entries
+    .filter(versionsFilter(selectedVersions))
+    .filter(releaseTypeFilter(releaseType));
 
   return (
     <div className={classes.root}>
