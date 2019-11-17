@@ -1,12 +1,3 @@
-/**
- * {
- *    index: {
- *       entries: []
- *     },
- *     kernels: [],
- * }
- */
-
 export default (state, action) => {
   switch (action.type) {
     case 'HYDRATE_INDEX_DATA':
