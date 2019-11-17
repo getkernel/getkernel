@@ -2,6 +2,7 @@ import { addKernelData, hydrateIndexData } from './kernels.actions';
 import {
   setAvailableVersionsFilter,
   setSelectedVersionsFilter,
+  setReleaseType,
 } from './filters.actions';
 
 export {
@@ -9,4 +10,5 @@ export {
   hydrateIndexData,
   setAvailableVersionsFilter,
   setSelectedVersionsFilter,
+  setReleaseType,
 };

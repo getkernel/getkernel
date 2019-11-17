@@ -47,6 +47,12 @@ export default (state, action) => {
         filtersSet: true,
       };
 
+    case 'SET_RELEASE_TYPE':
+      return {
+        ...state,
+        releaseType: action.filter,
+      };
+
     default:
       return state;
   }

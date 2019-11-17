@@ -1,11 +1,13 @@
 /**
  * KernelList component.
  */
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -15,6 +17,7 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import Select from '@material-ui/core/Select';
 import Checkbox from '@material-ui/core/Checkbox';
 import KernelListItem from '../KernelListItem';
+import PageContent from '../PageContent';
 import {
   KernelsContext,
   DispatchContext,
@@ -25,8 +28,9 @@ import {
   hydrateIndexData,
   setAvailableVersionsFilter,
   setSelectedVersionsFilter,
+  setReleaseType,
 } from '../../actions';
-import PageContent from '../PageContent';
+import { releaseTypes } from '../../reducers/filters.defaultState';
 import styles from './styles';
 
 const useStyles = makeStyles(styles);
@@ -37,9 +41,12 @@ const KernelList = () => {
   const {
     index: { entries },
   } = useContext(KernelsContext);
-  const { filtersSet, availableVersions, selectedVersions } = useContext(
-    FiltersContext
-  );
+  const {
+    filtersSet,
+    availableVersions,
+    selectedVersions,
+    releaseType,
+  } = useContext(FiltersContext);
   const kernelsDispatch = useContext(DispatchContext);
   const filtersDispatch = useContext(FiltersDispatchContext);
 
@@ -76,40 +83,76 @@ const KernelList = () => {
       majorMinorString = `${major}.${minor}`;
     }
 
-    return selectedVersions.includes(majorMinorString);
+    let showRc = true;
+    switch (releaseType) {
+      case 'all':
+        showRc = true;
+        break;
+
+      case 'stable':
+        showRc = !version_slug.includes('-rc');
+        break;
+
+      case 'rc':
+        showRc = version_slug.includes('-rc');
+        break;
+    }
+
+    return selectedVersions.includes(majorMinorString) && showRc;
   });
 
   return (
     <div className={classes.root}>
       <AppBar position="sticky" color="default">
         <Toolbar>
-          <FormControl className={classes.formControl}>
-            <InputLabel id="demo-mutiple-checkbox-label">Version</InputLabel>
-            <Select
-              labelId="demo-mutiple-checkbox-label"
-              id="demo-mutiple-checkbox"
-              multiple
-              value={selectedVersions}
-              onChange={(e) =>
-                filtersDispatch(setSelectedVersionsFilter(e.target.value))
-              }
-              input={<Input />}
-              renderValue={(selected) => selected.join(', ')}
-              // MenuProps={MenuProps}
-            >
-              {availableVersions.map(({ version, count, minors }) => [
-                <ListSubheader>
-                  {version} ({`${count} items`})
-                </ListSubheader>,
-                minors.map((minor) => (
-                  <MenuItem key={`${version}-${minor}`} value={minor}>
-                    <Checkbox checked={selectedVersions.indexOf(minor) > -1} />
-                    <ListItemText primary={minor} />
+          <FormGroup row>
+            <FormControl className={classes.formControl}>
+              <InputLabel id="version-select-label">Version</InputLabel>
+              <Select
+                labelId="version-select-label"
+                id="version-select"
+                multiple
+                value={selectedVersions}
+                onChange={(e) =>
+                  filtersDispatch(setSelectedVersionsFilter(e.target.value))
+                }
+                input={<Input />}
+                renderValue={(selected) => selected.join(', ')}
+                // MenuProps={MenuProps}
+              >
+                {availableVersions.map(({ version, count, minors }) => [
+                  <ListSubheader>
+                    {version} ({`${count} items`})
+                  </ListSubheader>,
+                  minors.map((minor) => (
+                    <MenuItem key={`${version}-${minor}`} value={minor}>
+                      <Checkbox
+                        checked={selectedVersions.indexOf(minor) > -1}
+                      />
+                      <ListItemText primary={minor} />
+                    </MenuItem>
+                  )),
+                ])}
+              </Select>
+            </FormControl>
+            <FormControl className={classes.formControl}>
+              <InputLabel id="release-type-label">Release Type</InputLabel>
+              <Select
+                labelId="release-type-label"
+                id="release-type-select"
+                value={releaseType}
+                onChange={(e) =>
+                  filtersDispatch(setReleaseType(e.target.value))
+                }
+              >
+                {releaseTypes.map(({ value, text }) => (
+                  <MenuItem value={value} key={`release-type-${value}`}>
+                    {text}
                   </MenuItem>
-                )),
-              ])}
-            </Select>
-          </FormControl>
+                ))}
+              </Select>
+            </FormControl>
+          </FormGroup>
         </Toolbar>
       </AppBar>
       <PageContent>
