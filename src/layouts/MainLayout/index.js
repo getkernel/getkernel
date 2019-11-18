@@ -1,7 +1,7 @@
 /**
  * MainLayout component.
  */
-import React, { Fragment } from 'react';
+import React, { Fragment, useContext } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -22,8 +22,13 @@ import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import SearchIcon from '@material-ui/icons/Search';
-import { useToggleState } from '../../hooks';
 import DocumentHead from '../../components/DocumentHead';
+import {
+  GlobalContext,
+  GlobalDispatchContext,
+  withGlobalProvider,
+} from '../../contexts';
+import { toggleDrawer } from '../../actions';
 import styles from './styles';
 
 const useStyles = makeStyles(styles);
@@ -31,7 +36,9 @@ const useStyles = makeStyles(styles);
 const MainLayout = ({ children, pageTitle, contentTitle, showShadow }) => {
   const classes = useStyles();
   const theme = useTheme();
-  const [drawerOpen, toggleDrawer] = useToggleState(true);
+
+  const { drawerOpen } = useContext(GlobalContext);
+  const dispatch = useContext(GlobalDispatchContext);
 
   return (
     <Fragment>
@@ -48,7 +55,7 @@ const MainLayout = ({ children, pageTitle, contentTitle, showShadow }) => {
             <IconButton
               color="inherit"
               aria-label="open drawer"
-              onClick={toggleDrawer}
+              onClick={() => dispatch(toggleDrawer())}
               edge="start"
               className={clsx(classes.menuButton, drawerOpen && classes.hide)}
             >
@@ -85,7 +92,7 @@ const MainLayout = ({ children, pageTitle, contentTitle, showShadow }) => {
             <Typography variant="h6" className={classes.appTitle}>
               getkernel.sh
             </Typography>
-            <IconButton onClick={toggleDrawer}>
+            <IconButton onClick={() => dispatch(toggleDrawer())}>
               {theme.direction === 'ltr' ? (
                 <ChevronLeftIcon />
               ) : (
@@ -141,4 +148,4 @@ MainLayout.propTypes = {
   showShadow: PropTypes.bool,
 };
 
-export default MainLayout;
+export default withGlobalProvider(MainLayout);

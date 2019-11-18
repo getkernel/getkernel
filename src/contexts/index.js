@@ -10,8 +10,18 @@ import {
   FiltersProvider,
   withFiltersProvider,
 } from './filters.context';
+import {
+  GlobalContext,
+  GlobalDispatchContext,
+  GlobalProvider,
+  withGlobalProvider,
+} from './global.context';
 
 export {
+  GlobalContext,
+  GlobalDispatchContext,
+  GlobalProvider,
+  withGlobalProvider,
   KernelsContext,
   DispatchContext,
   KernelsProvider,
