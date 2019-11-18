@@ -4,7 +4,7 @@ import fetch from 'isomorphic-unfetch';
 import MainLayout from '../../src/layouts/MainLayout';
 import {
   KernelsContext,
-  DispatchContext,
+  KernelsDispatchContext,
   withKernelsProvider,
 } from '../../src/contexts';
 import { addKernelData } from '../../src/actions';
@@ -15,7 +15,7 @@ const KernelVersion = (props) => {
   } = useRouter();
 
   const { kernels } = useContext(KernelsContext);
-  const dispatch = useContext(DispatchContext);
+  const dispatch = useContext(KernelsDispatchContext);
 
   useEffect(() => {
     const getKernelData = async () => {
