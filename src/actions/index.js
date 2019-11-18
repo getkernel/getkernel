@@ -4,10 +4,12 @@ import {
   setSelectedVersionsFilter,
   setReleaseType,
 } from './filters.actions';
-import { toggleDrawer } from './global.actions';
+import { toggleDrawer, showWebViewer, closeWebViewer } from './global.actions';
 
 export {
   toggleDrawer,
+  showWebViewer,
+  closeWebViewer,
   addKernelData,
   hydrateIndexData,
   setAvailableVersionsFilter,
