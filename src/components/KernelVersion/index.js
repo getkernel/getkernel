@@ -31,17 +31,18 @@ const KernelVersion = ({ version }) => {
       }
     };
 
-    if (!kernels.find((kernel) => kernel.version === version)) {
+    const kernel = version && kernels.find((k) => k.version === version);
+
+    if (version && !kernel) {
       getKernelData();
     }
-  }, []);
 
-  useEffect(() => {
-    const kernel = kernels.find((kernel) => kernel.version === version);
-    setSelectedKernel(kernel);
+    if (kernel) {
+      setSelectedKernel(kernel);
+    }
   }, [kernels, version]);
 
-  if (!selectedKernel) {
+  if (!(version && selectedKernel)) {
     return <LoadingIndicator />;
   }
 
