@@ -9,8 +9,11 @@ const KernelVersionPage = (props) => {
     query: { version },
   } = useRouter();
 
+  const pageTitle = `Get Kernel ${version}`;
+  const contentTitle = `Kernel ${version}`;
+
   return (
-    <MainLayout pageTitle={`Get Kernel ${version}`} contentTitle={version}>
+    <MainLayout pageTitle={pageTitle} contentTitle={contentTitle}>
       <KernelsProvider>
         <KernelVersion version={version} />
       </KernelsProvider>
