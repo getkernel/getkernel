@@ -4,7 +4,7 @@ import KernelList from '../src/components/KernelList';
 import { KernelsProvider, FiltersProvider } from '../src/contexts';
 
 const Home = () => (
-  <MainLayout>
+  <MainLayout showShadow={false}>
     <KernelsProvider>
       <FiltersProvider>
         <KernelList />

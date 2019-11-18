@@ -28,7 +28,7 @@ import styles from './styles';
 
 const useStyles = makeStyles(styles);
 
-const MainLayout = ({ children, pageTitle, contentTitle }) => {
+const MainLayout = ({ children, pageTitle, contentTitle, showShadow }) => {
   const classes = useStyles();
   const theme = useTheme();
   const [drawerOpen, toggleDrawer] = useToggleState(true);
@@ -42,6 +42,7 @@ const MainLayout = ({ children, pageTitle, contentTitle }) => {
           className={clsx(classes.appBar, {
             [classes.appBarShift]: drawerOpen,
           })}
+          elevation={showShadow ? 1 : 0}
         >
           <Toolbar>
             <IconButton
@@ -130,12 +131,14 @@ const MainLayout = ({ children, pageTitle, contentTitle }) => {
 
 MainLayout.defaultProps = {
   contentTitle: 'Available Kernels',
+  showShadow: true,
 };
 
 MainLayout.propTypes = {
   pageTitle: PropTypes.string,
   contentTitle: PropTypes.string,
   children: PropTypes.any.isRequired,
+  showShadow: PropTypes.bool,
 };
 
 export default MainLayout;
