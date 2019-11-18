@@ -1,17 +1,12 @@
 export default (releaseType) => ({ version_slug }) => {
-  let showRc = true;
   switch (releaseType) {
     case 'all':
-      showRc = true;
-      break;
+      return true;
 
     case 'stable':
-      showRc = !version_slug.includes('-rc');
-      break;
+      return !version_slug.includes('-rc');
 
     case 'rc':
-      showRc = version_slug.includes('-rc');
-      break;
+      return version_slug.includes('-rc');
   }
-  return showRc;
 };
