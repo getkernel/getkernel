@@ -67,7 +67,7 @@ const KernelList = () => {
     .filter(versionsFilter(selectedVersions))
     .filter(releaseTypeFilter(releaseType));
 
-  if (!filteredEntries.length) {
+  if (!filtersSet && !filteredEntries.length) {
     return <LoadingIndicator />;
   }
 
