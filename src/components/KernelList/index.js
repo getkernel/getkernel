@@ -20,7 +20,7 @@ import KernelListItem from '../KernelListItem';
 import PageContent from '../PageContent';
 import {
   KernelsContext,
-  DispatchContext,
+  KernelsDispatchContext,
   FiltersContext,
   FiltersDispatchContext,
 } from '../../contexts';
@@ -48,7 +48,7 @@ const KernelList = () => {
     selectedVersions,
     releaseType,
   } = useContext(FiltersContext);
-  const kernelsDispatch = useContext(DispatchContext);
+  const kernelsDispatch = useContext(KernelsDispatchContext);
   const filtersDispatch = useContext(FiltersDispatchContext);
 
   useEffect(() => {

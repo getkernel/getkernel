@@ -4,7 +4,7 @@ import { useLocalStorageReducer } from '../hooks';
 import defaultState from '../reducers/kernels.defaultState';
 
 export const KernelsContext = createContext();
-export const DispatchContext = createContext();
+export const KernelsDispatchContext = createContext();
 
 export function KernelsProvider({ children }) {
   const [state, dispatch] = useLocalStorageReducer(
@@ -15,9 +15,9 @@ export function KernelsProvider({ children }) {
 
   return (
     <KernelsContext.Provider value={state}>
-      <DispatchContext.Provider value={dispatch}>
+      <KernelsDispatchContext.Provider value={dispatch}>
         {children}
-      </DispatchContext.Provider>
+      </KernelsDispatchContext.Provider>
     </KernelsContext.Provider>
   );
 }

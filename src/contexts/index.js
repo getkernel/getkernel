@@ -1,6 +1,6 @@
 import {
   KernelsContext,
-  DispatchContext,
+  KernelsDispatchContext,
   KernelsProvider,
   withKernelsProvider,
 } from './kernels.context';
@@ -23,7 +23,7 @@ export {
   GlobalProvider,
   withGlobalProvider,
   KernelsContext,
-  DispatchContext,
+  KernelsDispatchContext,
   KernelsProvider,
   withKernelsProvider,
   FiltersContext,
