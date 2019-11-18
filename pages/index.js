@@ -3,7 +3,7 @@ import MainLayout from '../src/layouts/MainLayout';
 import KernelList from '../src/components/KernelList';
 import { KernelsProvider, FiltersProvider } from '../src/contexts';
 
-const Home = () => (
+const HomePage = () => (
   <MainLayout showShadow={false}>
     <KernelsProvider>
       <FiltersProvider>
@@ -13,4 +13,4 @@ const Home = () => (
   </MainLayout>
 );
 
-export default Home;
+export default HomePage;
