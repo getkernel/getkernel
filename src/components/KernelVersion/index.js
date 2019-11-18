@@ -39,7 +39,7 @@ const KernelVersion = ({ version }) => {
   useEffect(() => {
     const kernel = kernels.find((kernel) => kernel.version === version);
     setSelectedKernel(kernel);
-  }, [kernels]);
+  }, [kernels, version]);
 
   if (!selectedKernel) {
     return <LoadingIndicator />;
