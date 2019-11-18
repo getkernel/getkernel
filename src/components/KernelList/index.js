@@ -18,6 +18,7 @@ import Select from '@material-ui/core/Select';
 import Checkbox from '@material-ui/core/Checkbox';
 import KernelListItem from '../KernelListItem';
 import PageContent from '../PageContent';
+import LoadingIndicator from '../LoadingIndicator';
 import {
   KernelsContext,
   KernelsDispatchContext,
@@ -78,6 +79,10 @@ const KernelList = () => {
   const filteredEntries = entries
     .filter(versionsFilter(selectedVersions))
     .filter(releaseTypeFilter(releaseType));
+
+  if (!filteredEntries.length) {
+    return <LoadingIndicator />;
+  }
 
   return (
     <div className={classes.root}>
