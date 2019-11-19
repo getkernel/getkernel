@@ -22,6 +22,21 @@ export default (state, action) => {
         },
       };
 
+    case 'SHOW_SNACKBAR':
+      return {
+        ...state,
+        snackbar: action.snackbar,
+      };
+
+    case 'CLOSE_SNACKBAR':
+      return {
+        ...state,
+        snackbar: {
+          open: false,
+          text: '',
+        },
+      };
+
     default:
       return state;
   }

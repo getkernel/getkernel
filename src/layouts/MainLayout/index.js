@@ -23,6 +23,7 @@ import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import SearchIcon from '@material-ui/icons/Search';
 import DocumentHead from '../../components/DocumentHead';
+import GlobalSnackbar from '../../components/GlobalSnackbar';
 import WebViewerDialog from '../../components/WebViewerDialog';
 import {
   GlobalContext,
@@ -133,6 +134,7 @@ const MainLayout = ({ children, pageTitle, contentTitle, showShadow }) => {
           {children}
         </main>
       </div>
+      <GlobalSnackbar />
       <WebViewerDialog />
     </Fragment>
   );

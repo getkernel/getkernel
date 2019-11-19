@@ -50,7 +50,7 @@ const PlatformListItem = ({
     setMenuAnchorEl(null);
   };
 
-  const handleBuildLogClick = () => {
+  const handleBuildLogsClick = () => {
     handleMenuClose();
     handleShowWebViewer(logUrl, `Build Logs for ${platformText}`);
   };
@@ -82,7 +82,7 @@ const PlatformListItem = ({
           open={Boolean(menuAnchorEl)}
           onClose={handleMenuClose}
         >
-          <MenuItem onClick={handleBuildLogClick}>Build logs</MenuItem>
+          <MenuItem onClick={handleBuildLogsClick}>Build logs</MenuItem>
         </Menu>
         <CardContent>
           <h1>{platform}</h1>

@@ -5,4 +5,8 @@ export default {
     url: '',
     title: '',
   },
+  snackbar: {
+    open: false,
+    text: '',
+  },
 };
