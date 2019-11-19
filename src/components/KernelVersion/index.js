@@ -17,8 +17,8 @@ import {
 } from '../../contexts';
 import { addKernelData, showWebViewer } from '../../actions';
 import LoadingIndicator from '../LoadingIndicator';
-import styles from './styles';
 import PlatformListItem from '../PlatformListItem';
+import styles from './styles';
 
 const useStyles = makeStyles(styles);
 
@@ -81,6 +81,7 @@ const KernelVersion = ({ version }) => {
               <PlatformListItem
                 key={file.platform}
                 {...file}
+                version={version}
                 base_url={base_url}
                 handleShowWebViewer={handleShowWebViewer}
               />

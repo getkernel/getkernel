@@ -1,5 +1,6 @@
 /**
  * PlatformListItem component.
+ * Rendered by KernelVersion.
  */
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
@@ -22,18 +23,22 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Checkbox from '@material-ui/core/Checkbox';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import Tooltip from '@material-ui/core/Tooltip';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
 import DownloadIcon from '@material-ui/icons/CloudDownload';
+import { saveAs } from 'file-saver';
 import styles from './styles';
 import { BUILD_VARIANTS } from '../../constants';
+import { buildChecksums } from '../../utils';
 
 const useStyles = makeStyles(styles);
 
 const PlatformListItem = ({
+  version,
   base_url,
   platform,
   status,
@@ -45,7 +50,7 @@ const PlatformListItem = ({
 
   const buildVariants = [...BUILD_VARIANTS[platform], 'all'];
   const [selectedVariant, setSelectedVariant] = useState(buildVariants[0]);
-  const [checkedBinaries, setCheckedBinaries] = useState([]);
+  const [checkedBinaryIndices, setCheckedBinaryIndices] = useState([]);
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
 
   const buildSucceeded = status === 'succeeded';
@@ -55,21 +60,21 @@ const PlatformListItem = ({
 
   useEffect(() => {
     const newChecked = [];
-    binaries.forEach(({ binary }) => {
+    binaries.forEach(({ binary }, index) => {
       if (selectedVariant === 'all') {
-        return newChecked.push(binary);
+        return newChecked.push(index);
       }
 
       if (binary.includes(`${selectedVariant}_`) || binary.includes('_all')) {
-        newChecked.push(binary);
+        newChecked.push(index);
       }
     });
-    setCheckedBinaries(newChecked);
+    setCheckedBinaryIndices(newChecked);
   }, [selectedVariant]);
 
   const handleToggleChecked = (value) => {
-    const currentIndex = checkedBinaries.indexOf(value);
-    const newChecked = [...checkedBinaries];
+    const currentIndex = checkedBinaryIndices.indexOf(value);
+    const newChecked = [...checkedBinaryIndices];
 
     if (currentIndex === -1) {
       newChecked.push(value);
@@ -77,7 +82,7 @@ const PlatformListItem = ({
       newChecked.splice(currentIndex, 1);
     }
 
-    setCheckedBinaries(newChecked);
+    setCheckedBinaryIndices(newChecked);
   };
 
   const handleMenuClick = (e) => {
@@ -110,10 +115,13 @@ const PlatformListItem = ({
   };
 
   const handleBatchDownload = () => {
-    const items = checkedBinaries.map((binary) => ({
-      url: base_url + binary,
-      fileName: binary,
-    }));
+    const items = checkedBinaryIndices.map((index) => {
+      const { binary } = binaries[index];
+      return {
+        url: base_url + binary,
+        fileName: binary,
+      };
+    });
 
     startBatchDownload(items);
   };
@@ -127,6 +135,39 @@ const PlatformListItem = ({
       }, 1000);
     }
   };
+
+  const handleChecksumsDownload = () => {
+    const { fileName, text } = buildChecksums(
+      version,
+      platform,
+      binaries,
+      checkedBinaryIndices
+    );
+    const contents = new Blob([text], { type: 'text/plain;charset=utf-8"' });
+
+    saveAs(contents, fileName);
+  };
+
+  const mainButtons = [
+    {
+      button: {
+        text: 'Checksums',
+        variant: 'outlined',
+        handler: handleChecksumsDownload,
+        disabled: !(checkedBinaryIndices.length && buildSucceeded),
+      },
+      tooltip: 'Download Checksums for selected files',
+    },
+    {
+      button: {
+        text: 'Binaries',
+        variant: 'contained',
+        handler: handleBatchDownload,
+        disabled: !(checkedBinaryIndices.length && buildSucceeded),
+      },
+      tooltip: 'Download selected files',
+    },
+  ];
 
   return (
     <Grid item xs={12} md={12}>
@@ -159,7 +200,7 @@ const PlatformListItem = ({
         </Menu>
         <CardContent>
           <List>
-            {binaries.map(({ binary, sha1, sha256 }) => {
+            {binaries.map(({ binary }, index) => {
               const labelId = `checkbox-list-label-${binary}`;
 
               return (
@@ -168,13 +209,13 @@ const PlatformListItem = ({
                   role={undefined}
                   dense
                   button
-                  onClick={() => handleToggleChecked(binary)}
+                  onClick={() => handleToggleChecked(index)}
                   disabled={!buildSucceeded}
                 >
                   <ListItemIcon>
                     <Checkbox
                       edge="start"
-                      checked={checkedBinaries.indexOf(binary) !== -1}
+                      checked={checkedBinaryIndices.indexOf(index) !== -1}
                       tabIndex={-1}
                       disableRipple
                       inputProps={{ 'aria-labelledby': labelId }}
@@ -182,58 +223,71 @@ const PlatformListItem = ({
                   </ListItemIcon>
                   <ListItemText id={labelId} primary={binary} />
                   <ListItemSecondaryAction>
-                    <IconButton
-                      edge="end"
-                      aria-label="deb package"
-                      disabled={!buildSucceeded}
-                      onClick={() =>
-                        handleFileDownload(base_url + binary, binary)
-                      }
-                    >
-                      <img src="/images/deb.svg" width="24" height="24" />
-                    </IconButton>
+                    <Tooltip title={`Download ${binary}`}>
+                      <span>
+                        <IconButton
+                          edge="end"
+                          aria-label="deb package"
+                          disabled={!buildSucceeded}
+                          onClick={() =>
+                            handleFileDownload(base_url + binary, binary)
+                          }
+                        >
+                          <img src="/images/deb.svg" width="24" height="24" />
+                        </IconButton>
+                      </span>
+                    </Tooltip>
                   </ListItemSecondaryAction>
                 </ListItem>
               );
             })}
           </List>
-        </CardContent>
-        <CardActions>
-          <ToggleButtonGroup
-            size="small"
-            value={selectedVariant}
-            exclusive
-            onChange={handleVariantChange}
-            aria-label="build variants"
-          >
-            {buildVariants &&
-              buildVariants.map((variant) => (
-                <ToggleButton
-                  key={`${platform}-${variant}`}
-                  value={variant}
-                  disabled={!buildSucceeded}
-                >
-                  {variant}
-                </ToggleButton>
+          <div className={classes.buttons}>
+            <ToggleButtonGroup
+              size="small"
+              value={selectedVariant}
+              exclusive
+              onChange={handleVariantChange}
+              aria-label="build variants"
+            >
+              {buildVariants &&
+                buildVariants.map((variant) => (
+                  <ToggleButton
+                    key={`${platform}-${variant}`}
+                    value={variant}
+                    disabled={!buildSucceeded}
+                  >
+                    {variant}
+                  </ToggleButton>
+                ))}
+            </ToggleButtonGroup>
+            <div className={classes.buttonsRight}>
+              {mainButtons.map(({ button, tooltip }) => (
+                <Tooltip title={tooltip} key={`main-btn-${button.text}`}>
+                  <span>
+                    <Button
+                      size="medium"
+                      variant={button.variant}
+                      color="primary"
+                      onClick={button.handler}
+                      disabled={button.disabled}
+                    >
+                      <DownloadIcon className={classes.icon} />
+                      <Typography variant="button">{button.text}</Typography>
+                    </Button>
+                  </span>
+                </Tooltip>
               ))}
-          </ToggleButtonGroup>
-          <Button
-            size="medium"
-            variant="contained"
-            color="primary"
-            onClick={handleBatchDownload}
-            disabled={!checkedBinaries.length}
-          >
-            <DownloadIcon className={classes.icon} />
-            <Typography variant="button">Download Binaries</Typography>
-          </Button>
-        </CardActions>
+            </div>
+          </div>
+        </CardContent>
       </Card>
     </Grid>
   );
 };
 
 PlatformListItem.propTypes = {
+  version: PropTypes.string.isRequired,
   base_url: PropTypes.string.isRequired,
   platform: PropTypes.string.isRequired,
   status: PropTypes.string.isRequired,

@@ -13,6 +13,7 @@
     "@material-ui/lab": "^4.0.0-alpha.32",
     "cheerio": "^1.0.0-rc.3",
     "clsx": "^1.0.4",
+    "file-saver": "^2.0.2",
     "isomorphic-unfetch": "^3.0.0",
     "markdown-it": "^10.0.0",
     "moment": "^2.24.0",

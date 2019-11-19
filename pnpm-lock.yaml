@@ -4,6 +4,7 @@ dependencies:
   '@material-ui/lab': 4.0.0-alpha.32_6147bde6fe308e2b8c1aad218a1e5354
   cheerio: 1.0.0-rc.3
   clsx: 1.0.4
+  file-saver: 2.0.2
   isomorphic-unfetch: 3.0.0
   markdown-it: 10.0.0
   moment: 2.24.0
@@ -2570,6 +2571,10 @@ packages:
       webpack: ^4.0.0
     resolution:
       integrity: sha512-+xZnaK5R8kBJrHK0/6HRlrKNamvVS5rjyuju+rnyxRGuwUJwpAMsVzUl5dz6rK8brkzjV6JpcFNjp6NqV0g1OQ==
+  /file-saver/2.0.2:
+    dev: false
+    resolution:
+      integrity: sha512-Wz3c3XQ5xroCxd1G8b7yL0Ehkf0TC9oYC6buPFkNnU9EnaPlifeAFCyCh+iewXTyFRcg0a6j3J7FmJsIhlhBdw==
   /fill-range/4.0.0:
     dependencies:
       extend-shallow: 2.0.1
@@ -4718,7 +4723,7 @@ packages:
     dependencies:
       loose-envify: 1.4.0
       object-assign: 4.1.1
-      react-is: 16.8.6
+      react-is: 16.12.0
     dev: false
     resolution:
       integrity: sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -5902,6 +5907,7 @@ specifiers:
   '@material-ui/lab': ^4.0.0-alpha.32
   cheerio: ^1.0.0-rc.3
   clsx: ^1.0.4
+  file-saver: ^2.0.2
   isomorphic-unfetch: ^3.0.0
   markdown-it: ^10.0.0
   moment: ^2.24.0
