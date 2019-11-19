@@ -10,6 +10,7 @@
   "dependencies": {
     "@material-ui/core": "^4.6.1",
     "@material-ui/icons": "^4.5.1",
+    "@material-ui/lab": "^4.0.0-alpha.32",
     "cheerio": "^1.0.0-rc.3",
     "clsx": "^1.0.4",
     "isomorphic-unfetch": "^3.0.0",

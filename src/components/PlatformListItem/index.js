@@ -1,13 +1,12 @@
 /**
  * PlatformListItem component.
  */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -23,10 +22,14 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Checkbox from '@material-ui/core/Checkbox';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import ToggleButton from '@material-ui/lab/ToggleButton';
+import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
+import DownloadIcon from '@material-ui/icons/CloudDownload';
 import styles from './styles';
+import { BUILD_VARIANTS } from '../../constants';
 
 const useStyles = makeStyles(styles);
 
@@ -40,13 +43,33 @@ const PlatformListItem = ({
 }) => {
   const classes = useStyles();
 
+  const buildVariants = [...BUILD_VARIANTS[platform], 'all'];
+  const [selectedVariant, setSelectedVariant] = useState(buildVariants[0]);
+  const [checkedBinaries, setCheckedBinaries] = useState([]);
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
 
-  const [checked, setChecked] = React.useState([0]);
+  const buildSucceeded = status === 'succeeded';
+  const buildText = `Build ${buildSucceeded ? 'succeeded' : 'failed'}.`;
+  const platformText = platform !== 'i386' ? platform.toUpperCase() : platform;
+  const logUrl = base_url + log;
 
-  const handleToggle = (value) => () => {
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
+  useEffect(() => {
+    const newChecked = [];
+    binaries.forEach(({ binary }) => {
+      if (selectedVariant === 'all') {
+        return newChecked.push(binary);
+      }
+
+      if (binary.includes(`${selectedVariant}_`) || binary.includes('_all')) {
+        newChecked.push(binary);
+      }
+    });
+    setCheckedBinaries(newChecked);
+  }, [selectedVariant]);
+
+  const handleToggleChecked = (value) => {
+    const currentIndex = checkedBinaries.indexOf(value);
+    const newChecked = [...checkedBinaries];
 
     if (currentIndex === -1) {
       newChecked.push(value);
@@ -54,14 +77,8 @@ const PlatformListItem = ({
       newChecked.splice(currentIndex, 1);
     }
 
-    setChecked(newChecked);
+    setCheckedBinaries(newChecked);
   };
-
-  const buildSucceeded = status === 'succeeded';
-  const buildText = `Build ${buildSucceeded ? 'succeeded' : 'failed'}.`;
-  const platformText = platform !== 'i386' ? platform.toUpperCase() : platform;
-
-  const logUrl = base_url + log;
 
   const handleMenuClick = (e) => {
     setMenuAnchorEl(e.currentTarget);
@@ -74,6 +91,41 @@ const PlatformListItem = ({
   const handleBuildLogsClick = () => {
     handleMenuClose();
     handleShowWebViewer(logUrl, `Build Logs for ${platformText}`);
+  };
+
+  const handleVariantChange = (event, value) => {
+    setSelectedVariant(value);
+  };
+
+  const handleFileDownload = (url, fileName) => {
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = fileName;
+    if (fileName.endsWith('.deb')) {
+      anchor.type = 'application/x-debian-package';
+    }
+    anchor.hidden = true;
+    anchor.click();
+    anchor.remove();
+  };
+
+  const handleBatchDownload = () => {
+    const items = checkedBinaries.map((binary) => ({
+      url: base_url + binary,
+      fileName: binary,
+    }));
+
+    startBatchDownload(items);
+  };
+
+  const startBatchDownload = (items) => {
+    if (items.length) {
+      const item = items.shift();
+      handleFileDownload(item.url, item.fileName);
+      return setTimeout(() => {
+        startBatchDownload(items);
+      }, 1000);
+    }
   };
 
   return (
@@ -106,7 +158,7 @@ const PlatformListItem = ({
           <MenuItem onClick={handleBuildLogsClick}>Build logs</MenuItem>
         </Menu>
         <CardContent>
-          <List className={classes.root}>
+          <List>
             {binaries.map(({ binary, sha1, sha256 }) => {
               const labelId = `checkbox-list-label-${binary}`;
 
@@ -116,12 +168,13 @@ const PlatformListItem = ({
                   role={undefined}
                   dense
                   button
-                  onClick={handleToggle(binary)}
+                  onClick={() => handleToggleChecked(binary)}
+                  disabled={!buildSucceeded}
                 >
                   <ListItemIcon>
                     <Checkbox
                       edge="start"
-                      checked={checked.indexOf(binary) !== -1}
+                      checked={checkedBinaries.indexOf(binary) !== -1}
                       tabIndex={-1}
                       disableRipple
                       inputProps={{ 'aria-labelledby': labelId }}
@@ -129,7 +182,14 @@ const PlatformListItem = ({
                   </ListItemIcon>
                   <ListItemText id={labelId} primary={binary} />
                   <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="deb package">
+                    <IconButton
+                      edge="end"
+                      aria-label="deb package"
+                      disabled={!buildSucceeded}
+                      onClick={() =>
+                        handleFileDownload(base_url + binary, binary)
+                      }
+                    >
                       <img src="/images/deb.svg" width="24" height="24" />
                     </IconButton>
                   </ListItemSecondaryAction>
@@ -138,6 +198,36 @@ const PlatformListItem = ({
             })}
           </List>
         </CardContent>
+        <CardActions>
+          <ToggleButtonGroup
+            size="small"
+            value={selectedVariant}
+            exclusive
+            onChange={handleVariantChange}
+            aria-label="build variants"
+          >
+            {buildVariants &&
+              buildVariants.map((variant) => (
+                <ToggleButton
+                  key={`${platform}-${variant}`}
+                  value={variant}
+                  disabled={!buildSucceeded}
+                >
+                  {variant}
+                </ToggleButton>
+              ))}
+          </ToggleButtonGroup>
+          <Button
+            size="medium"
+            variant="contained"
+            color="primary"
+            onClick={handleBatchDownload}
+            disabled={!checkedBinaries.length}
+          >
+            <DownloadIcon className={classes.icon} />
+            <Typography variant="button">Download Binaries</Typography>
+          </Button>
+        </CardActions>
       </Card>
     </Grid>
   );

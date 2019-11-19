@@ -1,6 +1,7 @@
 dependencies:
   '@material-ui/core': 4.6.1_react-dom@16.12.0+react@16.12.0
   '@material-ui/icons': 4.5.1_6147bde6fe308e2b8c1aad218a1e5354
+  '@material-ui/lab': 4.0.0-alpha.32_6147bde6fe308e2b8c1aad218a1e5354
   cheerio: 1.0.0-rc.3
   clsx: 1.0.4
   isomorphic-unfetch: 3.0.0
@@ -960,6 +961,24 @@ packages:
       react-dom: ^16.8.0
     resolution:
       integrity: sha512-YZ/BgJbXX4a0gOuKWb30mBaHaoXRqPanlePam83JQPZ/y4kl+3aW0Wv9tlR70hB5EGAkEJGW5m4ktJwMgxQAeA==
+  /@material-ui/lab/4.0.0-alpha.32_6147bde6fe308e2b8c1aad218a1e5354:
+    dependencies:
+      '@babel/runtime': 7.7.2
+      '@material-ui/core': 4.6.1_react-dom@16.12.0+react@16.12.0
+      '@material-ui/utils': 4.5.2_react-dom@16.12.0+react@16.12.0
+      clsx: 1.0.4
+      prop-types: 15.7.2
+      react: 16.12.0
+      react-dom: 16.12.0_react@16.12.0
+    dev: false
+    engines:
+      node: '>=8.0.0'
+    peerDependencies:
+      '@material-ui/core': ^4.5.2
+      react: ^16.8.0
+      react-dom: ^16.8.0
+    resolution:
+      integrity: sha512-ONh2WLp8E11Gsl/HaLQ1CLfZadtuyt2cbEKDCAJ9G267zCrKzrc5T9Ij7UH5Z2jwmP9aDjpp8PoA1+zUSlGknw==
   /@material-ui/styles/4.6.0_react-dom@16.12.0+react@16.12.0:
     dependencies:
       '@babel/runtime': 7.7.2
@@ -4699,7 +4718,7 @@ packages:
     dependencies:
       loose-envify: 1.4.0
       object-assign: 4.1.1
-      react-is: 16.12.0
+      react-is: 16.8.6
     dev: false
     resolution:
       integrity: sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -5880,6 +5899,7 @@ packages:
 specifiers:
   '@material-ui/core': ^4.6.1
   '@material-ui/icons': ^4.5.1
+  '@material-ui/lab': ^4.0.0-alpha.32
   cheerio: ^1.0.0-rc.3
   clsx: ^1.0.4
   isomorphic-unfetch: ^3.0.0

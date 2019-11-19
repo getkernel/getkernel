@@ -10,4 +10,7 @@ export default (theme) => ({
   fail: {
     backgroundColor: red[400],
   },
+  icon: {
+    marginRight: theme.spacing(1),
+  },
 });
