@@ -21,9 +21,3 @@ export function KernelsProvider({ children }) {
     </KernelsContext.Provider>
   );
 }
-
-export const withKernelsProvider = (Component) => (props) => (
-  <KernelsProvider>
-    <Component {...props} />
-  </KernelsProvider>
-);

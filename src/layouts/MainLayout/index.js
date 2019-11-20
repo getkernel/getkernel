@@ -26,9 +26,10 @@ import DocumentHead from '../../components/DocumentHead';
 import GlobalSnackbar from '../../components/GlobalSnackbar';
 import WebViewerDialog from '../../components/WebViewerDialog';
 import {
+  GlobalProvider,
   GlobalContext,
   GlobalDispatchContext,
-  withGlobalProvider,
+  withProvider,
 } from '../../contexts';
 import { toggleDrawer } from '../../actions';
 import styles from './styles';
@@ -146,10 +147,10 @@ MainLayout.defaultProps = {
 };
 
 MainLayout.propTypes = {
+  children: PropTypes.any.isRequired,
   pageTitle: PropTypes.string,
   contentTitle: PropTypes.string,
-  children: PropTypes.any.isRequired,
   showShadow: PropTypes.bool,
 };
 
-export default withGlobalProvider(MainLayout);
+export default withProvider(GlobalProvider)(MainLayout);

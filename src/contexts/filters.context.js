@@ -21,9 +21,3 @@ export function FiltersProvider({ children }) {
     </FiltersContext.Provider>
   );
 }
-
-export const withFiltersProvider = (Component) => (props) => (
-  <FiltersProvider>
-    <Component {...props} />
-  </FiltersProvider>
-);

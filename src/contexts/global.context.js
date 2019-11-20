@@ -21,9 +21,3 @@ export function GlobalProvider({ children }) {
     </GlobalContext.Provider>
   );
 }
-
-export const withGlobalProvider = (Component) => (props) => (
-  <GlobalProvider>
-    <Component {...props} />
-  </GlobalProvider>
-);
