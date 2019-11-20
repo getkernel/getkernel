@@ -25,6 +25,9 @@ export default (theme) => ({
   menuButton: {
     marginRight: theme.spacing(2),
   },
+  button: {
+    marginLeft: theme.spacing(2),
+  },
   hide: {
     display: 'none',
   },

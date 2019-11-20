@@ -2,6 +2,10 @@ export const toggleDrawer = () => ({
   type: 'TOGGLE_DRAWER',
 });
 
+export const toggleTheme = () => ({
+  type: 'TOGGLE_THEME',
+});
+
 export const showWebViewer = ({ url, title }) => ({
   type: 'SHOW_WEB_VIEWER',
   webViewer: {

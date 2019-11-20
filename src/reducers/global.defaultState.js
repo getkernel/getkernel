@@ -9,4 +9,5 @@ export default {
     open: false,
     text: '',
   },
+  theme: 'dark',
 };

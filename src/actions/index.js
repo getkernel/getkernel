@@ -1,5 +1,6 @@
 import {
   toggleDrawer,
+  toggleTheme,
   showWebViewer,
   closeWebViewer,
   showSnackbar,
@@ -14,6 +15,7 @@ import {
 
 export {
   toggleDrawer,
+  toggleTheme,
   showWebViewer,
   closeWebViewer,
   showSnackbar,

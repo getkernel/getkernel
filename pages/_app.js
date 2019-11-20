@@ -1,10 +1,14 @@
 import React from 'react';
 import App from 'next/app';
+import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import { GlobalProvider, GlobalContext, withProvider } from '../src/contexts';
 import theme from '../src/theme';
 
-export default class MyApp extends App {
+class MyApp extends App {
+  static contextType = GlobalContext;
+
   componentDidMount() {
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector('#jss-server-side');
@@ -15,12 +19,23 @@ export default class MyApp extends App {
 
   render() {
     const { Component, pageProps } = this.props;
+    const { theme: themePref } = this.context;
+
+    // Create a theme instance.
+    const muiTheme = createMuiTheme({
+      palette: {
+        ...theme.palette,
+        [themePref && 'type']: themePref,
+      },
+    });
 
     return (
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={muiTheme}>
         <CssBaseline />
         <Component {...pageProps} />
       </ThemeProvider>
     );
   }
 }
+
+export default withProvider(GlobalProvider)(MyApp);

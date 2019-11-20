@@ -1,22 +1,18 @@
-import { createMuiTheme } from '@material-ui/core/styles';
-import { red } from '@material-ui/core/colors';
+import { brown, red, teal } from '@material-ui/core/colors';
 
-// Create a theme instance.
-const theme = createMuiTheme({
+export default {
   palette: {
     primary: {
-      main: '#556cd6',
+      main: brown[400],
     },
     secondary: {
-      main: '#19857b',
+      main: teal[400],
     },
     error: {
       main: red.A400,
     },
     background: {
-      default: '#fff',
+      main: '#fff',
     },
   },
-});
-
-export default theme;
+};

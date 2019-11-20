@@ -6,6 +6,12 @@ export default (state, action) => {
         drawerOpen: !state.drawerOpen,
       };
 
+    case 'TOGGLE_THEME':
+      return {
+        ...state,
+        theme: state.theme === 'dark' ? 'light' : 'dark',
+      };
+
     case 'SHOW_WEB_VIEWER':
       return {
         ...state,

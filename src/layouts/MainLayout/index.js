@@ -19,19 +19,17 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import Tooltip from '@material-ui/core/Tooltip';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import SearchIcon from '@material-ui/icons/Search';
+import LightThemeIcon from '@material-ui/icons/Brightness7';
+import DarkThemeIcon from '@material-ui/icons/Brightness4';
 import DocumentHead from '../../components/DocumentHead';
 import GlobalSnackbar from '../../components/GlobalSnackbar';
 import WebViewerDialog from '../../components/WebViewerDialog';
-import {
-  GlobalProvider,
-  GlobalContext,
-  GlobalDispatchContext,
-  withProvider,
-} from '../../contexts';
-import { toggleDrawer } from '../../actions';
+import { GlobalContext, GlobalDispatchContext } from '../../contexts';
+import { toggleDrawer, toggleTheme } from '../../actions';
 import styles from './styles';
 
 const useStyles = makeStyles(styles);
@@ -40,7 +38,7 @@ const MainLayout = ({ children, pageTitle, contentTitle, showShadow }) => {
   const classes = useStyles();
   const theme = useTheme();
 
-  const { drawerOpen } = useContext(GlobalContext);
+  const { drawerOpen, theme: themePref } = useContext(GlobalContext);
   const dispatch = useContext(GlobalDispatchContext);
 
   return (
@@ -80,6 +78,20 @@ const MainLayout = ({ children, pageTitle, contentTitle, showShadow }) => {
                 inputProps={{ 'aria-label': 'search' }}
               />
             </div>
+            <Tooltip
+              title="Toggle light/dark theme"
+              aria-label="Toggle light/dark theme"
+            >
+              <IconButton
+                color="inherit"
+                aria-label="toggle theme"
+                onClick={() => dispatch(toggleTheme())}
+                edge="start"
+                className={classes.button}
+              >
+                {themePref === 'dark' ? <DarkThemeIcon /> : <LightThemeIcon />}
+              </IconButton>
+            </Tooltip>
           </Toolbar>
         </AppBar>
         <Drawer
@@ -153,4 +165,4 @@ MainLayout.propTypes = {
   showShadow: PropTypes.bool,
 };
 
-export default withProvider(GlobalProvider)(MainLayout);
+export default MainLayout;
