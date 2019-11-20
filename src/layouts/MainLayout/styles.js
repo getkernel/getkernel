@@ -2,7 +2,7 @@
  * MainLayout styles.
  */
 import { fade } from '@material-ui/core/styles';
-export const drawerWidth = 240;
+export const drawerWidth = 280;
 
 export default (theme) => ({
   root: {

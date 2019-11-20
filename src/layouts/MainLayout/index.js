@@ -4,6 +4,7 @@
 import React, { Fragment, useContext } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
+import Router from 'next/router';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
@@ -20,8 +21,10 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Tooltip from '@material-ui/core/Tooltip';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
+import HomeIcon from '@material-ui/icons/Home';
+import BookmarksIcon from '@material-ui/icons/Bookmarks';
+import BugReportIcon from '@material-ui/icons/BugReport';
+import InfoIcon from '@material-ui/icons/Info';
 import SearchIcon from '@material-ui/icons/Search';
 import LightThemeIcon from '@material-ui/icons/Brightness7';
 import DarkThemeIcon from '@material-ui/icons/Brightness4';
@@ -40,6 +43,40 @@ const MainLayout = ({ children, pageTitle, contentTitle, showShadow }) => {
 
   const { drawerOpen, theme: themePref } = useContext(GlobalContext);
   const dispatch = useContext(GlobalDispatchContext);
+
+  const menuItems = [
+    [
+      {
+        text: 'Home',
+        icon: <HomeIcon />,
+        handler: () => Router.push('/'),
+      },
+      {
+        text: 'Bookmarks',
+        icon: <BookmarksIcon />,
+        handler: () => {},
+      },
+    ],
+    [
+      {
+        text: 'Toggle Theme',
+        icon: themePref === 'dark' ? <DarkThemeIcon /> : <LightThemeIcon />,
+        handler: () => dispatch(toggleTheme()),
+      },
+    ],
+    [
+      {
+        text: 'Report a Problem',
+        icon: <BugReportIcon />,
+        handler: () => {},
+      },
+      {
+        text: 'About',
+        icon: <InfoIcon />,
+        handler: () => {},
+      },
+    ],
+  ];
 
   return (
     <Fragment>
@@ -116,27 +153,19 @@ const MainLayout = ({ children, pageTitle, contentTitle, showShadow }) => {
             </IconButton>
           </div>
           <Divider />
-          <List>
-            {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-            ))}
-          </List>
-          <Divider />
-          <List>
-            {['All mail', 'Trash', 'Spam'].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-            ))}
-          </List>
+          {menuItems.map((menuSet, index) => (
+            <Fragment key={`menuset-${index}`}>
+              <List>
+                {menuSet.map(({ text, icon, handler }) => (
+                  <ListItem button key={text} onClick={handler}>
+                    <ListItemIcon>{icon}</ListItemIcon>
+                    <ListItemText primary={text} />
+                  </ListItem>
+                ))}
+              </List>
+              <Divider />
+            </Fragment>
+          ))}
         </Drawer>
         <main
           className={clsx(classes.content, {
