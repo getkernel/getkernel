@@ -31,6 +31,7 @@ import DarkThemeIcon from '@material-ui/icons/Brightness4';
 import DocumentHead from '../../components/DocumentHead';
 import GlobalSnackbar from '../../components/GlobalSnackbar';
 import WebViewerDialog from '../../components/WebViewerDialog';
+import Logo from './components/Logo';
 import { GlobalContext, GlobalDispatchContext } from '../../contexts';
 import { toggleDrawer, toggleTheme } from '../../actions';
 import styles from './styles';
@@ -141,9 +142,6 @@ const MainLayout = ({ children, pageTitle, contentTitle, showShadow }) => {
           }}
         >
           <div className={classes.drawerHeader}>
-            <Typography variant="h6" className={classes.appTitle}>
-              getkernel.sh
-            </Typography>
             <IconButton onClick={() => dispatch(toggleDrawer())}>
               {theme.direction === 'ltr' ? (
                 <ChevronLeftIcon />
@@ -151,6 +149,9 @@ const MainLayout = ({ children, pageTitle, contentTitle, showShadow }) => {
                 <ChevronRightIcon />
               )}
             </IconButton>
+          </div>
+          <div onClick={() => Router.push('/')}>
+            <Logo />
           </div>
           <Divider />
           {menuItems.map((menuSet, index) => (

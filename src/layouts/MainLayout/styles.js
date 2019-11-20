@@ -43,12 +43,8 @@ export default (theme) => ({
     alignItems: 'center',
     padding: theme.spacing(0, 1),
     ...theme.mixins.toolbar,
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
     marginLeft: theme.spacing(1),
-  },
-  appTitle: {
-    letterSpacing: '2px',
-    fontWeight: 400,
   },
   content: {
     flexGrow: 1,
