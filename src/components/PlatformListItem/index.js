@@ -4,6 +4,7 @@
  */
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
@@ -41,7 +42,7 @@ const PlatformListItem = ({
   version,
   base_url,
   platform,
-  status,
+  build_status,
   binaries,
   log,
   handleShowWebViewer,
@@ -53,19 +54,22 @@ const PlatformListItem = ({
   const [checkedBinaryIndices, setCheckedBinaryIndices] = useState([]);
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
 
-  const buildSucceeded = status === 'succeeded';
-  const buildText = `Build ${buildSucceeded ? 'succeeded' : 'failed'}.`;
+  const buildStatus = build_status;
+  const buildText = `Build ${buildStatus ? 'succeeded' : 'failed'}.`;
   const platformText = platform !== 'i386' ? platform.toUpperCase() : platform;
   const logUrl = base_url + log;
 
   useEffect(() => {
     const newChecked = [];
-    binaries.forEach(({ binary }, index) => {
+    binaries.forEach(({ file_name }, index) => {
       if (selectedVariant === 'all') {
         return newChecked.push(index);
       }
 
-      if (binary.includes(`${selectedVariant}_`) || binary.includes('_all')) {
+      if (
+        file_name.includes(`${selectedVariant}_`) ||
+        file_name.includes('_all')
+      ) {
         newChecked.push(index);
       }
     });
@@ -116,10 +120,10 @@ const PlatformListItem = ({
 
   const handleBatchDownload = () => {
     const items = checkedBinaryIndices.map((index) => {
-      const { binary } = binaries[index];
+      const { file_name } = binaries[index];
       return {
-        url: base_url + binary,
-        fileName: binary,
+        url: base_url + file_name,
+        fileName: file_name,
       };
     });
 
@@ -154,7 +158,7 @@ const PlatformListItem = ({
         text: 'Checksums',
         variant: 'outlined',
         handler: handleChecksumsDownload,
-        disabled: !(checkedBinaryIndices.length && buildSucceeded),
+        disabled: !(checkedBinaryIndices.length && buildStatus),
       },
       tooltip: 'Download Checksums for selected files',
     },
@@ -163,7 +167,7 @@ const PlatformListItem = ({
         text: 'Binaries',
         variant: 'contained',
         handler: handleBatchDownload,
-        disabled: !(checkedBinaryIndices.length && buildSucceeded),
+        disabled: !(checkedBinaryIndices.length && buildStatus),
       },
       tooltip: 'Download selected files',
     },
@@ -176,9 +180,9 @@ const PlatformListItem = ({
           avatar={
             <Avatar
               aria-label="build status"
-              className={buildSucceeded ? classes.success : classes.fail}
+              className={buildStatus ? classes.success : classes.fail}
             >
-              {buildSucceeded ? <CheckIcon /> : <CloseIcon />}
+              {buildStatus ? <CheckIcon /> : <CloseIcon />}
             </Avatar>
           }
           action={
@@ -200,17 +204,17 @@ const PlatformListItem = ({
         </Menu>
         <CardContent>
           <List>
-            {binaries.map(({ binary }, index) => {
-              const labelId = `checkbox-list-label-${binary}`;
+            {binaries.map(({ file_name, file_size, last_modified }, index) => {
+              const labelId = `checkbox-list-label-${file_name}`;
 
               return (
                 <ListItem
-                  key={binary}
+                  key={file_name}
                   role={undefined}
                   dense
                   button
                   onClick={() => handleToggleChecked(index)}
-                  disabled={!buildSucceeded}
+                  disabled={!buildStatus}
                 >
                   <ListItemIcon>
                     <Checkbox
@@ -221,16 +225,34 @@ const PlatformListItem = ({
                       inputProps={{ 'aria-labelledby': labelId }}
                     />
                   </ListItemIcon>
-                  <ListItemText id={labelId} primary={binary} />
+                  <ListItemText
+                    id={labelId}
+                    primary={
+                      <span>
+                        <Typography variant="inherit" component="span">
+                          {file_name}
+                        </Typography>
+                        <Typography
+                          variant="subtitle2"
+                          color="textSecondary"
+                          component="span"
+                          className={classes.fileSize}
+                        >
+                          ({file_size})
+                        </Typography>
+                      </span>
+                    }
+                    secondary={moment(last_modified).format('L LT')}
+                  />
                   <ListItemSecondaryAction>
-                    <Tooltip title={`Download ${binary}`}>
+                    <Tooltip title={`Download ${file_name}`}>
                       <span>
                         <IconButton
                           edge="end"
                           aria-label="deb package"
-                          disabled={!buildSucceeded}
+                          disabled={!buildStatus}
                           onClick={() =>
-                            handleFileDownload(base_url + binary, binary)
+                            handleFileDownload(base_url + file_name, file_name)
                           }
                         >
                           <img src="/images/deb.svg" width="24" height="24" />
@@ -255,7 +277,7 @@ const PlatformListItem = ({
                   <ToggleButton
                     key={`${platform}-${variant}`}
                     value={variant}
-                    disabled={!buildSucceeded}
+                    disabled={!buildStatus}
                   >
                     {variant}
                   </ToggleButton>
@@ -290,7 +312,7 @@ PlatformListItem.propTypes = {
   version: PropTypes.string.isRequired,
   base_url: PropTypes.string.isRequired,
   platform: PropTypes.string.isRequired,
-  status: PropTypes.string.isRequired,
+  build_status: PropTypes.bool.isRequired,
   binaries: PropTypes.array.isRequired,
   log: PropTypes.string.isRequired,
   handleShowWebViewer: PropTypes.func.isRequired,

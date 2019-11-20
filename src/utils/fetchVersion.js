@@ -1,7 +1,6 @@
 import fetch from 'isomorphic-unfetch';
 import cheerio from 'cheerio';
 import moment from 'moment';
-import MarkdownIt from 'markdown-it';
 import { BASE_URL, SERVER_DATE_FORMAT, BUILD_VARIANTS } from '../constants';
 
 const fetchVersion = async (version) => {

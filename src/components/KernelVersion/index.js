@@ -60,7 +60,7 @@ const KernelVersion = ({ version }) => {
     return <LoadingIndicator />;
   }
 
-  const { base_url, changes, gpg_key, files } = selectedKernel;
+  const { base_url, changes, checksums, gpg_key, files } = selectedKernel;
 
   return (
     <div className={classes.root}>
@@ -68,6 +68,11 @@ const KernelVersion = ({ version }) => {
         <Toolbar>
           <Button onClick={() => handleShowWebViewer(changes, 'Changes')}>
             Changes
+          </Button>
+          <Button
+            onClick={() => handleShowWebViewer(checksums, 'Checksums (All)')}
+          >
+            Checksums
           </Button>
           <Button onClick={() => handleShowWebViewer(gpg_key, 'GPG Key')}>
             GPG Key

@@ -11,12 +11,12 @@ export default (version, platform, binaries, checkedBinaryIndices) => {
 
   text += '\n#\n# Checksums-Sha1:\n';
   text += selectedBinaries
-    .map(({ binary, sha1 }) => `${sha1}  ${binary}`)
+    .map(({ file_name, sha1 }) => `${sha1}  ${file_name}`)
     .join('\n');
 
   text += '\n#\n# Checksums-Sha256:\n';
   text += selectedBinaries
-    .map(({ binary, sha256 }) => `${sha256}  ${binary}`)
+    .map(({ file_name, sha256 }) => `${sha256}  ${file_name}`)
     .join('\n');
 
   text += `\n#\n# https://getkernel.sh/kernel/${version}\n`;
