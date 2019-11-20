@@ -49,7 +49,7 @@ const PlatformListItem = ({
 }) => {
   const classes = useStyles();
 
-  const buildVariants = [...BUILD_VARIANTS[platform], 'all'];
+  const buildVariants = [...(BUILD_VARIANTS[platform] || []), 'all'];
   const [selectedVariant, setSelectedVariant] = useState(buildVariants[0]);
   const [checkedBinaryIndices, setCheckedBinaryIndices] = useState([]);
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
