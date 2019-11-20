@@ -1,4 +1,4 @@
-import { fetchVersion } from '../../../src/utils';
+import { fetchVersion } from '../../../src/api';
 
 export default async (req, res) => {
   const {

@@ -1,4 +1,4 @@
-import { fetchIndex } from '../../src/utils';
+import { fetchIndex } from '../../src/api';
 
 export default async (req, res) => {
   const { method } = req;
