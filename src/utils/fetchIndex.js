@@ -1,7 +1,7 @@
 import fetch from 'isomorphic-unfetch';
 import cheerio from 'cheerio';
 import moment from 'moment';
-import { BASE_URL } from '../constants';
+import { BASE_URL, SERVER_DATE_FORMAT } from '../constants';
 
 const fetchIndex = async () => {
   const result = {
@@ -46,7 +46,7 @@ const fetchIndex = async () => {
         result.data.entries.push({
           version_name: versionName,
           version_slug: versionSlug,
-          last_modified: moment(lastModified, 'YYYY-MM-DD HH:mm'),
+          last_modified: moment(lastModified, SERVER_DATE_FORMAT),
         });
       });
 

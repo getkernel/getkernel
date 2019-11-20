@@ -10,7 +10,7 @@ const KernelVersionPage = (props) => {
   } = useRouter();
 
   const pageTitle = `Get Kernel ${version}`;
-  const contentTitle = `Kernel ${version}`;
+  const contentTitle = `${version} Mainline Build`;
 
   return (
     <MainLayout pageTitle={pageTitle} contentTitle={contentTitle}>

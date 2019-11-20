@@ -1,11 +1,11 @@
 import fetch from 'isomorphic-unfetch';
 import cheerio from 'cheerio';
+import moment from 'moment';
 import MarkdownIt from 'markdown-it';
-import { BASE_URL } from '../constants';
+import { BASE_URL, SERVER_DATE_FORMAT, BUILD_VARIANTS } from '../constants';
 
 const fetchVersion = async (version) => {
   if (!version.includes('v')) version = `v${version}`;
-  const md = new MarkdownIt();
   const kernelBaseUrl = `${BASE_URL}/${version}`;
 
   const result = {
@@ -14,59 +14,127 @@ const fetchVersion = async (version) => {
       version,
       base_url: `${kernelBaseUrl}/`,
       changes: `${kernelBaseUrl}/CHANGES`,
+      checksums: `${kernelBaseUrl}/CHECKSUMS`,
       gpg_key: `${kernelBaseUrl}/CHECKSUMS.gpg`,
       files: [],
     },
   };
 
+  const files = {};
+  let builtInfo = [];
+  let checksums = [];
+
   try {
-    // Fetch README and parse as HTML.
-    const response = await fetch(`${kernelBaseUrl}/README`);
-    const body = await response.text();
-    const html = md.render(body);
-    const $ = cheerio.load(html);
+    // Fetch main html file.
+    const resMain = await fetch(kernelBaseUrl);
+    const bodyMain = await resMain.text();
+    const $_main = cheerio.load(bodyMain);
 
-    // Fetch CHECKSUMS.
-    const checksumsResponse = await fetch(`${kernelBaseUrl}/CHECKSUMS`);
-    const checksumBody = await checksumsResponse.text();
-    const checksums = checksumBody.split('\n').map((line) => {
-      const [sum, file] = line.split('  ');
-      return { sum, file };
-    });
+    // Fetch and parse BUILT file.
+    const resBuilt = await fetch(`${kernelBaseUrl}/BUILT`);
+    const bodyBuilt = await resBuilt.text();
+    builtInfo = bodyBuilt
+      .split('\n')
+      .map((line) => line.toLowerCase())
+      .filter((line) => line.includes('status'))
+      .map((line) => {
+        const [, token] = line.split(':').map((l) => l.trim());
+        const [platform, status] = token.split(' ');
+        return {
+          platform,
+          status: status === '0',
+        };
+      });
 
-    // Loop over newly generated 'p' tags and extract necessary information.
-    $('p').each((i, elem) => {
-      const entry = $(elem)
-        .text()
-        .trim();
-      if (!entry.includes('Build for')) return true;
+    // Fetch and parse CHECKSUMS file.
+    const resChecksums = await fetch(`${kernelBaseUrl}/CHECKSUMS`);
+    const bodyChecksums = await resChecksums.text();
+    checksums = bodyChecksums
+      .split('\n')
+      .filter((line) => line.includes('.deb'))
+      .map((line) => {
+        const [sum, file] = line.split('  ');
+        return { file, sum };
+      });
 
-      const binaries = entry.split('\n');
-      let signature = binaries.shift();
-      signature = signature.replace('Build for', '').trim();
-      const [platform, status] = signature.split(' ');
+    // Loop over table rows and extract necessary information.
+    $_main('table')
+      .find('tr')
+      .each((_, elem) => {
+        const tds = $_main(elem).find('td');
+        if (tds.length === 0) return true;
+
+        // Extract file name, file size, platform and last modified date.
+        const fileName = tds
+          .eq(1)
+          .text()
+          .trim();
+        const lastModified = tds
+          .eq(2)
+          .text()
+          .trim();
+        const fileSize = tds
+          .eq(3)
+          .text()
+          .trim();
+
+        if (!fileName.endsWith('.deb')) return true;
+
+        const [platform] = fileName
+          .substring(fileName.lastIndexOf('_') + 1)
+          .split('.');
+
+        if (!files[platform]) {
+          files[platform] = [];
+        }
+
+        files[platform].push({
+          file_name: fileName,
+          file_size: fileSize,
+          last_modified: moment(lastModified, SERVER_DATE_FORMAT),
+        });
+      });
+
+    // Decide platforms data to use to generate files array.
+    const platforms = builtInfo.length
+      ? builtInfo.filter(({ platform }) => platform !== 'binary-headers')
+      : Object.keys(BUILD_VARIANTS)
+          .map((variant) => ({
+            platform: variant,
+            status: true,
+          }))
+          .filter(({ platform }) => files[platform] && files[platform].length);
+
+    result.data.files = platforms.map(({ platform, status }) => {
+      const platformFiles = [...files['all'], ...(files[platform] || [])];
 
       // Build binaries array with checksums.
-      const binariesData = binaries.map((binary) => {
-        const [sha1, sha256] = checksums.filter((c) => c.file === binary);
-        if (!sha1 || !sha256) {
+      const binaries = platformFiles.map((file) => {
+        const [sha1, sha256] = checksums.filter(
+          (c) => c.file === file.file_name
+        );
+
+        if (!(sha1 && sha256)) {
           return {
-            binary,
+            ...file,
           };
         }
+
         return {
-          binary,
+          ...file,
           sha1: sha1.sum,
           sha256: sha256.sum,
         };
       });
 
-      result.data.files.push({
+      binaries.sort((a, b) => b.file_name - a.file_name);
+
+      return {
         platform,
-        status,
-        binaries: binariesData,
+        build_status: status,
+        binaries,
         log: `BUILD.LOG.${platform}`,
-      });
+      };
     });
 
     if (!result.data.files.length) {
