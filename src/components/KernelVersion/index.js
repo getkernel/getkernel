@@ -9,6 +9,10 @@ import Grid from '@material-ui/core/Grid';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
+import Chip from '@material-ui/core/Chip';
+import CheckIcon from '@material-ui/icons/Check';
+import CloseIcon from '@material-ui/icons/Close';
+import Scroll from 'react-scroll';
 import PageContent from '../PageContent';
 import {
   KernelsContext,
@@ -19,6 +23,7 @@ import { addKernelData, showWebViewer } from '../../actions';
 import LoadingIndicator from '../LoadingIndicator';
 import PlatformListItem from '../PlatformListItem';
 import styles from './styles';
+import appConfig from '../../app.config';
 
 const useStyles = makeStyles(styles);
 
@@ -62,21 +67,58 @@ const KernelVersion = ({ version }) => {
 
   const { base_url, changes, checksums, gpg_key, files } = selectedKernel;
 
+  const toolbarButtons = [
+    {
+      text: 'Changes',
+      handler: () => handleShowWebViewer(changes, 'Changes'),
+    },
+    {
+      text: 'Checksums',
+      handler: () => handleShowWebViewer(checksums, 'Checksums (All)'),
+    },
+    {
+      text: 'GPG Key',
+      handler: () => handleShowWebViewer(gpg_key, 'GPG Key'),
+    },
+  ];
+
+  const platforms = files
+    ? files.map(({ platform, build_status }) => ({ platform, build_status }))
+    : [];
+
   return (
     <div className={classes.root}>
       <AppBar position="sticky" color="default">
-        <Toolbar>
-          <Button onClick={() => handleShowWebViewer(changes, 'Changes')}>
-            Changes
-          </Button>
-          <Button
-            onClick={() => handleShowWebViewer(checksums, 'Checksums (All)')}
-          >
-            Checksums
-          </Button>
-          <Button onClick={() => handleShowWebViewer(gpg_key, 'GPG Key')}>
-            GPG Key
-          </Button>
+        <Toolbar className={classes.toolbar}>
+          <div className={classes.platformChips}>
+            {platforms.map(({ platform, build_status }) => (
+              <Scroll.Link
+                activeClass={classes.linkActive}
+                key={`platform-chip-${platform}`}
+                to={platform}
+                spy={true}
+                hashSpy={true}
+                smooth={true}
+                offset={-70}
+                duration={appConfig.smoothScrollDuration}
+              >
+                <Chip
+                  label={platform}
+                  icon={build_status ? <CheckIcon /> : <CloseIcon />}
+                  variant="outlined"
+                  size="small"
+                  clickable
+                />
+              </Scroll.Link>
+            ))}
+          </div>
+          <div>
+            {toolbarButtons.map(({ text, handler }) => (
+              <Button key={`toolbar-button-${text}`} onClick={handler}>
+                {text}
+              </Button>
+            ))}
+          </div>
         </Toolbar>
       </AppBar>
       <PageContent>

@@ -2,7 +2,7 @@
  * PlatformListItem component.
  * Rendered by KernelVersion.
  */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, memo } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { makeStyles } from '@material-ui/core/styles';
@@ -161,7 +161,7 @@ const PlatformListItem = ({
   ];
 
   return (
-    <Grid item xs={12} md={12}>
+    <Grid item id={platform} xs={12} md={12}>
       <Card>
         <CardHeader
           avatar={
@@ -305,4 +305,4 @@ PlatformListItem.propTypes = {
   handleShowWebViewer: PropTypes.func.isRequired,
 };
 
-export default PlatformListItem;
+export default memo(PlatformListItem);
