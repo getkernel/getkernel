@@ -48,7 +48,8 @@ const PlatformListItem = ({
 }) => {
   const classes = useStyles();
 
-  const variants = [...buildVariants(binaries), 'all'];
+  const VARIANT_ALL = 'all';
+  const variants = [...buildVariants(binaries), VARIANT_ALL];
   const [selectedVariant, setSelectedVariant] = useState(variants[0]);
   const [checkedBinaryIndices, setCheckedBinaryIndices] = useState([]);
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
@@ -59,15 +60,19 @@ const PlatformListItem = ({
   const logUrl = base_url + log;
 
   useEffect(() => {
+    if (!selectedVariant) {
+      return setCheckedBinaryIndices([]);
+    }
+
     const newChecked = [];
     binaries.forEach(({ file_name }, index) => {
-      if (selectedVariant === 'all') {
+      if (selectedVariant === VARIANT_ALL) {
         return newChecked.push(index);
       }
 
       if (
         file_name.includes(`${selectedVariant}_`) ||
-        file_name.includes('_all')
+        file_name.includes(`_${VARIANT_ALL}`)
       ) {
         newChecked.push(index);
       }
