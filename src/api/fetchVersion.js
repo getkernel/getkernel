@@ -1,7 +1,7 @@
 import fetch from 'isomorphic-unfetch';
 import cheerio from 'cheerio';
 import moment from 'moment';
-import { BASE_URL, SERVER_DATE_FORMAT, BUILD_VARIANTS } from '../constants';
+import { BASE_URL, SERVER_DATE_FORMAT } from '../constants';
 
 const fetchVersion = async (version) => {
   if (!version.includes('v')) version = `v${version}`;
@@ -97,12 +97,10 @@ const fetchVersion = async (version) => {
     // Decide platforms data to use to generate files array.
     const platforms = builtInfo.length
       ? builtInfo.filter(({ platform }) => platform !== 'binary-headers')
-      : Object.keys(BUILD_VARIANTS)
-          .map((variant) => ({
-            platform: variant,
-            status: true,
-          }))
-          .filter(({ platform }) => files[platform] && files[platform].length);
+      : Object.keys(files).map(({ platform }) => ({
+          platform,
+          status: true,
+        }));
 
     result.data.files = platforms.map(({ platform, status }) => {
       const platformFiles = [...files['all'], ...(files[platform] || [])];
