@@ -1,6 +1,7 @@
 import fetch from 'isomorphic-unfetch';
 import cheerio from 'cheerio';
 import moment from 'moment';
+import { stringObjectCompare } from '../utils';
 import { BASE_URL, SERVER_DATE_FORMAT } from '../constants';
 
 const fetchVersion = async (version) => {
@@ -97,34 +98,37 @@ const fetchVersion = async (version) => {
     // Decide platforms data to use to generate files array.
     const platforms = builtInfo.length
       ? builtInfo.filter(({ platform }) => platform !== 'binary-headers')
-      : Object.keys(files).map(({ platform }) => ({
-          platform,
-          status: true,
-        }));
+      : Object.keys(files)
+          .map((platform) => ({
+            platform,
+            status: true,
+          }))
+          .filter(({ platform }) => platform !== 'all')
+          .sort(stringObjectCompare('platform'));
 
     result.data.files = platforms.map(({ platform, status }) => {
       const platformFiles = [...files['all'], ...(files[platform] || [])];
 
       // Build binaries array with checksums.
-      const binaries = platformFiles.map((file) => {
-        const [sha1, sha256] = checksums.filter(
-          (c) => c.file === file.file_name
-        );
+      const binaries = platformFiles
+        .map((file) => {
+          const [sha1, sha256] = checksums.filter(
+            (c) => c.file === file.file_name
+          );
 
-        if (!(sha1 && sha256)) {
+          if (!(sha1 && sha256)) {
+            return {
+              ...file,
+            };
+          }
+
           return {
             ...file,
+            sha1: sha1.sum,
+            sha256: sha256.sum,
           };
-        }
-
-        return {
-          ...file,
-          sha1: sha1.sum,
-          sha256: sha256.sum,
-        };
-      });
-
-      binaries.sort((a, b) => b.file_name - a.file_name);
+        })
+        .sort(stringObjectCompare('file_name', '_all'));
 
       return {
         platform,
