@@ -1,9 +1,9 @@
-import { deepPurple, red, teal } from '@material-ui/core/colors';
+import { indigo, red, teal } from '@material-ui/core/colors';
 
 export default {
   palette: {
     primary: {
-      main: deepPurple[400],
+      main: indigo[400],
     },
     secondary: {
       main: teal[400],

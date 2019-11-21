@@ -39,7 +39,7 @@ export default (theme) => ({
     height: 'auto',
   },
   shapePrimary: {
-    animation: '$rotation 300ms 2 alternate ease-in-out',
+    // animation: '$rotation 300ms 2 alternate ease-in-out',
     fill: theme.palette.background.paper,
     transformOrigin: 'center',
   },
@@ -55,7 +55,7 @@ export default (theme) => ({
     fontSize: '1.75rem',
     fontWeight: '300',
     letterSpacing: '-1',
-    paddingBottom: theme.spacing(3),
+    paddingBottom: theme.spacing(4),
     color: theme.palette.text.secondary,
     transition: theme.transitions.create('color', {
       easing: theme.transitions.easing.easeOut,
