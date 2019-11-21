@@ -33,8 +33,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import DownloadIcon from '@material-ui/icons/CloudDownload';
 import { saveAs } from 'file-saver';
 import styles from './styles';
-import { BUILD_VARIANTS } from '../../constants';
-import { buildChecksums } from '../../utils';
+import { buildChecksums, buildVariants } from '../../utils';
 
 const useStyles = makeStyles(styles);
 
@@ -49,8 +48,8 @@ const PlatformListItem = ({
 }) => {
   const classes = useStyles();
 
-  const buildVariants = [...(BUILD_VARIANTS[platform] || []), 'all'];
-  const [selectedVariant, setSelectedVariant] = useState(buildVariants[0]);
+  const variants = [...buildVariants(binaries), 'all'];
+  const [selectedVariant, setSelectedVariant] = useState(variants[0]);
   const [checkedBinaryIndices, setCheckedBinaryIndices] = useState([]);
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
 
@@ -272,8 +271,8 @@ const PlatformListItem = ({
               onChange={handleVariantChange}
               aria-label="build variants"
             >
-              {buildVariants &&
-                buildVariants.map((variant) => (
+              {variants &&
+                variants.map((variant) => (
                   <ToggleButton
                     key={`${platform}-${variant}`}
                     value={variant}
