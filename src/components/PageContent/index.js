@@ -7,7 +7,7 @@ import styles from './styles';
 
 const useStyles = makeStyles(styles);
 
-const PageContent = ({ children }) => {
+export const PageContent = ({ children }) => {
   const classes = useStyles();
 
   return <div className={classes.root}>{children}</div>;

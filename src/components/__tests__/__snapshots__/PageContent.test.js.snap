@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PageContent /> should correctly render PageContent component 1`] = `
+<div
+  className="makeStyles-root-1"
+>
+  <h1>
+    Hello Jest!
+  </h1>
+</div>
+`;
