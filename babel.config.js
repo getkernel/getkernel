@@ -9,5 +9,10 @@ module.exports = {
       },
     ],
     '@babel/preset-react',
+    'next/babel',
+  ],
+  plugins: [
+    '@babel/plugin-proposal-do-expressions',
+    '@babel/plugin-proposal-class-properties',
   ],
 };

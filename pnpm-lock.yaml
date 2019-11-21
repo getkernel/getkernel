@@ -15,6 +15,8 @@ dependencies:
   react-dom: 16.12.0_react@16.12.0
 devDependencies:
   '@babel/core': 7.7.2
+  '@babel/plugin-proposal-class-properties': 7.7.0_@babel+core@7.7.2
+  '@babel/plugin-proposal-do-expressions': 7.6.0_@babel+core@7.7.2
   '@babel/preset-env': 7.7.1_@babel+core@7.7.2
   '@babel/preset-react': 7.7.0_@babel+core@7.7.2
   babel-jest: 24.9.0_@babel+core@7.7.2
@@ -149,6 +151,20 @@ packages:
       '@babel/helper-replace-supers': 7.7.0
       '@babel/helper-split-export-declaration': 7.7.0
     dev: false
+    peerDependencies:
+      '@babel/core': ^7.0.0
+    resolution:
+      integrity: sha512-MZiB5qvTWoyiFOgootmRSDV1udjIqJW/8lmxgzKq6oDqxdmHUjeP2ZUOmgHdYjmUVNABqRrHjYAYRvj8Eox/UA==
+  /@babel/helper-create-class-features-plugin/7.7.0_@babel+core@7.7.2:
+    dependencies:
+      '@babel/core': 7.7.2
+      '@babel/helper-function-name': 7.7.0
+      '@babel/helper-member-expression-to-functions': 7.7.0
+      '@babel/helper-optimise-call-expression': 7.7.0
+      '@babel/helper-plugin-utils': 7.0.0
+      '@babel/helper-replace-supers': 7.7.0
+      '@babel/helper-split-export-declaration': 7.7.0
+    dev: true
     peerDependencies:
       '@babel/core': ^7.0.0
     resolution:
@@ -324,6 +340,26 @@ packages:
       '@babel/core': ^7.0.0-0
     resolution:
       integrity: sha512-AF79FsnWFxjlaosgdi421vmYG6/jg79bVD0dpD44QdgobzHKuLZ6S3vl8la9qIeSwGi8i1fS0O1mfuDAAdo1/A==
+  /@babel/plugin-proposal-class-properties/7.7.0_@babel+core@7.7.2:
+    dependencies:
+      '@babel/core': 7.7.2
+      '@babel/helper-create-class-features-plugin': 7.7.0_@babel+core@7.7.2
+      '@babel/helper-plugin-utils': 7.0.0
+    dev: true
+    peerDependencies:
+      '@babel/core': ^7.0.0-0
+    resolution:
+      integrity: sha512-tufDcFA1Vj+eWvwHN+jvMN6QsV5o+vUlytNKrbMiCeDL0F2j92RURzUsUMWE5EJkLyWxjdUslCsMQa9FWth16A==
+  /@babel/plugin-proposal-do-expressions/7.6.0_@babel+core@7.7.2:
+    dependencies:
+      '@babel/core': 7.7.2
+      '@babel/helper-plugin-utils': 7.0.0
+      '@babel/plugin-syntax-do-expressions': 7.2.0_@babel+core@7.7.2
+    dev: true
+    peerDependencies:
+      '@babel/core': ^7.0.0-0
+    resolution:
+      integrity: sha512-qJDaoBDbLySwU1tG0jbAomOwz8W1PEiiiK0iLQAnHLr4PYIMVX4ltDGkj3uAKx4HDs1WJ0tozGW1zAQjuTIiWg==
   /@babel/plugin-proposal-dynamic-import/7.7.0_@babel+core@7.6.4:
     dependencies:
       '@babel/core': 7.6.4
@@ -446,6 +482,15 @@ packages:
       '@babel/core': ^7.0.0-0
     resolution:
       integrity: sha512-1ZrIRBv2t0GSlcwVoQ6VgSLpLgiN/FVQUzt9znxo7v2Ov4jJrs8RY8tv0wvDmFN3qIdMKWrmMMW6yZ0G19MfGg==
+  /@babel/plugin-syntax-do-expressions/7.2.0_@babel+core@7.7.2:
+    dependencies:
+      '@babel/core': 7.7.2
+      '@babel/helper-plugin-utils': 7.0.0
+    dev: true
+    peerDependencies:
+      '@babel/core': ^7.0.0-0
+    resolution:
+      integrity: sha512-/u4rJ+XEmZkIhspVuKRS+7WLvm7Dky9j9TvGK5IgId8B3FKir9MG+nQxDZ9xLn10QMBvW58dZ6ABe2juSmARjg==
   /@babel/plugin-syntax-dynamic-import/7.2.0_@babel+core@7.6.4:
     dependencies:
       '@babel/core': 7.6.4
@@ -8406,6 +8451,8 @@ packages:
       integrity: sha512-2eehun/8ALW8TLoIl7MVaRUrg+yCnenu8B4kBlRxj3GJGDKU1Og7sMXPNm1BYyM1DOJmTZ4YeN/Nwxv+8XJsUA==
 specifiers:
   '@babel/core': ^7.7.2
+  '@babel/plugin-proposal-class-properties': ^7.7.0
+  '@babel/plugin-proposal-do-expressions': ^7.6.0
   '@babel/preset-env': ^7.7.1
   '@babel/preset-react': ^7.7.0
   '@material-ui/core': ^4.6.1
