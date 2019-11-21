@@ -8,6 +8,8 @@ export default (theme) => ({
   dialogRoot: {
     overflow: 'hidden',
     padding: 0,
+    backgroundColor: '#eee',
+    borderBottom: '1px dashed gray',
   },
   contentRoot: {
     padding: theme.spacing(0, 3),
@@ -17,6 +19,5 @@ export default (theme) => ({
     border: 'none',
     width: '100%',
     height: '70vh',
-    borderBottom: '1px dashed gray',
   },
 });
