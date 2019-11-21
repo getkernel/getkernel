@@ -32,8 +32,13 @@ import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
 import DownloadIcon from '@material-ui/icons/CloudDownload';
 import { saveAs } from 'file-saver';
+import {
+  buildChecksums,
+  buildVariants,
+  fileDownload,
+  batchDownload,
+} from '../../utils';
 import styles from './styles';
-import { buildChecksums, buildVariants } from '../../utils';
 
 const useStyles = makeStyles(styles);
 
@@ -110,18 +115,6 @@ const PlatformListItem = ({
     setSelectedVariant(value);
   };
 
-  const handleFileDownload = (url, fileName) => {
-    const anchor = document.createElement('a');
-    anchor.href = url;
-    anchor.download = fileName;
-    if (fileName.endsWith('.deb')) {
-      anchor.type = 'application/x-debian-package';
-    }
-    anchor.hidden = true;
-    anchor.click();
-    anchor.remove();
-  };
-
   const handleBatchDownload = () => {
     const items = checkedBinaryIndices.map((index) => {
       const { file_name } = binaries[index];
@@ -131,17 +124,7 @@ const PlatformListItem = ({
       };
     });
 
-    startBatchDownload(items);
-  };
-
-  const startBatchDownload = (items) => {
-    if (items.length) {
-      const item = items.shift();
-      handleFileDownload(item.url, item.fileName);
-      return setTimeout(() => {
-        startBatchDownload(items);
-      }, 1000);
-    }
+    batchDownload(items);
   };
 
   const handleChecksumsDownload = () => {
@@ -256,7 +239,7 @@ const PlatformListItem = ({
                           aria-label="deb package"
                           disabled={!buildStatus}
                           onClick={() =>
-                            handleFileDownload(base_url + file_name, file_name)
+                            fileDownload(base_url + file_name, file_name)
                           }
                         >
                           <img src="/images/deb.svg" width="24" height="24" />
