@@ -24,7 +24,4 @@ export default (theme) => ({
       marginLeft: theme.spacing(1),
     },
   },
-  fileSize: {
-    marginLeft: theme.spacing(1),
-  },
 });

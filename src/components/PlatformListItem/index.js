@@ -2,9 +2,8 @@
  * PlatformListItem component.
  * Rendered by KernelVersion.
  */
-import React, { useEffect, useState, memo } from 'react';
+import React, { useState, memo } from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
@@ -14,14 +13,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
-import Chip from '@material-ui/core/Chip';
 import Typography from '@material-ui/core/Typography';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListItemText from '@material-ui/core/ListItemText';
-import Checkbox from '@material-ui/core/Checkbox';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -32,77 +24,41 @@ import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
 import DownloadIcon from '@material-ui/icons/CloudDownload';
 import { saveAs } from 'file-saver';
+import BinaryList from './components/BinaryList';
 import {
   buildChecksums,
   buildVariants,
-  fileDownload,
   batchDownload,
   calculateDownloadSize,
 } from '../../utils';
+import { BUILD_VARIANT_ALL } from '../../constants';
 import styles from './styles';
 
 const useStyles = makeStyles(styles);
 
 const PlatformListItem = ({
   version,
-  base_url,
+  base_url: baseUrl,
   platform,
-  build_status,
+  build_status: buildStatus,
   binaries,
   log,
   handleShowWebViewer,
 }) => {
   const classes = useStyles();
 
-  const VARIANT_ALL = 'all';
-  const variants = [...buildVariants(binaries), VARIANT_ALL];
+  const variants = [...buildVariants(binaries), BUILD_VARIANT_ALL];
   const [selectedVariant, setSelectedVariant] = useState(variants[0]);
-  const [checkedBinaryIndices, setCheckedBinaryIndices] = useState([]);
   const [checkedBinaries, setCheckedBinaries] = useState([]);
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
 
-  const buildStatus = build_status;
   const buildText = `Build ${buildStatus ? 'succeeded' : 'failed'}.`;
   const platformText = platform !== 'i386' ? platform.toUpperCase() : platform;
-  const logUrl = base_url + log;
+  const logUrl = baseUrl + log;
 
-  useEffect(() => {
-    if (!selectedVariant) {
-      return setCheckedBinaryIndices([]);
-    }
-
-    const newChecked = [];
-    binaries.forEach(({ file_name }, index) => {
-      if (selectedVariant === VARIANT_ALL) {
-        return newChecked.push(index);
-      }
-
-      if (
-        file_name.includes(`${selectedVariant}_`) ||
-        file_name.includes(`_${VARIANT_ALL}`)
-      ) {
-        newChecked.push(index);
-      }
-    });
-    setCheckedBinaryIndices(newChecked);
-  }, [selectedVariant]);
-
-  useEffect(() => {
-    const checked = checkedBinaryIndices.map((index) => binaries[index]);
-    setCheckedBinaries(checked);
-  }, [checkedBinaryIndices]);
-
-  const handleToggleChecked = (value) => {
-    const currentIndex = checkedBinaryIndices.indexOf(value);
-    const newChecked = [...checkedBinaryIndices];
-
-    if (currentIndex === -1) {
-      newChecked.push(value);
-    } else {
-      newChecked.splice(currentIndex, 1);
-    }
-
-    setCheckedBinaryIndices(newChecked);
+  const handleBinaryIndicesChange = (indices) => {
+    const items = indices.map((index) => binaries[index]);
+    setCheckedBinaries(items);
   };
 
   const handleMenuClick = (e) => {
@@ -123,7 +79,7 @@ const PlatformListItem = ({
   };
 
   const handleBatchDownload = () => {
-    batchDownload(checkedBinaries, base_url);
+    batchDownload(checkedBinaries, baseUrl);
   };
 
   const handleChecksumsDownload = () => {
@@ -147,7 +103,7 @@ const PlatformListItem = ({
         text: 'Checksums',
         variant: 'outlined',
         handler: handleChecksumsDownload,
-        disabled: !(checkedBinaryIndices.length && buildStatus),
+        disabled: !(checkedBinaries.length && buildStatus),
       },
       tooltip: 'Download Checksums for selected files',
     },
@@ -156,7 +112,7 @@ const PlatformListItem = ({
         text: `Binaries${getDownloadSize()}`,
         variant: 'contained',
         handler: handleBatchDownload,
-        disabled: !(checkedBinaryIndices.length && buildStatus),
+        disabled: !(checkedBinaries.length && buildStatus),
       },
       tooltip: 'Download selected files',
     },
@@ -192,67 +148,13 @@ const PlatformListItem = ({
           <MenuItem onClick={handleBuildLogsClick}>Build logs</MenuItem>
         </Menu>
         <CardContent>
-          <List>
-            {binaries.map(({ file_name, file_size, last_modified }, index) => {
-              const labelId = `checkbox-list-label-${file_name}`;
-
-              return (
-                <ListItem
-                  key={file_name}
-                  role={undefined}
-                  dense
-                  button
-                  onClick={() => handleToggleChecked(index)}
-                  disabled={!buildStatus}
-                >
-                  <ListItemIcon>
-                    <Checkbox
-                      edge="start"
-                      checked={checkedBinaryIndices.indexOf(index) !== -1}
-                      tabIndex={-1}
-                      disableRipple
-                      inputProps={{ 'aria-labelledby': labelId }}
-                    />
-                  </ListItemIcon>
-                  <ListItemText
-                    id={labelId}
-                    primary={
-                      <span>
-                        <Typography variant="inherit" component="span">
-                          {file_name}
-                        </Typography>
-                        <Typography
-                          variant="subtitle2"
-                          color="textSecondary"
-                          component="span"
-                          className={classes.fileSize}
-                        >
-                          ({file_size})
-                        </Typography>
-                      </span>
-                    }
-                    secondary={moment(last_modified).format('L LT')}
-                  />
-                  <ListItemSecondaryAction>
-                    <Tooltip title={`Download ${file_name}`}>
-                      <span>
-                        <IconButton
-                          edge="end"
-                          aria-label="deb package"
-                          disabled={!buildStatus}
-                          onClick={() =>
-                            fileDownload(base_url + file_name, file_name)
-                          }
-                        >
-                          <img src="/images/deb.svg" width="24" height="24" />
-                        </IconButton>
-                      </span>
-                    </Tooltip>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              );
-            })}
-          </List>
+          <BinaryList
+            binaries={binaries}
+            buildStatus={buildStatus}
+            baseUrl={baseUrl}
+            selectedVariant={selectedVariant}
+            onBinaryIndicesChange={handleBinaryIndicesChange}
+          />
           <div className={classes.buttons}>
             <ToggleButtonGroup
               size="small"
