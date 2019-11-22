@@ -122,13 +122,7 @@ const PlatformListItem = ({
   };
 
   const handleBatchDownload = () => {
-    const items = checkedBinaries.map(({ file_name }) => {
-      return {
-        url: base_url + file_name,
-        fileName: file_name,
-      };
-    });
-    batchDownload(items);
+    batchDownload(checkedBinaries, base_url);
   };
 
   const handleChecksumsDownload = () => {

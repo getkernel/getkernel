@@ -1,3 +1,10 @@
+import appConfig from '../app.config';
+
+/**
+ * Initiates file download.
+ * @param {String} url File url
+ * @param {String} fileName File name
+ */
 export const fileDownload = (url, fileName) => {
   const anchor = document.createElement('a');
   anchor.href = url;
@@ -11,12 +18,31 @@ export const fileDownload = (url, fileName) => {
   document.body.removeChild(anchor);
 };
 
-export const batchDownload = (items, waitBetween = 1000) => {
+/**
+ * Initiates batch download process.
+ * @param {Array} binaries Array of binaries
+ * @param {String} baseUrl Base url to prepend to file names
+ */
+export const batchDownload = (binaries, baseUrl) => {
+  const items = binaries.map(({ file_name }) => {
+    return {
+      url: baseUrl + file_name,
+      fileName: file_name,
+    };
+  });
+  doBatchDownload(items);
+};
+
+/**
+ * Performs batch download.
+ * @param {Array} items Items to download
+ */
+const doBatchDownload = (items) => {
   if (items.length) {
     const { url, fileName } = items.shift();
     fileDownload(url, fileName);
     return setTimeout(() => {
-      batchDownload(items);
-    }, waitBetween);
+      doBatchDownload(items);
+    }, appConfig.downloadInterval);
   }
 };
