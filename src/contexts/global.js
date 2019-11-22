@@ -1,7 +1,9 @@
+/**
+ * Global context.
+ */
 import React, { createContext } from 'react';
-import { globalReducer } from '../reducers';
 import { useLocalStorageReducer } from '../hooks';
-import defaultState from '../reducers/global.defaultState';
+import globalReducer, { defaultState } from '../reducers/global';
 
 export const GlobalContext = createContext();
 export const GlobalDispatchContext = createContext();

@@ -1,7 +1,9 @@
+/**
+ * Kernels context.
+ */
 import React, { createContext } from 'react';
-import { kernelsReducer } from '../reducers';
 import { useLocalStorageReducer } from '../hooks';
-import defaultState from '../reducers/kernels.defaultState';
+import kernelsReducer, { defaultState } from '../reducers/kernels';
 
 export const KernelsContext = createContext();
 export const KernelsDispatchContext = createContext();

@@ -58,7 +58,7 @@ const KernelVersion = ({ version }) => {
   }, [kernels, version]);
 
   const handleShowWebViewer = (url, title) => {
-    globalDispatch(showWebViewer({ url, title }));
+    globalDispatch(showWebViewer(url, title));
   };
 
   if (!(version && selectedKernel)) {

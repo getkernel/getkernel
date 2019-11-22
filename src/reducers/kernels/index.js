@@ -1,3 +1,10 @@
+/**
+ * Kernels reducer.
+ */
+import defaultState from './defaultState';
+
+export { defaultState };
+
 export default (state, action) => {
   switch (action.type) {
     case 'HYDRATE_INDEX_DATA':

@@ -1,7 +1,9 @@
+/**
+ * Filters context.
+ */
 import React, { createContext } from 'react';
-import { filtersReducer } from '../reducers';
 import { useLocalStorageReducer } from '../hooks';
-import defaultState from '../reducers/filters.defaultState';
+import filtersReducer, { defaultState } from '../reducers/filters';
 
 export const FiltersContext = createContext();
 export const FiltersDispatchContext = createContext();

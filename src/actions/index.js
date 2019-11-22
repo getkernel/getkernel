@@ -9,13 +9,13 @@ import {
   closeAlert,
   addDoNotAskItem,
   removeDoNotAskItem,
-} from './global.actions';
-import { addKernelData, hydrateIndexData } from './kernels.actions';
+} from './global';
+import { addKernelData, hydrateIndexData } from './kernels';
 import {
   setAvailableVersionsFilter,
   setSelectedVersionsFilter,
   setReleaseType,
-} from './filters.actions';
+} from './filters';
 
 export {
   toggleDrawer,

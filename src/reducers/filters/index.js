@@ -1,3 +1,10 @@
+/**
+ * Filters reducer.
+ */
+import defaultState, { releaseTypes } from './defaultState';
+
+export { defaultState, releaseTypes };
+
 export default (state, action) => {
   switch (action.type) {
     case 'SET_AVAILABLE_VERSIONS_FILTER':

@@ -1,5 +1,5 @@
-import globalReducer from './global.reducer';
-import kernelsReducer from './kernels.reducer';
-import filtersReducer from './filters.reducer';
+import globalReducer from './global';
+import kernelsReducer from './kernels';
+import filtersReducer from './filters';
 
 export { globalReducer, kernelsReducer, filtersReducer };

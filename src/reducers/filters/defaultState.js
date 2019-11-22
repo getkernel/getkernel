@@ -1,3 +1,6 @@
+/**
+ * Filters default state.
+ */
 export const releaseTypes = [
   {
     text: 'All',

@@ -1,3 +1,6 @@
+/**
+ * Global default state.
+ */
 export default {
   drawerOpen: true,
   webViewer: {

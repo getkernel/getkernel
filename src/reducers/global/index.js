@@ -1,4 +1,9 @@
-import defaultState from './global.defaultState';
+/**
+ * Global reducer.
+ */
+import defaultState from './defaultState';
+
+export { defaultState };
 
 export default (state, action) => {
   switch (action.type) {

@@ -2,17 +2,13 @@ import {
   KernelsContext,
   KernelsDispatchContext,
   KernelsProvider,
-} from './kernels.context';
+} from './kernels';
 import {
   FiltersContext,
   FiltersDispatchContext,
   FiltersProvider,
-} from './filters.context';
-import {
-  GlobalContext,
-  GlobalDispatchContext,
-  GlobalProvider,
-} from './global.context';
+} from './filters';
+import { GlobalContext, GlobalDispatchContext, GlobalProvider } from './global';
 import withProvider from './withProvider';
 
 export {

@@ -16,7 +16,7 @@ import Select from '@material-ui/core/Select';
 import Checkbox from '@material-ui/core/Checkbox';
 import { FiltersContext, FiltersDispatchContext } from '../../contexts';
 import { setSelectedVersionsFilter, setReleaseType } from '../../actions';
-import { releaseTypes } from '../../reducers/filters.defaultState';
+import { releaseTypes } from '../../reducers/filters/defaultState';
 import styles from './styles';
 
 const useStyles = makeStyles(styles);
