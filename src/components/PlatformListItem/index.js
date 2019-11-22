@@ -20,8 +20,8 @@ import Tooltip from '@material-ui/core/Tooltip';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
-import BinaryList from './components/BinaryList';
-import MainActions from './components/MainActions';
+import BinaryList from './BinaryList';
+import MainActions from './MainActions';
 import styles from './styles';
 
 const useStyles = makeStyles(styles);

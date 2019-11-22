@@ -32,7 +32,7 @@ import DocumentHead from '../../components/DocumentHead';
 import AlertDialog from '../../components/AlertDialog';
 import GlobalSnackbar from '../../components/GlobalSnackbar';
 import WebViewerDialog from '../../components/WebViewerDialog';
-import Logo from './components/Logo';
+import Logo from './Logo';
 import { GlobalContext, GlobalDispatchContext } from '../../contexts';
 import { toggleDrawer, toggleTheme } from '../../actions';
 import styles from './styles';
