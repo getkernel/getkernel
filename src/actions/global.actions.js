@@ -30,3 +30,35 @@ export const showSnackbar = (text) => ({
 export const closeSnackbar = () => ({
   type: 'CLOSE_SNACKBAR',
 });
+
+export const showAlert = (
+  id,
+  title,
+  text,
+  successCallback = null,
+  dismissCallback = null
+) => ({
+  type: 'SHOW_ALERT',
+  alert: {
+    open: true,
+    id,
+    title,
+    text,
+    successCallback,
+    dismissCallback,
+  },
+});
+
+export const closeAlert = () => ({
+  type: 'CLOSE_ALERT',
+});
+
+export const addDoNotAskItem = (id) => ({
+  type: 'ADD_DO_NOT_ASK_ITEM',
+  id,
+});
+
+export const removeDoNotAskItem = (id) => ({
+  type: 'REMOVE_DO_NOT_ASK_ITEM',
+  id,
+});

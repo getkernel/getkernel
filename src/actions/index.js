@@ -5,6 +5,10 @@ import {
   closeWebViewer,
   showSnackbar,
   closeSnackbar,
+  showAlert,
+  closeAlert,
+  addDoNotAskItem,
+  removeDoNotAskItem,
 } from './global.actions';
 import { addKernelData, hydrateIndexData } from './kernels.actions';
 import {
@@ -20,6 +24,10 @@ export {
   closeWebViewer,
   showSnackbar,
   closeSnackbar,
+  showAlert,
+  closeAlert,
+  addDoNotAskItem,
+  removeDoNotAskItem,
   addKernelData,
   hydrateIndexData,
   setAvailableVersionsFilter,

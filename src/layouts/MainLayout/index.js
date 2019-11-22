@@ -29,6 +29,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import LightThemeIcon from '@material-ui/icons/Brightness7';
 import DarkThemeIcon from '@material-ui/icons/Brightness4';
 import DocumentHead from '../../components/DocumentHead';
+import AlertDialog from '../../components/AlertDialog';
 import GlobalSnackbar from '../../components/GlobalSnackbar';
 import WebViewerDialog from '../../components/WebViewerDialog';
 import Logo from './components/Logo';
@@ -177,6 +178,7 @@ const MainLayout = ({ children, pageTitle, contentTitle, showShadow }) => {
           {children}
         </main>
       </div>
+      <AlertDialog />
       <GlobalSnackbar />
       <WebViewerDialog />
     </Fragment>

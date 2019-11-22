@@ -9,5 +9,14 @@ export default {
     open: false,
     text: '',
   },
+  alert: {
+    open: false,
+    id: '',
+    title: '',
+    text: '',
+    successCallback: null,
+    dismissCallback: null,
+  },
+  doNotAskList: [],
   theme: 'dark',
 };

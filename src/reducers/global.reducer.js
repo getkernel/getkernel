@@ -1,3 +1,5 @@
+import defaultState from './global.defaultState';
+
 export default (state, action) => {
   switch (action.type) {
     case 'TOGGLE_DRAWER':
@@ -21,11 +23,7 @@ export default (state, action) => {
     case 'CLOSE_WEB_VIEWER':
       return {
         ...state,
-        webViewer: {
-          open: false,
-          url: '',
-          title: '',
-        },
+        webViewer: defaultState.webViewer,
       };
 
     case 'SHOW_SNACKBAR':
@@ -37,10 +35,31 @@ export default (state, action) => {
     case 'CLOSE_SNACKBAR':
       return {
         ...state,
-        snackbar: {
-          open: false,
-          text: '',
-        },
+        snackbar: defaultState.snackbar,
+      };
+
+    case 'SHOW_ALERT':
+      return {
+        ...state,
+        alert: action.alert,
+      };
+
+    case 'CLOSE_ALERT':
+      return {
+        ...state,
+        alert: defaultState.alert,
+      };
+
+    case 'ADD_DO_NOT_ASK_ITEM':
+      return {
+        ...state,
+        doNotAskList: [...state.doNotAskList, action.id],
+      };
+
+    case 'REMOVE_DO_NOT_ASK_ITEM':
+      return {
+        ...state,
+        doNotAskList: state.doNotAskList.filter((id) => id !== action.id),
       };
 
     default:

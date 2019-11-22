@@ -2,7 +2,7 @@
  * MainActions component.
  * Rendered by PlatformListItem.
  */
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -10,8 +10,11 @@ import Typography from '@material-ui/core/Typography';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import Tooltip from '@material-ui/core/Tooltip';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import DownloadIcon from '@material-ui/icons/CloudDownload';
 import { saveAs } from 'file-saver';
+import { GlobalContext, GlobalDispatchContext } from '../../../../contexts';
+import { showAlert } from '../../../../actions';
 import {
   buildChecksums,
   buildVariants,
@@ -36,6 +39,9 @@ const MainActions = ({
   const classes = useStyles();
   const variants = [...buildVariants(binaries), BUILD_VARIANT_ALL];
 
+  const { alert, doNotAskList } = useContext(GlobalContext);
+  const globalDispatch = useContext(GlobalDispatchContext);
+
   useEffect(() => {
     onVariantChange(variants[0]);
   }, []);
@@ -45,7 +51,20 @@ const MainActions = ({
   };
 
   const handleBatchDownload = () => {
-    batchDownload(checkedBinaries, baseUrl);
+    const multipleDownloadsId = 'multipleDownloadsAlert';
+
+    if (doNotAskList.some((id) => id === multipleDownloadsId)) {
+      return batchDownload(checkedBinaries, baseUrl);
+    }
+
+    globalDispatch(
+      showAlert(
+        multipleDownloadsId,
+        'About to download multiple files',
+        'Allow your browser to initiate multiple downloads.',
+        () => batchDownload(checkedBinaries, baseUrl)
+      )
+    );
   };
 
   const handleChecksumsDownload = () => {
@@ -70,6 +89,7 @@ const MainActions = ({
         variant: 'outlined',
         handler: handleChecksumsDownload,
         disabled: !(checkedBinaries.length && buildStatus),
+        icon: <DownloadIcon className={classes.icon} />,
       },
       tooltip: 'Download Checksums for selected files',
     },
@@ -79,6 +99,15 @@ const MainActions = ({
         variant: 'contained',
         handler: handleBatchDownload,
         disabled: !(checkedBinaries.length && buildStatus),
+        icon: alert.open ? (
+          <CircularProgress
+            size={24}
+            className={classes.icon}
+            color="inherit"
+          />
+        ) : (
+          <DownloadIcon className={classes.icon} />
+        ),
       },
       tooltip: 'Download selected files',
     },
@@ -115,7 +144,7 @@ const MainActions = ({
                 onClick={button.handler}
                 disabled={button.disabled}
               >
-                <DownloadIcon className={classes.icon} />
+                {button.icon}
                 <Typography variant="button">{button.text}</Typography>
               </Button>
             </span>
