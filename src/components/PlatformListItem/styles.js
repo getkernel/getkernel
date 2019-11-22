@@ -10,18 +10,4 @@ export default (theme) => ({
   fail: {
     backgroundColor: red[400],
   },
-  icon: {
-    marginRight: theme.spacing(1),
-  },
-  buttons: {
-    display: 'flex',
-    width: '100%',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  buttonsRight: {
-    '& button': {
-      marginLeft: theme.spacing(1),
-    },
-  },
 });
