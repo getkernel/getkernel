@@ -57,6 +57,7 @@ const PlatformListItem = ({
   const variants = [...buildVariants(binaries), VARIANT_ALL];
   const [selectedVariant, setSelectedVariant] = useState(variants[0]);
   const [checkedBinaryIndices, setCheckedBinaryIndices] = useState([]);
+  const [checkedBinaries, setCheckedBinaries] = useState([]);
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
 
   const buildStatus = build_status;
@@ -84,6 +85,11 @@ const PlatformListItem = ({
     });
     setCheckedBinaryIndices(newChecked);
   }, [selectedVariant]);
+
+  useEffect(() => {
+    const checked = checkedBinaryIndices.map((index) => binaries[index]);
+    setCheckedBinaries(checked);
+  }, [checkedBinaryIndices]);
 
   const handleToggleChecked = (value) => {
     const currentIndex = checkedBinaryIndices.indexOf(value);
@@ -116,26 +122,22 @@ const PlatformListItem = ({
   };
 
   const handleBatchDownload = () => {
-    const items = checkedBinaryIndices.map((index) => {
-      const { file_name } = binaries[index];
+    const items = checkedBinaries.map(({ file_name }) => {
       return {
         url: base_url + file_name,
         fileName: file_name,
       };
     });
-
     batchDownload(items);
   };
 
   const handleChecksumsDownload = () => {
     const { fileName, text } = buildChecksums(
+      checkedBinaries,
       version,
-      platform,
-      binaries,
-      checkedBinaryIndices
+      platform
     );
     const contents = new Blob([text], { type: 'text/plain;charset=utf-8"' });
-
     saveAs(contents, fileName);
   };
 
