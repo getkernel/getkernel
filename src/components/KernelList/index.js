@@ -1,24 +1,14 @@
 /**
  * KernelList component.
  */
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import PageContent from '../PageContent';
 import LoadingIndicator from '../LoadingIndicator';
 import KernelListToolbar from '../KernelListToolbar';
 import KernelListItem from '../KernelListItem';
-import {
-  KernelsContext,
-  KernelsDispatchContext,
-  FiltersContext,
-  FiltersDispatchContext,
-} from '../../contexts';
-import {
-  hydrateIndexData,
-  setAvailableVersionsFilter,
-  setSelectedVersionsFilter,
-} from '../../actions';
+import { KernelsContext, FiltersContext } from '../../contexts';
 import { versionsFilter, releaseTypeFilter } from '../../selectors';
 import styles from './styles';
 
@@ -30,38 +20,9 @@ const KernelList = () => {
   const {
     index: { entries },
   } = useContext(KernelsContext);
-  const {
-    filtersSet,
-    availableVersions,
-    selectedVersions,
-    releaseType,
-  } = useContext(FiltersContext);
-  const kernelsDispatch = useContext(KernelsDispatchContext);
-  const filtersDispatch = useContext(FiltersDispatchContext);
-
-  useEffect(() => {
-    const getInitialData = async () => {
-      const res = await fetch('http://localhost:3000/api/kernels');
-      const json = await res.json();
-
-      if (json.success) {
-        kernelsDispatch(hydrateIndexData(json.data));
-        filtersDispatch(setAvailableVersionsFilter(json.data));
-      }
-    };
-
-    if (!entries.length) {
-      getInitialData();
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!filtersSet && availableVersions.length) {
-      // Set default filters to latest two minor versions of the latest kernel
-      const [filterOne, filterTwo] = availableVersions[0].minors;
-      filtersDispatch(setSelectedVersionsFilter([filterOne, filterTwo]));
-    }
-  }, [availableVersions]);
+  const { filtersSet, selectedVersions, releaseType } = useContext(
+    FiltersContext
+  );
 
   const filteredEntries = entries
     .filter(versionsFilter(selectedVersions))

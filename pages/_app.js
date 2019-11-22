@@ -4,6 +4,7 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { GlobalProvider, GlobalContext, withProvider } from '../src/contexts';
+import InitApp from '../src/components/InitApp';
 import theme from '../src/theme';
 
 class MyApp extends App {
@@ -32,6 +33,7 @@ class MyApp extends App {
     return (
       <ThemeProvider theme={muiTheme}>
         <CssBaseline />
+        <InitApp />
         <Component {...pageProps} />
       </ThemeProvider>
     );
