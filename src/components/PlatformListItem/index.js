@@ -37,6 +37,7 @@ import {
   buildVariants,
   fileDownload,
   batchDownload,
+  calculateDownloadSize,
 } from '../../utils';
 import styles from './styles';
 
@@ -135,6 +136,11 @@ const PlatformListItem = ({
     saveAs(contents, fileName);
   };
 
+  const getDownloadSize = () => {
+    const size = calculateDownloadSize(checkedBinaries);
+    return size ? ` (${size})` : '';
+  };
+
   const mainButtons = [
     {
       button: {
@@ -147,7 +153,7 @@ const PlatformListItem = ({
     },
     {
       button: {
-        text: 'Binaries',
+        text: `Binaries${getDownloadSize()}`,
         variant: 'contained',
         handler: handleBatchDownload,
         disabled: !(checkedBinaryIndices.length && buildStatus),
