@@ -21,13 +21,19 @@ export default class Version {
    * @param {String} versionString Version string
    */
   static parse(versionString) {
+    const regex = /^v?(\d+)\.(\d+)(?:\.(\d+))?(?:-(rc\d+))?(?:-(\w+))?/i;
     let major, minor, patch, rc, distro;
     try {
-      const regex = /^v?(\d+)\.(\d+)(?:\.(\d+))?(?:-(rc\d+))?(?:-(\w+))?/i;
       [, major, minor, patch, rc, distro] = versionString.match(regex);
     } catch (_) {}
 
-    return { major, minor, patch, rc, distro };
+    return {
+      major: Number(major),
+      minor: Number(minor),
+      patch: Number(patch),
+      rc,
+      distro,
+    };
   }
 
   get major() {
@@ -54,6 +60,14 @@ export default class Version {
     return this._distro;
   }
   set distro(_) {}
+
+  /**
+   * Returns true if the version belongs to a Release Candidate,
+   * otherwise false.
+   */
+  isRC() {
+    return !!this.rc;
+  }
 
   /**
    * Returns string representation of the Version instance.
