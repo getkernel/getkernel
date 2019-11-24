@@ -1,7 +1,7 @@
 import fetch from 'isomorphic-unfetch';
 import cheerio from 'cheerio';
 import moment from 'moment';
-import { stringObjectCompare } from '../utils';
+import Compare from '../utils/Compare';
 import { BASE_URL, SERVER_DATE_FORMAT } from '../constants';
 
 const fetchVersion = async (version) => {
@@ -104,7 +104,7 @@ const fetchVersion = async (version) => {
             status: true,
           }))
           .filter(({ platform }) => platform !== 'all')
-          .sort(stringObjectCompare('platform'));
+          .sort(Compare.prop('platform'));
 
     result.data.files = platforms.map(({ platform, status }) => {
       const platformFiles = [...files['all'], ...(files[platform] || [])];
@@ -128,7 +128,7 @@ const fetchVersion = async (version) => {
             sha256: sha256.sum,
           };
         })
-        .sort(stringObjectCompare('file_name', '_all'));
+        .sort(Compare.prop('file_name', 'asc', '_all'));
 
       return {
         platform,
