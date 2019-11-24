@@ -4,7 +4,7 @@
 export default class Compare {
   /**
    * String compare function.
-   * @param {String} order Compare order (asc|desc)
+   * @param {String} order Compare order (asc|desc).
    * asc by default.
    * @param {String} alwaysOnTop Item to keep on top of the list.
    */
@@ -34,18 +34,19 @@ export default class Compare {
 
   /**
    * Sorts objects by property name.
-   * @param {String} propName Property name to sort
-   * @param {String} order Compare order (asc|desc)
+   * @param {String} propName Property name to sort by.
+   * @param {String} order Compare order (asc|desc).
    * asc by default.
    * @param {String} alwaysOnTop Item to keep on top of the list.
    */
   static prop(propName, order = 'asc', alwaysOnTop = null) {
-    return Compare.string(order, alwaysOnTop)(a[propName], b[propName]);
+    return (a, b) =>
+      Compare.string(order, alwaysOnTop)(a[propName], b[propName]);
   }
 
   /**
    * Comperator function for sorting Version objects.
-   * @param {String} order Compare order (asc|desc)
+   * @param {String} order Compare order (asc|desc).
    * asc by default.
    */
   static version(order = 'asc') {
