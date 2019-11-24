@@ -58,7 +58,7 @@ const MainLayout = ({ children, pageTitle, contentTitle, showShadow }) => {
       {
         text: 'Bookmarks',
         icon: <BookmarksIcon />,
-        chip: bookmarks.length,
+        chip: bookmarks.length || null,
         handler: () => Router.push('/bookmarks'),
       },
     ],
@@ -167,9 +167,11 @@ const MainLayout = ({ children, pageTitle, contentTitle, showShadow }) => {
                     <ListItemIcon>{icon}</ListItemIcon>
                     <ListItemText classes={{ primary: classes.listItemText }}>
                       <span>{text}</span>
-                      <span>
-                        {chip && <Chip size="small" label={chip} clickable />}
-                      </span>
+                      {chip && (
+                        <span>
+                          <Chip size="small" label={chip} clickable />
+                        </span>
+                      )}
                     </ListItemText>
                   </ListItem>
                 ))}

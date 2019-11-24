@@ -1,7 +1,7 @@
 /**
  * KernelListItem component.
  */
-import React from 'react';
+import React, { useContext } from 'react';
 import Link from 'next/link';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -13,7 +13,12 @@ import Button from '@material-ui/core/Button';
 import Chip from '@material-ui/core/Chip';
 import Typography from '@material-ui/core/Typography';
 import moment from 'moment';
+import IconButton from '@material-ui/core/IconButton';
+import BookmarkIcon from '@material-ui/icons/Bookmark';
+import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 import Version from '../../models/Version';
+import { GlobalContext, GlobalDispatchContext } from '../../contexts';
+import { addBookmark, removeBookmark, showSnackbar } from '../../actions';
 import styles from './styles';
 
 const useStyles = makeStyles(styles);
@@ -21,10 +26,25 @@ const useStyles = makeStyles(styles);
 const KernelListItem = ({ version_name, version_slug, last_modified }) => {
   const classes = useStyles();
 
+  const { bookmarks } = useContext(GlobalContext);
+  const globalDispatch = useContext(GlobalDispatchContext);
+
   const version = new Version(version_slug);
 
   const dateFriendly = moment(last_modified).format('L');
   const timeFriendly = moment(last_modified).format('LT');
+  const isBookmarked = bookmarks.some((b) => b === version.toString());
+
+  const handleBookmarkClick = () => {
+    const versionStr = version.toString();
+    if (isBookmarked) {
+      globalDispatch(removeBookmark(versionStr));
+      globalDispatch(showSnackbar(`${versionStr} removed from bookmarks.`));
+    } else {
+      globalDispatch(addBookmark(versionStr));
+      globalDispatch(showSnackbar(`${versionStr} added to bookmarks.`));
+    }
+  };
 
   return (
     <Grid item xs={6} md={4} lg={3} xl={2}>
@@ -64,6 +84,15 @@ const KernelListItem = ({ version_name, version_slug, last_modified }) => {
             </div>
           </CardActionArea>
         </Link>
+        <CardActions disableSpacing className={classes.actions}>
+          <IconButton
+            size="small"
+            onClick={handleBookmarkClick}
+            aria-label="add to bookmarks"
+          >
+            {isBookmarked ? <BookmarkIcon /> : <BookmarkBorderIcon />}
+          </IconButton>
+        </CardActions>
       </Card>
     </Grid>
   );

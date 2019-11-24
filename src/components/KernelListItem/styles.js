@@ -1,6 +1,8 @@
 /**
  * KernelListItem style.
  */
+import { fade } from '@material-ui/core/styles';
+
 export default (theme) => ({
   card: {
     display: 'grid',
@@ -55,6 +57,13 @@ export default (theme) => ({
     '& span': {
       display: 'block',
       fontSize: '0.8rem',
+    },
+  },
+  actions: {
+    backgroundColor: fade(theme.palette.common.black, 0.05),
+    padding: theme.spacing(1),
+    '& > *': {
+      opacity: '0.7',
     },
   },
 });
