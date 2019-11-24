@@ -75,12 +75,24 @@ export default class Version {
    * Defaults to true.
    */
   toString(withLeadingV = true) {
-    const { major, minor, patch, rc, distro } = this;
-    let str = `${major}.${minor}`;
-    if (patch) str += `.${patch}`;
+    const { rc, distro } = this;
+    let str = this.toFriendlyString(withLeadingV);
     if (rc) str += `-${rc}`;
     if (distro) str += `-${distro}`;
-    return withLeadingV ? `v${str}` : str;
+    return str;
+  }
+
+  /**
+   * Returns the string representation of the Version instance
+   * in the form of v[Major].[Minor].[Patch?].
+   * @param {Boolean} withLeadingV Return value should include the leading "v" or not.
+   * Defaults to true.
+   */
+  toFriendlyString(withLeadingV = true) {
+    const { patch } = this;
+    let str = this.toShortString(withLeadingV);
+    if (patch) str += `.${patch}`;
+    return str;
   }
 
   /**
@@ -91,7 +103,7 @@ export default class Version {
    */
   toShortString(withLeadingV = true) {
     const { major, minor } = this;
-    const shortStr = `${major}.${minor}`;
-    return withLeadingV ? `v${shortStr}` : shortStr;
+    const str = `${major}.${minor}`;
+    return withLeadingV ? `v${str}` : str;
   }
 }
