@@ -21,7 +21,7 @@ export default class Version {
    * @param {String} versionString Version string
    */
   static parse(versionString) {
-    const regex = /^v?(\d+)\.(\d+)(?:\.(\d+))?(?:\.(\d+))?(?:\.(\d+))?(?:-(rc\d+))?(?:-(\w+))?/i;
+    const regex = /^v?(\d+)\.(\d+)(?:\.(\d+))?(?:\.(\d+))?(?:\.(\d+))?(?:-(rc\d*|ckt\d*))?(?:-(.+))?/i;
     let major, minor, build, patch, extra, rc, distro;
     try {
       [, major, minor, build, patch, extra, rc, distro] = versionString.match(
@@ -68,12 +68,24 @@ export default class Version {
     return this._distro;
   }
 
+  get ckt() {
+    return this._rc;
+  }
+
   /**
    * Returns true if the version belongs to a Release Candidate,
    * otherwise false.
    */
   isRC() {
-    return !!this.rc;
+    return !!this.rc && this.rc.toLowerCase().includes('rc');
+  }
+
+  /**
+   * Returns true if the version belongs to a release that is
+   * marked as CKT, otherwise false.
+   */
+  isCKT() {
+    return !!this.rc && this.rc.toLowerCase().includes('ckt');
   }
 
   /**
