@@ -1,7 +1,8 @@
 /**
  * KernelListItem component.
  */
-import React, { useContext } from 'react';
+import React, { memo } from 'react';
+import PropTypes from 'prop-types';
 import Link from 'next/link';
 import moment from 'moment';
 import { makeStyles } from '@material-ui/core/styles';
@@ -18,32 +19,33 @@ import IconButton from '@material-ui/core/IconButton';
 import BookmarkIcon from '@material-ui/icons/Bookmark';
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 import Version from '../../models/Version';
-import { GlobalContext, GlobalDispatchContext } from '../../contexts';
-import { addBookmark, removeBookmark, showSnackbar } from '../../actions';
 import styles from './styles';
 
 const useStyles = makeStyles(styles);
 
-const KernelListItem = ({ version_name, version_slug, last_modified }) => {
+const KernelListItem = ({
+  version_name,
+  version_slug,
+  last_modified,
+  bookmarks,
+  handleAddBookmark,
+  handleRemoveBookmark,
+}) => {
   const classes = useStyles();
-
-  const { bookmarks } = useContext(GlobalContext);
-  const globalDispatch = useContext(GlobalDispatchContext);
 
   const version = new Version(version_slug);
 
   const dateFriendly = moment(last_modified).format('L');
   const timeFriendly = moment(last_modified).format('LT');
-  const isBookmarked = bookmarks.some((b) => b === version.toString());
+  const isBookmarked =
+    bookmarks && bookmarks.some((b) => b === version.toString());
 
   const handleBookmarkClick = () => {
     const versionStr = version.toString();
     if (isBookmarked) {
-      globalDispatch(removeBookmark(versionStr));
-      globalDispatch(showSnackbar(`${versionStr} removed from bookmarks.`));
+      handleRemoveBookmark(versionStr);
     } else {
-      globalDispatch(addBookmark(versionStr));
-      globalDispatch(showSnackbar(`${versionStr} added to bookmarks.`));
+      handleAddBookmark(versionStr);
     }
   };
 
@@ -122,4 +124,8 @@ const KernelListItem = ({ version_name, version_slug, last_modified }) => {
   );
 };
 
-export default KernelListItem;
+KernelListItem.propTypes = {
+  bookmarks: PropTypes.array,
+};
+
+export default memo(KernelListItem);

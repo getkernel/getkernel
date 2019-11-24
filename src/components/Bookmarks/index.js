@@ -11,8 +11,9 @@ import {
   GlobalDispatchContext,
   KernelsContext,
 } from '../../contexts';
-import styles from './styles';
+import { addBookmark, removeBookmark, showSnackbar } from '../../actions';
 import BookmarkUtils from '../../utils/BookmarkUtils';
+import styles from './styles';
 
 const useStyles = makeStyles(styles);
 
@@ -31,6 +32,16 @@ const Bookmarks = () => {
     bookmarks.includes(version_slug)
   );
 
+  const handleAddBookmark = (versionStr) => {
+    globalDispatch(addBookmark(versionStr));
+    globalDispatch(showSnackbar(`${versionStr} added to bookmarks.`));
+  };
+
+  const handleRemoveBookmark = (versionStr) => {
+    globalDispatch(removeBookmark(versionStr));
+    globalDispatch(showSnackbar(`${versionStr} removed from bookmarks.`));
+  };
+
   return (
     <div className={classes.root}>
       <PageContent>
@@ -39,7 +50,13 @@ const Bookmarks = () => {
         </p>
         <Grid container spacing={3}>
           {bookmarkedEntries.map((entry) => (
-            <KernelListItem key={entry.version_slug} {...entry} />
+            <KernelListItem
+              key={entry.version_slug}
+              {...entry}
+              bookmarks={bookmarks}
+              handleAddBookmark={handleAddBookmark}
+              handleRemoveBookmark={handleRemoveBookmark}
+            />
           ))}
         </Grid>
       </PageContent>
