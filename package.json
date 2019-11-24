@@ -27,7 +27,7 @@
     "react-scroll": "^1.7.14"
   },
   "devDependencies": {
-    "@babel/core": "^7.7.2",
+    "@babel/core": "^7.7.4",
     "babel-jest": "^24.9.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.15.1",
