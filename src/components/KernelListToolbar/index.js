@@ -47,12 +47,10 @@ const KernelListToolbar = () => {
               renderValue={(selected) => selected.join(', ')}
               // MenuProps={MenuProps}
             >
-              {availableVersions.map(({ version, count, minors }) => [
-                <ListSubheader>
-                  {version} ({`${count} items`})
-                </ListSubheader>,
+              {availableVersions.map(({ major, count, minors }) => [
+                <ListSubheader>{`v${major} (${count} items)`}</ListSubheader>,
                 minors.map((minor) => (
-                  <MenuItem key={`${version}-${minor}`} value={minor}>
+                  <MenuItem key={`${major}-${minor}`} value={minor}>
                     <Checkbox checked={selectedVersions.indexOf(minor) > -1} />
                     <ListItemText primary={minor} />
                   </MenuItem>

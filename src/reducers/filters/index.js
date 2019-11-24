@@ -2,6 +2,8 @@
  * Filters reducer.
  */
 import defaultState, { releaseTypes } from './defaultState';
+import Version from '../../models/Version';
+import Compare from '../../utils/Compare';
 
 export { defaultState, releaseTypes };
 
@@ -9,38 +11,26 @@ export default (state, action) => {
   switch (action.type) {
     case 'SET_AVAILABLE_VERSIONS_FILTER':
       const availableVersions = [];
-      action.data.entries.forEach(({ version_slug }) => {
-        const [versionMajor, versionMinor] = version_slug.split('.');
-        if (versionMajor.includes('v')) {
-          if (
-            !availableVersions.some(({ version }) => version === versionMajor)
-          ) {
-            availableVersions.push({
-              version: versionMajor,
-              count: 0,
-              minors: [],
-            });
-          }
-          const versionObject = availableVersions.find(
-            ({ version }) => version === versionMajor
-          );
-          const minorString = `${versionMajor}.${versionMinor.split('-')[0]}`;
-          versionObject.count++;
-          if (!versionObject.minors.includes(minorString)) {
-            versionObject.minors.push(minorString);
-          }
+      const versions = action.data.entries
+        .filter(({ version_slug }) => version_slug.startsWith('v'))
+        .map(({ version_slug }) => new Version(version_slug));
+
+      versions.forEach((version) => {
+        if (!availableVersions.some(({ major }) => major === version.major)) {
+          const minors = versions.filter((v) => v.major === version.major);
+          // Sort minors in descending order.
+          minors.sort(Compare.version('desc'));
+
+          availableVersions.push({
+            major: version.major,
+            count: minors.length,
+            minors: [...new Set(minors.map((m) => m.toShortString()))],
+          });
         }
       });
 
-      // Sort versions by name - descending order
-      if (availableVersions.length) {
-        availableVersions.sort((a, b) => {
-          // Sort minors
-          a.minors.sort((i, j) => j.split('.')[1] - i.split('.')[1]);
-          b.minors.sort((i, j) => j.split('.')[1] - i.split('.')[1]);
-          return b.version[1] - a.version[1];
-        });
-      }
+      // Sort by major in descending order.
+      availableVersions.sort(Compare.prop('major', 'desc'));
 
       return {
         ...state,
