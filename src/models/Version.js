@@ -30,7 +30,7 @@ export default class Version {
     return {
       major: Number(major),
       minor: Number(minor),
-      patch: Number(patch),
+      patch: patch && Number(patch),
       rc,
       distro,
     };
@@ -70,14 +70,24 @@ export default class Version {
   }
 
   /**
+   * Returns string representation of the Version instance
+   * without the leading "v".
+   */
+  toBaseString() {
+    const { major, minor, patch, rc, distro } = this;
+    let str = `${major}.${minor}`;
+    if (patch) str += `.${patch}`;
+    if (rc) str += `-${rc}`;
+    if (distro) str += `-${distro}`;
+    return str;
+  }
+
+  /**
    * Returns string representation of the Version instance.
+   * with the leading "v".
    */
   toString() {
-    const { major, minor, patch, rc, distro } = this;
-    let vString = `v${major}.${minor}`;
-    if (patch) vString += `.${patch}`;
-    if (rc) vString += `-${rc}`;
-    if (distro) vString += `-${distro}`;
-    return vString;
+    const str = this.toBaseString();
+    return `v${str}`;
   }
 }
