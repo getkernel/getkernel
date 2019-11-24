@@ -9,6 +9,7 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
+import Chip from '@material-ui/core/Chip';
 import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
@@ -44,7 +45,7 @@ const MainLayout = ({ children, pageTitle, contentTitle, showShadow }) => {
   const classes = useStyles();
   const theme = useTheme();
 
-  const { drawerOpen, theme: themePref } = useContext(GlobalContext);
+  const { drawerOpen, theme: themePref, bookmarks } = useContext(GlobalContext);
   const dispatch = useContext(GlobalDispatchContext);
 
   const menuItems = [
@@ -57,6 +58,7 @@ const MainLayout = ({ children, pageTitle, contentTitle, showShadow }) => {
       {
         text: 'Bookmarks',
         icon: <BookmarksIcon />,
+        chip: bookmarks.length,
         handler: () => Router.push('/bookmarks'),
       },
     ],
@@ -160,10 +162,15 @@ const MainLayout = ({ children, pageTitle, contentTitle, showShadow }) => {
           {menuItems.map((menuSet, index) => (
             <Fragment key={`menuset-${index}`}>
               <List>
-                {menuSet.map(({ text, icon, handler }) => (
+                {menuSet.map(({ text, icon, handler, chip }) => (
                   <ListItem button key={text} onClick={handler}>
                     <ListItemIcon>{icon}</ListItemIcon>
-                    <ListItemText primary={text} />
+                    <ListItemText classes={{ primary: classes.listItemText }}>
+                      <span>{text}</span>
+                      <span>
+                        {chip && <Chip size="small" label={chip} clickable />}
+                      </span>
+                    </ListItemText>
                   </ListItem>
                 ))}
               </List>
