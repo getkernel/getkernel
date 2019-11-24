@@ -19,6 +19,24 @@ export default (state, action) => {
         theme: state.theme === 'dark' ? 'light' : 'dark',
       };
 
+    case 'ADD_BOOKMARK':
+      return {
+        ...state,
+        bookmarks: [...state.bookmarks, action.bookmark],
+      };
+
+    case 'REMOVE_BOOKMARK':
+      return {
+        ...state,
+        bookmarks: state.bookmarks.filter((b) => b !== action.bookmark),
+      };
+
+    case 'CLEAR_BOOKMARKS':
+      return {
+        ...state,
+        bookmarks: defaultState.bookmarks,
+      };
+
     case 'SHOW_WEB_VIEWER':
       return {
         ...state,

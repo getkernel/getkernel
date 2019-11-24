@@ -3,6 +3,7 @@
  */
 export default {
   drawerOpen: true,
+  bookmarks: [],
   webViewer: {
     open: false,
     url: '',

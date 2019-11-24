@@ -56,7 +56,7 @@ const MainLayout = ({ children, pageTitle, contentTitle, showShadow }) => {
       {
         text: 'Bookmarks',
         icon: <BookmarksIcon />,
-        handler: () => {},
+        handler: () => Router.push('/bookmarks'),
       },
     ],
     [

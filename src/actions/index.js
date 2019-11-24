@@ -1,6 +1,9 @@
 import {
   toggleDrawer,
   toggleTheme,
+  addBookmark,
+  removeBookmark,
+  clearBookmarks,
   showWebViewer,
   closeWebViewer,
   showSnackbar,
@@ -20,6 +23,9 @@ import {
 export {
   toggleDrawer,
   toggleTheme,
+  addBookmark,
+  removeBookmark,
+  clearBookmarks,
   showWebViewer,
   closeWebViewer,
   showSnackbar,
