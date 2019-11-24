@@ -15,7 +15,7 @@ export default class BookmarkUtils {
     const versions = [...bookmarksArray]
       .map((version) => new Version(version))
       .sort(Compare.version('desc'))
-      .map((versionObj) => versionObj.toBaseString())
+      .map((versionObj) => versionObj.toString(false))
       .join('|');
 
     return btoa(versions);

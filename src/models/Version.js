@@ -70,24 +70,28 @@ export default class Version {
   }
 
   /**
-   * Returns string representation of the Version instance
-   * without the leading "v".
+   * Returns the string representation of the Version instance.
+   * @param {Boolean} withLeadingV Return value should include the leading "v" or not.
+   * Defaults to true.
    */
-  toBaseString() {
+  toString(withLeadingV = true) {
     const { major, minor, patch, rc, distro } = this;
     let str = `${major}.${minor}`;
     if (patch) str += `.${patch}`;
     if (rc) str += `-${rc}`;
     if (distro) str += `-${distro}`;
-    return str;
+    return withLeadingV ? `v${str}` : str;
   }
 
   /**
-   * Returns string representation of the Version instance.
-   * with the leading "v".
+   * Returns the string representation of the Version instance
+   * in the form of v[Major].[Minor].
+   * @param {Boolean} withLeadingV Return value should include the leading "v" or not.
+   * Defaults to true.
    */
-  toString() {
-    const str = this.toBaseString();
-    return `v${str}`;
+  toShortString(withLeadingV = true) {
+    const { major, minor } = this;
+    const shortStr = `${major}.${minor}`;
+    return withLeadingV ? `v${shortStr}` : shortStr;
   }
 }
