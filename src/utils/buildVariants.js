@@ -1,4 +1,4 @@
-import stringCompare from './stringCompare';
+import Compare from './Compare';
 
 export default (binaries) => {
   const [base, ...rest] = binaries;
@@ -18,5 +18,5 @@ export default (binaries) => {
     variants.add(variant);
   });
 
-  return [...variants].sort(stringCompare());
+  return [...variants].sort(Compare.string());
 };

@@ -1,14 +1,13 @@
 import buildChecksums from './buildChecksums';
 import buildVariants from './buildVariants';
-import stringCompare from './stringCompare';
-import stringObjectCompare from './stringObjectCompare';
 import { fileDownload, batchDownload, calculateDownloadSize } from './download';
+import { encodeBookmarks, decodeBookmarks } from './bookmarks';
 
 export {
+  encodeBookmarks,
+  decodeBookmarks,
   buildChecksums,
   buildVariants,
-  stringCompare,
-  stringObjectCompare,
   fileDownload,
   batchDownload,
   calculateDownloadSize,
