@@ -28,6 +28,7 @@ import InfoIcon from '@material-ui/icons/Info';
 import SearchIcon from '@material-ui/icons/Search';
 import LightThemeIcon from '@material-ui/icons/Brightness7';
 import DarkThemeIcon from '@material-ui/icons/Brightness4';
+import InitApp from '../../components/InitApp';
 import DocumentHead from '../../components/DocumentHead';
 import AlertDialog from '../../components/AlertDialog';
 import GlobalSnackbar from '../../components/GlobalSnackbar';
@@ -83,6 +84,7 @@ const MainLayout = ({ children, pageTitle, contentTitle, showShadow }) => {
   return (
     <Fragment>
       <DocumentHead pageTitle={pageTitle} />
+      <InitApp />
       <div className={classes.root}>
         <AppBar
           position="fixed"
