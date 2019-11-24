@@ -13,6 +13,7 @@ import Button from '@material-ui/core/Button';
 import Chip from '@material-ui/core/Chip';
 import Typography from '@material-ui/core/Typography';
 import moment from 'moment';
+import Version from '../../models/Version';
 import styles from './styles';
 
 const useStyles = makeStyles(styles);
@@ -20,7 +21,8 @@ const useStyles = makeStyles(styles);
 const KernelListItem = ({ version_name, version_slug, last_modified }) => {
   const classes = useStyles();
 
-  const [versionFriendly, rcText] = version_name.replace('v', '').split('-');
+  const version = new Version(version_slug);
+
   const dateFriendly = moment(last_modified).format('L');
   const timeFriendly = moment(last_modified).format('LT');
 
@@ -33,11 +35,11 @@ const KernelListItem = ({ version_name, version_slug, last_modified }) => {
               <div className={classes.details}>
                 <CardContent className={classes.topArea}>
                   <Typography className={classes.versionName} variant="h5">
-                    <span>{versionFriendly}</span>
-                    {rcText && (
+                    <span>{version.toFriendlyString(false)}</span>
+                    {version.isRC() && (
                       <Chip
                         size="small"
-                        label={rcText.toUpperCase()}
+                        label={version.rc.toUpperCase()}
                         className={classes.rcChip}
                         title="Release Candidate"
                       />
