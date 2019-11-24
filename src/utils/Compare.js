@@ -50,7 +50,7 @@ export default class Compare {
    * asc by default.
    */
   static version(order = 'asc') {
-    const props = ['major', 'minor', 'patch', 'rc', 'distro'];
+    const props = ['major', 'minor', 'build', 'patch', 'extra', 'rc', 'distro'];
 
     const sort = {
       asc: function(verA, verB) {

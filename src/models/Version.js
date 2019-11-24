@@ -21,16 +21,20 @@ export default class Version {
    * @param {String} versionString Version string
    */
   static parse(versionString) {
-    const regex = /^v?(\d+)\.(\d+)(?:\.(\d+))?(?:-(rc\d+))?(?:-(\w+))?/i;
-    let major, minor, patch, rc, distro;
+    const regex = /^v?(\d+)\.(\d+)(?:\.(\d+))?(?:\.(\d+))?(?:\.(\d+))?(?:-(rc\d+))?(?:-(\w+))?/i;
+    let major, minor, build, patch, extra, rc, distro;
     try {
-      [, major, minor, patch, rc, distro] = versionString.match(regex);
+      [, major, minor, build, patch, extra, rc, distro] = versionString.match(
+        regex
+      );
     } catch (_) {}
 
     return {
       major: Number(major),
       minor: Number(minor),
+      build: build && Number(build),
       patch: patch && Number(patch),
+      extra: extra && Number(extra),
       rc,
       distro,
     };
@@ -39,27 +43,30 @@ export default class Version {
   get major() {
     return this._major;
   }
-  set major(_) {}
 
   get minor() {
     return this._minor;
   }
-  set minor(_) {}
+
+  get build() {
+    return this._build;
+  }
 
   get patch() {
     return this._patch;
   }
-  set patch(_) {}
+
+  get extra() {
+    return this._extra;
+  }
 
   get rc() {
     return this._rc;
   }
-  set rc(_) {}
 
   get distro() {
     return this._distro;
   }
-  set distro(_) {}
 
   /**
    * Returns true if the version belongs to a Release Candidate,
@@ -84,14 +91,16 @@ export default class Version {
 
   /**
    * Returns the string representation of the Version instance
-   * in the form of v[Major].[Minor].[Patch?].
+   * in the form of v[Major].[Minor].[Build?].[Patch?].[Extra?].
    * @param {Boolean} withLeadingV Return value should include the leading "v" or not.
    * Defaults to true.
    */
   toFriendlyString(withLeadingV = true) {
-    const { patch } = this;
+    const { build, patch, extra } = this;
     let str = this.toShortString(withLeadingV);
+    if (build) str += `.${build}`;
     if (patch) str += `.${patch}`;
+    if (extra) str += `.${extra}`;
     return str;
   }
 
