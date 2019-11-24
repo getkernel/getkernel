@@ -33,7 +33,7 @@ export default (theme) => ({
       },
     },
   },
-  rcChip: {
+  chip: {
     marginLeft: theme.spacing(1),
   },
   cover: {
@@ -61,6 +61,8 @@ export default (theme) => ({
   },
   actions: {
     backgroundColor: fade(theme.palette.common.black, 0.05),
+    display: 'flex',
+    justifyContent: 'space-between',
     padding: theme.spacing(1),
     '& > *': {
       opacity: '0.7',

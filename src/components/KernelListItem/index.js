@@ -47,6 +47,19 @@ const KernelListItem = ({ version_name, version_slug, last_modified }) => {
     }
   };
 
+  const chips = [];
+  version.distro &&
+    chips.push({
+      label: version.distro.toUpperCase(),
+      title: version.distro,
+    });
+  version.isRC() &&
+    chips.push({
+      label: version.rc.toUpperCase(),
+      title: 'Release Candidate',
+      color: 'secondary',
+    });
+
   return (
     <Grid item xs={6} md={4} lg={3} xl={2}>
       <Card>
@@ -57,14 +70,6 @@ const KernelListItem = ({ version_name, version_slug, last_modified }) => {
                 <CardContent className={classes.topArea}>
                   <Typography className={classes.versionName} variant="h5">
                     <span>{version.toFriendlyString(false)}</span>
-                    {version.isRC() && (
-                      <Chip
-                        size="small"
-                        label={version.rc.toUpperCase()}
-                        className={classes.rcChip}
-                        title="Release Candidate"
-                      />
-                    )}
                   </Typography>
                 </CardContent>
                 <div className={classes.bottomArea}>
@@ -98,6 +103,19 @@ const KernelListItem = ({ version_name, version_slug, last_modified }) => {
               {isBookmarked ? <BookmarkIcon /> : <BookmarkBorderIcon />}
             </IconButton>
           </Tooltip>
+          <div>
+            {chips &&
+              chips.map(({ label, title, color }) => (
+                <Chip
+                  key={`chip-${label}`}
+                  size="small"
+                  color={color || 'default'}
+                  label={label}
+                  className={classes.chip}
+                  title={title}
+                />
+              ))}
+          </div>
         </CardActions>
       </Card>
     </Grid>
