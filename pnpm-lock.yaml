@@ -14,6 +14,7 @@ dependencies:
   react-copy-to-clipboard: 5.0.2_react@16.12.0
   react-dom: 16.12.0_react@16.12.0
   react-scroll: 1.7.14_react-dom@16.12.0+react@16.12.0
+  react-window: 1.8.5_react-dom@16.12.0+react@16.12.0
 devDependencies:
   '@babel/core': 7.7.4
   babel-jest: 24.9.0_@babel+core@7.7.4
@@ -1665,14 +1666,14 @@ packages:
   /array.prototype.find/2.1.0:
     dependencies:
       define-properties: 1.1.3
-      es-abstract: 1.16.0
+      es-abstract: 1.16.2
     dev: true
     resolution:
       integrity: sha512-Wn41+K1yuO5p7wRZDl7890c3xvv5UBrfVXTVIe28rSQb6LS0fZMDrQB6PAcxQFRFy6vJTLDc3A2+3CjQdzVKRg==
   /array.prototype.flat/1.2.2:
     dependencies:
       define-properties: 1.1.3
-      es-abstract: 1.16.0
+      es-abstract: 1.16.2
       function-bind: 1.1.1
     dev: true
     engines:
@@ -1770,7 +1771,7 @@ packages:
   /autoprefixer/9.7.2:
     dependencies:
       browserslist: 4.7.3
-      caniuse-lite: 1.0.30001011
+      caniuse-lite: 1.0.30001012
       chalk: 2.4.2
       normalize-range: 0.1.2
       num2fraction: 1.2.2
@@ -2047,8 +2048,8 @@ packages:
       integrity: sha512-Z942RysHXmJrhqk88FmKBVq/v5tqmSkDz7p54G/MGyjMnCFFnC79XWNbg+Vta8W6Wb2qtSZTSxIGkJrRpCFEiA==
   /browserslist/4.7.3:
     dependencies:
-      caniuse-lite: 1.0.30001011
-      electron-to-chromium: 1.3.312
+      caniuse-lite: 1.0.30001012
+      electron-to-chromium: 1.3.314
       node-releases: 1.1.41
     dev: false
     hasBin: true
@@ -2159,10 +2160,10 @@ packages:
       node: '>=6'
     resolution:
       integrity: sha512-L28STB170nwWS63UjtlEOE3dldQApaJXZkOI1uMFfzf3rRuPegHaHesyee+YxQ+W6SvRDQV6UrdOdRiR153wJg==
-  /caniuse-lite/1.0.30001011:
+  /caniuse-lite/1.0.30001012:
     dev: false
     resolution:
-      integrity: sha512-h+Eqyn/YA6o6ZTqpS86PyRmNWOs1r54EBDcd2NTwwfsXQ8re1B38SnB+p2RKF8OUsyEIjeDU8XGec1RGO/wYCg==
+      integrity: sha512-7RR4Uh04t9K1uYRWzOJmzplgEOAXbfK72oVNokCdMzA67trrhPzy93ahKk1AWHiA0c58tD2P+NHqxrA8FZ+Trg==
   /capture-exit/2.0.0:
     dependencies:
       rsvp: 4.8.5
@@ -2886,10 +2887,10 @@ packages:
     dev: false
     resolution:
       integrity: sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
-  /electron-to-chromium/1.3.312:
+  /electron-to-chromium/1.3.314:
     dev: false
     resolution:
-      integrity: sha512-/Nk6Hvwt+RfS9X3oA4IXpWqpcnS7cdWsTMP4AmrP8hPpxtZbHemvTEYzjAKghk28aS9zIV8NwGHNt8H+6OmJug==
+      integrity: sha512-IKDR/xCxKFhPts7h+VaSXS02Z1mznP3fli1BbXWXeN89i2gCzKraU8qLpEid8YzKcmZdZD3Mly3cn5/lY9xsBQ==
   /elliptic/6.5.2:
     dependencies:
       bn.js: 4.11.8
@@ -3036,7 +3037,7 @@ packages:
       is-arrayish: 0.2.1
     resolution:
       integrity: sha512-7dFHNmqeFSEt2ZBsCriorKnn3Z2pj+fd9kmI6QoWw4//DL+icEBfc0U7qJCisqrTsKTjw4fNFy2pW9OqStD84g==
-  /es-abstract/1.16.0:
+  /es-abstract/1.16.2:
     dependencies:
       es-to-primitive: 1.2.1
       function-bind: 1.1.1
@@ -3052,7 +3053,7 @@ packages:
     engines:
       node: '>= 0.4'
     resolution:
-      integrity: sha512-xdQnfykZ9JMEiasTAJZJdMWCQ1Vm00NBw79/AWi7ELfZuuPCSOMDZbT9mkOfSctVtfhb+sAAzrm+j//GjjLHLg==
+      integrity: sha512-jYo/J8XU2emLXl3OLwfwtuFfuF2w6DYPs+xy9ZfVyPkDcrauu6LYrw/q2TyCtrbc/KUdCiC5e9UajRhgNkVopA==
   /es-to-primitive/1.2.1:
     dependencies:
       is-callable: 1.1.4
@@ -3516,7 +3517,7 @@ packages:
       node: '>=0.4.7'
     hasBin: true
     optionalDependencies:
-      uglify-js: 3.6.9
+      uglify-js: 3.7.0
     resolution:
       integrity: sha512-3yPecJoJHK/4c6aZhSvxOyG4vJKDshV36VHp0iVCDVh7o9w2vwi3NSnL2MMPj3YdduqaBcu7cGbggJQM0br9xA==
   /har-schema/2.0.0:
@@ -4940,6 +4941,10 @@ packages:
     dev: false
     resolution:
       integrity: sha1-/oWy7HWlkDfyrf7BAP1sYBdhFS4=
+  /memoize-one/5.1.1:
+    dev: false
+    resolution:
+      integrity: sha512-HKeeBpWvqiVJD57ZUAsJNm71eHTykffzcLZVYWiVfQeI1rJtuEaS7hQiEpWfVVk18donPwJEcFKIkCmPJNOhHA==
   /memory-fs/0.4.1:
     dependencies:
       errno: 0.1.7
@@ -5429,7 +5434,7 @@ packages:
   /object.entries/1.1.0:
     dependencies:
       define-properties: 1.1.3
-      es-abstract: 1.16.0
+      es-abstract: 1.16.2
       function-bind: 1.1.1
       has: 1.0.3
     dev: true
@@ -5440,7 +5445,7 @@ packages:
   /object.fromentries/2.0.1:
     dependencies:
       define-properties: 1.1.3
-      es-abstract: 1.16.0
+      es-abstract: 1.16.2
       function-bind: 1.1.1
       has: 1.0.3
     dev: true
@@ -5451,7 +5456,7 @@ packages:
   /object.getownpropertydescriptors/2.0.3:
     dependencies:
       define-properties: 1.1.3
-      es-abstract: 1.16.0
+      es-abstract: 1.16.2
     dev: true
     engines:
       node: '>= 0.8'
@@ -5467,7 +5472,7 @@ packages:
   /object.values/1.1.0:
     dependencies:
       define-properties: 1.1.3
-      es-abstract: 1.16.0
+      es-abstract: 1.16.2
       function-bind: 1.1.1
       has: 1.0.3
     dev: true
@@ -6101,7 +6106,7 @@ packages:
     dependencies:
       autoprefixer: 9.7.2
       browserslist: 4.7.3
-      caniuse-lite: 1.0.30001011
+      caniuse-lite: 1.0.30001012
       css-blank-pseudo: 0.1.4
       css-has-pseudo: 0.10.0
       css-prefers-color-scheme: 3.1.1
@@ -6484,6 +6489,20 @@ packages:
       react-dom: '>=16.6.0'
     resolution:
       integrity: sha512-1qRV1ZuVSdxPlPf4O8t7inxUGpdyO5zG9IoNfJxSO0ImU2A1YWkEQvFPuIPZmMLkg5hYs7vv5mMOyfgSkvAwvw==
+  /react-window/1.8.5_react-dom@16.12.0+react@16.12.0:
+    dependencies:
+      '@babel/runtime': 7.7.4
+      memoize-one: 5.1.1
+      react: 16.12.0
+      react-dom: 16.12.0_react@16.12.0
+    dev: false
+    engines:
+      node: '>8.0.0'
+    peerDependencies:
+      react: ^15.0.0 || ^16.0.0
+      react-dom: ^15.0.0 || ^16.0.0
+    resolution:
+      integrity: sha512-HeTwlNa37AFa8MDZFZOKcNEkuF2YflA0hpGPiTT9vR7OawEt+GZbfM6wqkBahD3D3pUjIabQYzsnY/BSJbgq6Q==
   /react/16.12.0:
     dependencies:
       loose-envify: 1.4.0
@@ -7144,7 +7163,7 @@ packages:
   /string.prototype.trim/1.2.0:
     dependencies:
       define-properties: 1.1.3
-      es-abstract: 1.16.0
+      es-abstract: 1.16.2
       function-bind: 1.1.1
     dev: true
     engines:
@@ -7492,7 +7511,7 @@ packages:
     dev: false
     resolution:
       integrity: sha512-8Y75pvTYkLJW2hWQHXxoqRgV7qb9B+9vFEtidML+7koHUFapnVJAZ6cKs+Qjz5Aw3aZWHMC6u0wJE3At+nSGwA==
-  /uglify-js/3.6.9:
+  /uglify-js/3.7.0:
     dependencies:
       commander: 2.20.3
       source-map: 0.6.1
@@ -7502,7 +7521,7 @@ packages:
     hasBin: true
     optional: true
     resolution:
-      integrity: sha512-pcnnhaoG6RtrvHJ1dFncAe8Od6Nuy30oaJ82ts6//sGSXOP5UjBMEthiProjXmMNHOfd93sqlkztifFMcb+4yw==
+      integrity: sha512-PC/ee458NEMITe1OufAjal65i6lB58R1HWMRcxwvdz1UopW0DYqlRL3xdu3IcTvTXsB02CRHykidkTRL+A3hQA==
   /unfetch/4.1.0:
     dev: false
     resolution:
@@ -7940,3 +7959,4 @@ specifiers:
   react-copy-to-clipboard: ^5.0.2
   react-dom: 16.12.0
   react-scroll: ^1.7.14
+  react-window: ^1.8.5

@@ -12,12 +12,10 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
-import InputBase from '@material-ui/core/InputBase';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import Tooltip from '@material-ui/core/Tooltip';
-import SearchIcon from '@material-ui/icons/Search';
 import LightThemeIcon from '@material-ui/icons/Brightness7';
 import DarkThemeIcon from '@material-ui/icons/Brightness4';
 import InitApp from '../../components/InitApp';
@@ -26,10 +24,17 @@ import AlertDialog from '../../components/AlertDialog';
 import GlobalSnackbar from '../../components/GlobalSnackbar';
 import WebViewerDialog from '../../components/WebViewerDialog';
 import Logo from './Logo';
-import { GlobalContext, GlobalDispatchContext } from '../../contexts';
+import MainMenu from './MainMenu';
+import SearchField from './SearchField';
+import {
+  GlobalContext,
+  KernelsContext,
+  KernelsProvider,
+  GlobalDispatchContext,
+  withProvider,
+} from '../../contexts';
 import { toggleDrawer, toggleTheme } from '../../actions';
 import styles from './styles';
-import MainMenu from './MainMenu';
 
 const useStyles = makeStyles(styles);
 
@@ -38,6 +43,9 @@ const MainLayout = ({ children, pageTitle, contentTitle, showShadow }) => {
   const theme = useTheme();
 
   const { drawerOpen, theme: themePref, bookmarks } = useContext(GlobalContext);
+  const {
+    index: { entries },
+  } = useContext(KernelsContext);
   const dispatch = useContext(GlobalDispatchContext);
 
   const ThemeIcon = themePref === 'dark' ? DarkThemeIcon : LightThemeIcon;
@@ -77,19 +85,7 @@ const MainLayout = ({ children, pageTitle, contentTitle, showShadow }) => {
             <Typography variant="h6" noWrap className={classes.title}>
               {contentTitle}
             </Typography>
-            <div className={classes.search}>
-              <div className={classes.searchIcon}>
-                <SearchIcon />
-              </div>
-              <InputBase
-                placeholder="Search…"
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInput,
-                }}
-                inputProps={{ 'aria-label': 'search' }}
-              />
-            </div>
+            <SearchField entries={entries} />
             <Tooltip
               title="Toggle light/dark theme"
               aria-label="Toggle light/dark theme"
@@ -158,4 +154,4 @@ MainLayout.propTypes = {
   showShadow: PropTypes.bool,
 };
 
-export default MainLayout;
+export default withProvider(KernelsProvider)(MainLayout);

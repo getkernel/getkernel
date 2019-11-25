@@ -13,7 +13,7 @@ export default (theme) => ({
     alignItems: 'center',
     flexWrap: 'wrap',
     backgroundColor: fade(theme.palette.text.primary, 0.05),
-    borderRadius: theme.spacing(0.75),
+    borderRadius: theme.shape.borderRadius,
     marginTop: theme.spacing(2),
     padding: theme.spacing(1, 2),
     '& > *': {
