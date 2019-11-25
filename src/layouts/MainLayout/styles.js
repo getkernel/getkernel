@@ -46,12 +46,6 @@ export default (theme) => ({
     justifyContent: 'flex-end',
     marginLeft: theme.spacing(1),
   },
-  listItemText: {
-    width: '100%',
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
   content: {
     flexGrow: 1,
     transition: theme.transitions.create('margin', {

@@ -9,8 +9,6 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Chip from '@material-ui/core/Chip';
-import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
@@ -18,14 +16,7 @@ import InputBase from '@material-ui/core/InputBase';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
 import Tooltip from '@material-ui/core/Tooltip';
-import HomeIcon from '@material-ui/icons/Home';
-import BookmarksIcon from '@material-ui/icons/Bookmarks';
-import BugReportIcon from '@material-ui/icons/BugReport';
-import InfoIcon from '@material-ui/icons/Info';
 import SearchIcon from '@material-ui/icons/Search';
 import LightThemeIcon from '@material-ui/icons/Brightness7';
 import DarkThemeIcon from '@material-ui/icons/Brightness4';
@@ -38,6 +29,7 @@ import Logo from './Logo';
 import { GlobalContext, GlobalDispatchContext } from '../../contexts';
 import { toggleDrawer, toggleTheme } from '../../actions';
 import styles from './styles';
+import MainMenu from './MainMenu';
 
 const useStyles = makeStyles(styles);
 
@@ -48,44 +40,17 @@ const MainLayout = ({ children, pageTitle, contentTitle, showShadow }) => {
   const { drawerOpen, theme: themePref, bookmarks } = useContext(GlobalContext);
   const dispatch = useContext(GlobalDispatchContext);
 
-  const menuItems = [
-    [
-      {
-        text: 'Home',
-        icon: <HomeIcon />,
-        handler: () => Router.push('/'),
-      },
-      {
-        text: 'Bookmarks',
-        icon: <BookmarksIcon />,
-        chip: bookmarks.length || null,
-        handler: () => {
-          if (bookmarks.length) {
-            Router.push('/bookmarks');
-          }
-        },
-      },
-    ],
-    [
-      {
-        text: 'Toggle Theme',
-        icon: themePref === 'dark' ? <DarkThemeIcon /> : <LightThemeIcon />,
-        handler: () => dispatch(toggleTheme()),
-      },
-    ],
-    [
-      {
-        text: 'Report a Problem',
-        icon: <BugReportIcon />,
-        handler: () => {},
-      },
-      {
-        text: 'About',
-        icon: <InfoIcon />,
-        handler: () => {},
-      },
-    ],
-  ];
+  const ThemeIcon = themePref === 'dark' ? DarkThemeIcon : LightThemeIcon;
+  const ChevronIcon =
+    theme.direction === 'ltr' ? ChevronLeftIcon : ChevronRightIcon;
+
+  const handleToggleTheme = () => {
+    dispatch(toggleTheme());
+  };
+
+  const handleToggleDrawer = () => {
+    dispatch(toggleDrawer());
+  };
 
   return (
     <Fragment>
@@ -103,7 +68,7 @@ const MainLayout = ({ children, pageTitle, contentTitle, showShadow }) => {
             <IconButton
               color="inherit"
               aria-label="open drawer"
-              onClick={() => dispatch(toggleDrawer())}
+              onClick={handleToggleDrawer}
               edge="start"
               className={clsx(classes.menuButton, drawerOpen && classes.hide)}
             >
@@ -132,11 +97,11 @@ const MainLayout = ({ children, pageTitle, contentTitle, showShadow }) => {
               <IconButton
                 color="inherit"
                 aria-label="toggle theme"
-                onClick={() => dispatch(toggleTheme())}
+                onClick={handleToggleTheme}
                 edge="start"
                 className={classes.button}
               >
-                {themePref === 'dark' ? <DarkThemeIcon /> : <LightThemeIcon />}
+                <ThemeIcon />
               </IconButton>
             </Tooltip>
           </Toolbar>
@@ -151,38 +116,19 @@ const MainLayout = ({ children, pageTitle, contentTitle, showShadow }) => {
           }}
         >
           <div className={classes.drawerHeader}>
-            <IconButton onClick={() => dispatch(toggleDrawer())}>
-              {theme.direction === 'ltr' ? (
-                <ChevronLeftIcon />
-              ) : (
-                <ChevronRightIcon />
-              )}
+            <IconButton onClick={handleToggleDrawer}>
+              <ChevronIcon />
             </IconButton>
           </div>
           <div onClick={() => Router.push('/')}>
             <Logo />
           </div>
           <Divider />
-          {menuItems.map((menuSet, index) => (
-            <Fragment key={`menuset-${index}`}>
-              <List>
-                {menuSet.map(({ text, icon, handler, chip }) => (
-                  <ListItem button key={text} onClick={handler}>
-                    <ListItemIcon>{icon}</ListItemIcon>
-                    <ListItemText classes={{ primary: classes.listItemText }}>
-                      <span>{text}</span>
-                      {chip && (
-                        <span>
-                          <Chip size="small" label={chip} clickable />
-                        </span>
-                      )}
-                    </ListItemText>
-                  </ListItem>
-                ))}
-              </List>
-              <Divider />
-            </Fragment>
-          ))}
+          <MainMenu
+            bookmarks={bookmarks}
+            themeIcon={ThemeIcon}
+            handleToggleTheme={handleToggleTheme}
+          />
         </Drawer>
         <main
           className={clsx(classes.content, {
