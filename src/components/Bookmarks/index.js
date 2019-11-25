@@ -6,15 +6,16 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
-import Paper from '@material-ui/core/Paper';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import LinkIcon from '@material-ui/icons/Link';
+import EmojiPeopleIcon from '@material-ui/icons/EmojiPeople';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { GlobalContext, GlobalDispatchContext } from '../../contexts';
 import { showSnackbar } from '../../actions';
 import PageContent from '../PageContent';
 import BookmarksList from '../BookmarksList';
+import InfoPanel from '../InfoPanel';
 import BookmarkUtils from '../../utils/BookmarkUtils';
 import styles from './styles';
 import appConfig from '../../app.config';
@@ -49,12 +50,13 @@ const Bookmarks = () => {
   return (
     <div className={classes.root}>
       <PageContent>
-        <Paper className={classes.paper}>
-          <Typography variant="body2">
-            This application is not using any form of persistent data storage
-            whatsoever. This means if you'd like to keep your selections around,
-            you can do so by literally bookmarking the link below.
-          </Typography>
+        <InfoPanel
+          title="Usage"
+          text="This application is not using any form of persistent data storage
+        whatsoever. This means if you'd like to keep your selections around, you
+        can do so by literally bookmarking the link below."
+          icon={EmojiPeopleIcon}
+        >
           <div className={classes.linkArea}>
             <Link href="/b/[encoded]" as={`/b/${encoded}`}>
               <a>{link}</a>
@@ -70,7 +72,7 @@ const Bookmarks = () => {
               </CopyToClipboard>
             </Tooltip>
           </div>
-        </Paper>
+        </InfoPanel>
         <BookmarksList bookmarks={bookmarks} />
       </PageContent>
     </div>

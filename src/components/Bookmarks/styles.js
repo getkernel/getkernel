@@ -7,10 +7,6 @@ export default (theme) => ({
   root: {
     flexGrow: 1,
   },
-  paper: {
-    marginBottom: theme.spacing(3),
-    padding: theme.spacing(2),
-  },
   linkArea: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -18,7 +14,7 @@ export default (theme) => ({
     flexWrap: 'wrap',
     backgroundColor: fade(theme.palette.text.primary, 0.05),
     borderRadius: theme.spacing(0.75),
-    marginTop: theme.spacing(1),
+    marginTop: theme.spacing(2),
     padding: theme.spacing(1, 2),
     '& > *': {
       color: theme.palette.text.secondary,
