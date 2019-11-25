@@ -1,7 +1,7 @@
 /**
  * SearchField component.
  */
-import React from 'react';
+import React, { useMemo, memo } from 'react';
 import PropTypes from 'prop-types';
 import Router from 'next/router';
 import { makeStyles } from '@material-ui/core/styles';
@@ -19,9 +19,11 @@ const useStyles = makeStyles(styles);
 const SearchField = ({ entries }) => {
   const classes = useStyles();
 
-  const options = entries
-    .map(({ version_slug }) => version_slug)
-    .sort(Compare.string('desc'));
+  const options = useMemo(() => {
+    return entries
+      .map(({ version_slug }) => version_slug)
+      .sort(Compare.string('desc'));
+  }, [entries]);
 
   const handleOnChange = (event, value) => {
     Router.push('/kernel/[version]', `/kernel/${value}`);
@@ -74,4 +76,4 @@ SearchField.propTypes = {
   entries: PropTypes.array.isRequired,
 };
 
-export default SearchField;
+export default memo(SearchField);

@@ -1,7 +1,7 @@
 /**
  * MainMenu component.
  */
-import React, { Fragment } from 'react';
+import React, { Fragment, memo } from 'react';
 import PropTypes from 'prop-types';
 import Router from 'next/router';
 import { makeStyles } from '@material-ui/core/styles';
@@ -91,4 +91,4 @@ MainMenu.propTypes = {
   handleToggleTheme: PropTypes.func.isRequired,
 };
 
-export default MainMenu;
+export default memo(MainMenu);

@@ -2,7 +2,7 @@
  * KernelListItem component.
  * Rendered by KernelList.
  */
-import React, { memo } from 'react';
+import React, { useMemo, memo } from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import moment from 'moment';
@@ -29,23 +29,26 @@ const KernelListItem = ({ version_name, version_slug, last_modified }) => {
   const dateFriendly = moment(last_modified).format('L');
   const timeFriendly = moment(last_modified).format('LT');
 
-  const chips = [];
-  version.distro &&
-    chips.push({
-      label: version.distro.toUpperCase(),
-      title: version.distro,
-    });
-  version.isCKT() &&
-    chips.push({
-      label: version.ckt.toUpperCase(),
-      title: version.ckt,
-    });
-  version.isRC() &&
-    chips.push({
-      label: version.rc.toUpperCase(),
-      title: 'Release Candidate',
-      color: 'secondary',
-    });
+  const chips = useMemo(() => {
+    const array = [];
+    version.distro &&
+      array.push({
+        label: version.distro.toUpperCase(),
+        title: version.distro,
+      });
+    version.isCKT() &&
+      array.push({
+        label: version.ckt.toUpperCase(),
+        title: version.ckt,
+      });
+    version.isRC() &&
+      array.push({
+        label: version.rc.toUpperCase(),
+        title: 'Release Candidate',
+        color: 'secondary',
+      });
+    return array;
+  }, [version]);
 
   return (
     <Grid item xs={6} md={4} lg={3} xl={2}>

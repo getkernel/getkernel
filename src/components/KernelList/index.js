@@ -1,7 +1,7 @@
 /**
  * KernelList component.
  */
-import React, { useContext, memo } from 'react';
+import React, { useContext, useMemo, memo } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import PageContent from '../PageContent';
@@ -9,7 +9,6 @@ import LoadingIndicator from '../LoadingIndicator';
 import KernelListToolbar from '../KernelListToolbar';
 import KernelListItem from '../KernelListItem';
 import { KernelsContext, FiltersContext } from '../../contexts';
-
 import { versionsFilter, releaseTypeFilter } from '../../selectors';
 import styles from './styles';
 
@@ -25,9 +24,11 @@ const KernelList = () => {
     FiltersContext
   );
 
-  const filteredEntries = entries
-    .filter(versionsFilter(selectedVersions))
-    .filter(releaseTypeFilter(releaseType));
+  const filteredEntries = useMemo(() => {
+    return entries
+      .filter(versionsFilter(selectedVersions))
+      .filter(releaseTypeFilter(releaseType));
+  }, [entries, selectedVersions, releaseType]);
 
   if (!(filtersSet && filteredEntries.length)) {
     return (
