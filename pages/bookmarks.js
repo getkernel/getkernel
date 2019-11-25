@@ -1,7 +1,6 @@
 import React from 'react';
 import MainLayout from '../src/layouts/MainLayout';
 import Bookmarks from '../src/components/Bookmarks';
-import { KernelsProvider } from '../src/contexts';
 
 const BookmarksPage = () => {
   const pageTitle = 'Bookmarks';
@@ -13,9 +12,7 @@ const BookmarksPage = () => {
       contentTitle={contentTitle}
       showShadow={false}
     >
-      <KernelsProvider>
-        <Bookmarks />
-      </KernelsProvider>
+      <Bookmarks />
     </MainLayout>
   );
 };

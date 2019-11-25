@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import MainLayout from '../../src/layouts/MainLayout';
 import KernelVersion from '../../src/components/KernelVersion';
-import { KernelsProvider } from '../../src/contexts';
 
 const KernelVersionPage = ({ version }) => {
   const pageTitle = `Get Kernel ${version}`;
@@ -10,9 +9,7 @@ const KernelVersionPage = ({ version }) => {
 
   return (
     <MainLayout pageTitle={pageTitle} contentTitle={contentTitle}>
-      <KernelsProvider>
-        <KernelVersion version={version} />
-      </KernelsProvider>
+      <KernelVersion version={version} />
     </MainLayout>
   );
 };
