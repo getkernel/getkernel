@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import MainLayout from '../../src/layouts/MainLayout';
 import { KernelsProvider } from '../../src/contexts';
-import BookmarkUtils from '../../src/utils/BookmarkUtils';
 import BookmarksSaved from '../../src/components/BookmarksSaved';
+import BookmarkUtils from '../../src/utils/BookmarkUtils';
 
 const SavedBookmarksPage = ({ bookmarks }) => {
   const pageTitle = 'Saved Bookmarks';
