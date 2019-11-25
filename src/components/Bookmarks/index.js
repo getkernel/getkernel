@@ -1,17 +1,12 @@
 /**
  * Bookmarks component.
  */
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
+import Link from 'next/link';
+import { GlobalContext } from '../../contexts';
 import PageContent from '../PageContent';
-import KernelListItem from '../KernelListItem';
-import {
-  GlobalContext,
-  GlobalDispatchContext,
-  KernelsContext,
-} from '../../contexts';
-import { addBookmark, removeBookmark, showSnackbar } from '../../actions';
+import BookmarksList from '../BookmarksList';
 import BookmarkUtils from '../../utils/BookmarkUtils';
 import styles from './styles';
 
@@ -21,44 +16,23 @@ const Bookmarks = () => {
   const classes = useStyles();
 
   const { bookmarks } = useContext(GlobalContext);
-  const {
-    index: { entries },
-  } = useContext(KernelsContext);
-  const globalDispatch = useContext(GlobalDispatchContext);
 
-  const encoded = BookmarkUtils.encode(bookmarks);
+  const [encoded, setEncoded] = useState('');
 
-  const bookmarkedEntries = entries.filter(({ version_slug }) =>
-    bookmarks.includes(version_slug)
-  );
-
-  const handleAddBookmark = (versionStr) => {
-    globalDispatch(addBookmark(versionStr));
-    globalDispatch(showSnackbar(`${versionStr} added to bookmarks.`));
-  };
-
-  const handleRemoveBookmark = (versionStr) => {
-    globalDispatch(removeBookmark(versionStr));
-    globalDispatch(showSnackbar(`${versionStr} removed from bookmarks.`));
-  };
+  useEffect(() => {
+    const newEncoded = BookmarkUtils.encode(bookmarks);
+    setEncoded(newEncoded);
+  }, [bookmarks]);
 
   return (
     <div className={classes.root}>
       <PageContent>
         <p>
-          <code>https://getkernel.sh/b/{encoded}</code>
+          <Link href="/b/[encoded]" as={`/b/${encoded}`}>
+            <a>https://getkernel.sh/b/{encoded}</a>
+          </Link>
         </p>
-        <Grid container spacing={3}>
-          {bookmarkedEntries.map((entry) => (
-            <KernelListItem
-              key={entry.version_slug}
-              {...entry}
-              bookmarks={bookmarks}
-              handleAddBookmark={handleAddBookmark}
-              handleRemoveBookmark={handleRemoveBookmark}
-            />
-          ))}
-        </Grid>
+        <BookmarksList bookmarks={bookmarks} />
       </PageContent>
     </div>
   );

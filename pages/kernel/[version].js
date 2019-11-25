@@ -1,14 +1,10 @@
 import React from 'react';
-import { useRouter } from 'next/router';
+import PropTypes from 'prop-types';
 import MainLayout from '../../src/layouts/MainLayout';
 import KernelVersion from '../../src/components/KernelVersion';
 import { KernelsProvider } from '../../src/contexts';
 
-const KernelVersionPage = (props) => {
-  const {
-    query: { version },
-  } = useRouter();
-
+const KernelVersionPage = ({ version }) => {
   const pageTitle = `Get Kernel ${version}`;
   const contentTitle = `${version} Mainline Build`;
 
@@ -19,6 +15,18 @@ const KernelVersionPage = (props) => {
       </KernelsProvider>
     </MainLayout>
   );
+};
+
+KernelVersionPage.getInitialProps = (context) => {
+  const {
+    query: { version },
+  } = context;
+
+  return { version };
+};
+
+KernelVersionPage.propTypes = {
+  version: PropTypes.string.isRequired,
 };
 
 export default KernelVersionPage;
