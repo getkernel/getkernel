@@ -3,6 +3,7 @@
  */
 import React, { useContext, useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
@@ -22,6 +23,7 @@ const useStyles = makeStyles(styles);
 
 const Bookmarks = () => {
   const classes = useStyles();
+  const router = useRouter();
 
   const { bookmarks } = useContext(GlobalContext);
   const globalDispatch = useContext(GlobalDispatchContext);
@@ -29,6 +31,9 @@ const Bookmarks = () => {
   const [encoded, setEncoded] = useState('');
 
   useEffect(() => {
+    if (!bookmarks.length) {
+      router.push('/');
+    }
     const newEncoded = BookmarkUtils.encode(bookmarks);
     setEncoded(newEncoded);
   }, [bookmarks]);

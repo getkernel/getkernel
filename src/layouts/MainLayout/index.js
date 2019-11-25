@@ -59,7 +59,11 @@ const MainLayout = ({ children, pageTitle, contentTitle, showShadow }) => {
         text: 'Bookmarks',
         icon: <BookmarksIcon />,
         chip: bookmarks.length || null,
-        handler: () => Router.push('/bookmarks'),
+        handler: () => {
+          if (bookmarks.length) {
+            Router.push('/bookmarks');
+          }
+        },
       },
     ],
     [
