@@ -1,5 +1,6 @@
 /**
  * KernelListItem component.
+ * Rendered by KernelList.
  */
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
@@ -20,14 +21,7 @@ import styles from './styles';
 
 const useStyles = makeStyles(styles);
 
-const KernelListItem = ({
-  version_name,
-  version_slug,
-  last_modified,
-  bookmarks,
-  handleAddBookmark,
-  handleRemoveBookmark,
-}) => {
+const KernelListItem = ({ version_name, version_slug, last_modified }) => {
   const classes = useStyles();
 
   const version = new Version(version_slug);
@@ -84,12 +78,7 @@ const KernelListItem = ({
           </CardActionArea>
         </Link>
         <CardActions disableSpacing className={classes.actions}>
-          <BookmarkToggle
-            bookmarks={bookmarks}
-            version={version}
-            handleAddBookmark={handleAddBookmark}
-            handleRemoveBookmark={handleRemoveBookmark}
-          />
+          <BookmarkToggle version={version} />
           <div>
             {chips &&
               chips.map(({ label, title, color }) => (
@@ -109,8 +98,6 @@ const KernelListItem = ({
   );
 };
 
-KernelListItem.propTypes = {
-  bookmarks: PropTypes.array,
-};
+KernelListItem.propTypes = {};
 
 export default memo(KernelListItem);

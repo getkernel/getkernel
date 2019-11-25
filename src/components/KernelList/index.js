@@ -8,13 +8,8 @@ import PageContent from '../PageContent';
 import LoadingIndicator from '../LoadingIndicator';
 import KernelListToolbar from '../KernelListToolbar';
 import KernelListItem from '../KernelListItem';
-import {
-  GlobalContext,
-  KernelsContext,
-  FiltersContext,
-  GlobalDispatchContext,
-} from '../../contexts';
-import { addBookmark, removeBookmark, showSnackbar } from '../../actions';
+import { KernelsContext, FiltersContext } from '../../contexts';
+
 import { versionsFilter, releaseTypeFilter } from '../../selectors';
 import styles from './styles';
 
@@ -22,9 +17,6 @@ const useStyles = makeStyles(styles);
 
 const KernelList = () => {
   const classes = useStyles();
-
-  const { bookmarks } = useContext(GlobalContext);
-  const globalDispatch = useContext(GlobalDispatchContext);
 
   const {
     index: { entries },
@@ -46,29 +38,13 @@ const KernelList = () => {
     );
   }
 
-  const handleAddBookmark = (versionStr) => {
-    globalDispatch(addBookmark(versionStr));
-    globalDispatch(showSnackbar(`${versionStr} added to bookmarks.`));
-  };
-
-  const handleRemoveBookmark = (versionStr) => {
-    globalDispatch(removeBookmark(versionStr));
-    globalDispatch(showSnackbar(`${versionStr} removed from bookmarks.`));
-  };
-
   return (
     <div className={classes.root}>
       <KernelListToolbar />
       <PageContent>
         <Grid container spacing={3}>
           {filteredEntries.map((entry) => (
-            <KernelListItem
-              key={entry.version_slug}
-              {...entry}
-              bookmarks={bookmarks}
-              handleAddBookmark={handleAddBookmark}
-              handleRemoveBookmark={handleRemoveBookmark}
-            />
+            <KernelListItem key={entry.version_slug} {...entry} />
           ))}
         </Grid>
       </PageContent>

@@ -15,6 +15,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import Scroll from 'react-scroll';
 import PageContent from '../PageContent';
 import {
+  GlobalContext,
   KernelsContext,
   KernelsDispatchContext,
   GlobalDispatchContext,
@@ -22,6 +23,8 @@ import {
 import { addKernelData, showWebViewer } from '../../actions';
 import LoadingIndicator from '../LoadingIndicator';
 import PlatformListItem from '../PlatformListItem';
+import BookmarkToggle from '../BookmarkToggle';
+import Version from '../../models/Version';
 import styles from './styles';
 import appConfig from '../../app.config';
 
@@ -30,11 +33,14 @@ const useStyles = makeStyles(styles);
 const KernelVersion = ({ version }) => {
   const classes = useStyles();
 
+  const { bookmarks } = useContext(GlobalContext);
   const { kernels } = useContext(KernelsContext);
   const kernelsDispatch = useContext(KernelsDispatchContext);
   const globalDispatch = useContext(GlobalDispatchContext);
 
   const [selectedKernel, setSelectedKernel] = useState({});
+
+  const versionObj = new Version(version);
 
   useEffect(() => {
     const getKernelData = async () => {
@@ -118,6 +124,7 @@ const KernelVersion = ({ version }) => {
                 {text}
               </Button>
             ))}
+            <BookmarkToggle version={versionObj} size="medium" />
           </div>
         </Toolbar>
       </AppBar>
