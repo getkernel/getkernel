@@ -73,7 +73,7 @@ const BookmarkToggle = ({ version, size }) => {
 
 BookmarkToggle.propTypes = {
   version: PropTypes.object.isRequired,
-  size: PropTypes.oneOf('small', 'medium'),
+  size: PropTypes.oneOf(['small', 'medium']),
 };
 
 export default memo(BookmarkToggle);
