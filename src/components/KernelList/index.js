@@ -10,7 +10,7 @@ import KernelListToolbar from '../KernelListToolbar';
 import KernelListItem from '../KernelListItem';
 import { KernelsContext, FiltersContext } from '../../contexts';
 import { versionsFilter, releaseTypeFilter } from '../../selectors';
-import Version from '../../models/Version';
+import ServerIndexObject from '../../models/ServerIndexObject';
 import styles from './styles';
 
 const useStyles = makeStyles(styles);
@@ -28,10 +28,7 @@ const KernelList = () => {
   const filteredVersions = useMemo(
     () =>
       entries
-        .map(
-          ({ version_name, last_modified }) =>
-            new Version(version_name, last_modified),
-        )
+        .map((entry) => ServerIndexObject.parseObj(entry).toVersion())
         .filter(versionsFilter(selectedVersions))
         .filter(releaseTypeFilter(releaseType)),
     [entries, selectedVersions, releaseType],

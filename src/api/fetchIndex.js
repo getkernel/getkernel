@@ -1,5 +1,6 @@
 import fetch from 'isomorphic-unfetch';
 import cheerio from 'cheerio';
+import ServerIndexObject from '../models/ServerIndexObject';
 import Compare from '../utils/Compare';
 import { BASE_URL } from '../constants';
 
@@ -45,15 +46,12 @@ const fetchIndex = async () => {
 
         if (versionSlug.includes('~kernel-ppa')) return true;
 
-        return entries.push({
-          version_name: versionName,
-          last_modified: lastModified,
-        });
+        return entries.push(new ServerIndexObject(versionName, lastModified));
       });
 
     // Sort data by date - descending order
     entries.sort((a, b) =>
-      Compare.date('desc')(a.last_modified, b.last_modified),
+      Compare.date('desc')(a.lastModified, b.lastModified),
     );
 
     result.data.entries = entries;

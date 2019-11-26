@@ -12,8 +12,8 @@ export default (state, action) => {
     case 'SET_AVAILABLE_VERSIONS_FILTER': {
       const availableVersions = [];
       const versions = action.data.entries
-        .filter(({ version_name }) => version_name.startsWith('v'))
-        .map(({ version_name }) => new Version(version_name));
+        .filter(({ versionName }) => versionName.startsWith('v'))
+        .map(({ versionName }) => new Version(versionName));
 
       versions.forEach((version) => {
         if (!availableVersions.some(({ major }) => major === version.major)) {

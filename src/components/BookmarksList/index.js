@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import KernelListItem from '../KernelListItem';
 import { KernelsContext } from '../../contexts';
-import Version from '../../models/Version';
+import ServerIndexObject from '../../models/ServerIndexObject';
 
 const BookmarksList = ({ bookmarks }) => {
   const {
@@ -15,11 +15,8 @@ const BookmarksList = ({ bookmarks }) => {
 
   const bookmarkedVersions = useMemo(() => {
     return entries
-      .filter(({ version_name }) => bookmarks.includes(version_name))
-      .map(
-        ({ version_name, last_modified }) =>
-          new Version(version_name, last_modified),
-      );
+      .filter(({ versionName }) => bookmarks.includes(versionName))
+      .map((entry) => ServerIndexObject.parseObj(entry).toVersion());
   }, [bookmarks, entries]);
 
   return (
