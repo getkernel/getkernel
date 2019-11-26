@@ -2,7 +2,7 @@
  * MainActions component.
  * Rendered by PlatformListItem.
  */
-import React, { useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -17,11 +17,9 @@ import { GlobalContext, GlobalDispatchContext } from '../../../contexts';
 import { showAlert } from '../../../actions';
 import {
   buildChecksums,
-  buildVariants,
   batchDownload,
   calculateDownloadSize,
 } from '../../../utils';
-import { BUILD_VARIANT_ALL } from '../../../constants';
 import styles from './styles';
 
 const useStyles = makeStyles(styles);
@@ -31,20 +29,15 @@ const MainActions = ({
   baseUrl,
   platform,
   buildStatus,
-  binaries,
+  variants,
   checkedBinaries,
   selectedVariant,
   onVariantChange,
 }) => {
   const classes = useStyles();
-  const variants = [...buildVariants(binaries), BUILD_VARIANT_ALL];
 
   const { alert, doNotAskList } = useContext(GlobalContext);
   const globalDispatch = useContext(GlobalDispatchContext);
-
-  useEffect(() => {
-    onVariantChange(variants[0]);
-  }, [onVariantChange, variants]);
 
   const handleVariantChange = (event, value) => {
     onVariantChange(value);
@@ -164,7 +157,7 @@ MainActions.propTypes = {
   baseUrl: PropTypes.string.isRequired,
   platform: PropTypes.string.isRequired,
   buildStatus: PropTypes.bool.isRequired,
-  binaries: PropTypes.array.isRequired,
+  variants: PropTypes.array.isRequired,
   checkedBinaries: PropTypes.array.isRequired,
   selectedVariant: PropTypes.string,
   onVariantChange: PropTypes.func.isRequired,

@@ -55,7 +55,7 @@ const BinaryList = ({
     });
     setCheckedBinaryIndices(newChecked);
     onBinaryIndicesChange(newChecked);
-  }, [binaries, onBinaryIndicesChange, selectedVariant]);
+  }, [binaries, selectedVariant]);
 
   const handleToggleChecked = (value) => {
     const currentIndex = checkedBinaryIndices.indexOf(value);

@@ -2,7 +2,7 @@
  * PlatformListItem component.
  * Rendered by KernelVersion.
  */
-import React, { useState, memo } from 'react';
+import React, { useState, useMemo, memo } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
@@ -18,6 +18,8 @@ import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
 import BinaryList from './BinaryList';
 import MainActions from './MainActions';
+import { buildVariants } from '../../utils';
+import { BUILD_VARIANT_ALL } from '../../constants';
 import styles from './styles';
 
 const useStyles = makeStyles(styles);
@@ -33,7 +35,11 @@ const PlatformListItem = ({
 }) => {
   const classes = useStyles();
 
-  const [selectedVariant, setSelectedVariant] = useState('');
+  const variants = useMemo(() => {
+    return [...buildVariants(binaries), BUILD_VARIANT_ALL];
+  }, [binaries]);
+
+  const [selectedVariant, setSelectedVariant] = useState(variants[0]);
   const [checkedBinaries, setCheckedBinaries] = useState([]);
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
 
@@ -105,7 +111,7 @@ const PlatformListItem = ({
             baseUrl={baseUrl}
             platform={platform}
             buildStatus={buildStatus}
-            binaries={binaries}
+            variants={variants}
             checkedBinaries={checkedBinaries}
             selectedVariant={selectedVariant}
             onVariantChange={handleVariantChange}
