@@ -1,10 +1,6 @@
+import Version from '../models/Version';
+
 export default (versionFilters) => ({ version_slug }) => {
-  const [major, minor] = version_slug.split('.');
-  let majorMinorString;
-  if (minor && minor.includes('-')) {
-    majorMinorString = `${major}.${minor.split('-')[0]}`;
-  } else {
-    majorMinorString = `${major}.${minor}`;
-  }
-  return versionFilters.includes(majorMinorString);
+  const version = new Version(version_slug);
+  return versionFilters.includes(version.toShortString());
 };
