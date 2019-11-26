@@ -22,7 +22,7 @@ const SearchField = ({ entries }) => {
   const options = useMemo(
     () =>
       entries
-        .map(({ version_slug }) => version_slug)
+        .map(({ versionName }) => versionName)
         .sort(Compare.string('desc')),
     [entries],
   );
