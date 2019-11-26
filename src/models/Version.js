@@ -34,8 +34,8 @@ export default class Version {
     }
 
     return {
-      major: Number(major),
-      minor: Number(minor),
+      major: major && Number(major),
+      minor: minor && Number(minor),
       build: build && Number(build),
       patch: patch && Number(patch),
       extra: extra && Number(extra),
@@ -74,6 +74,10 @@ export default class Version {
 
   get ckt() {
     return this._rc;
+  }
+
+  get error() {
+    return this._error;
   }
 
   /* eslint-enable no-underscore-dangle, one-var-declaration-per-line, one-var */
