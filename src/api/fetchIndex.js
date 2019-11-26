@@ -47,7 +47,6 @@ const fetchIndex = async () => {
 
         return entries.push({
           version_name: versionName,
-          version_slug: versionSlug,
           last_modified: lastModified,
         });
       });

@@ -5,7 +5,6 @@
 import React, { useMemo, memo } from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
-import moment from 'moment';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
@@ -20,13 +19,12 @@ import styles from './styles';
 
 const useStyles = makeStyles(styles);
 
-const KernelListItem = ({ version_name, version_slug, last_modified }) => {
+const KernelListItem = ({ version }) => {
   const classes = useStyles();
 
-  const version = new Version(version_slug);
-
-  const dateFriendly = moment(last_modified).format('L');
-  const timeFriendly = moment(last_modified).format('LT');
+  const versionStr = version.toString();
+  const dateFriendly = version.toFormattedLastModified('L');
+  const timeFriendly = version.toFormattedLastModified('LT');
 
   const chips = useMemo(() => {
     const array = [];
@@ -55,8 +53,8 @@ const KernelListItem = ({ version_name, version_slug, last_modified }) => {
   return (
     <Grid item xs={6} md={4} lg={3} xl={2}>
       <Card>
-        <Link href="/kernel/[version]" as={`/kernel/${version_slug}`}>
-          <CardActionArea title={version_name}>
+        <Link href="/kernel/[version]" as={`/kernel/${versionStr}`}>
+          <CardActionArea title={versionStr}>
             <div className={classes.card}>
               <div className={classes.details}>
                 <CardContent className={classes.topArea}>
@@ -79,7 +77,7 @@ const KernelListItem = ({ version_name, version_slug, last_modified }) => {
               <div className={classes.cover}>
                 <img
                   src="/images/deb.svg"
-                  title={version_name}
+                  title={versionStr}
                   alt="deb package"
                 />
               </div>
@@ -108,9 +106,7 @@ const KernelListItem = ({ version_name, version_slug, last_modified }) => {
 };
 
 KernelListItem.propTypes = {
-  version_name: PropTypes.string.isRequired,
-  version_slug: PropTypes.string.isRequired,
-  last_modified: PropTypes.string.isRequired,
+  version: PropTypes.instanceOf(Version).isRequired,
 };
 
 export default memo(KernelListItem);

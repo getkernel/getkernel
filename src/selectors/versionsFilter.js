@@ -1,6 +1,3 @@
-import Version from '../models/Version';
-
-export default (versionFilters) => ({ version_slug }) => {
-  const version = new Version(version_slug);
+export default (versionFilters) => (version) => {
   return versionFilters.includes(version.toShortString());
 };

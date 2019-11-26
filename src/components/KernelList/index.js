@@ -10,6 +10,7 @@ import KernelListToolbar from '../KernelListToolbar';
 import KernelListItem from '../KernelListItem';
 import { KernelsContext, FiltersContext } from '../../contexts';
 import { versionsFilter, releaseTypeFilter } from '../../selectors';
+import Version from '../../models/Version';
 import styles from './styles';
 
 const useStyles = makeStyles(styles);
@@ -24,15 +25,19 @@ const KernelList = () => {
     FiltersContext,
   );
 
-  const filteredEntries = useMemo(
+  const filteredVersions = useMemo(
     () =>
       entries
+        .map(
+          ({ version_name, last_modified }) =>
+            new Version(version_name, last_modified),
+        )
         .filter(versionsFilter(selectedVersions))
         .filter(releaseTypeFilter(releaseType)),
     [entries, selectedVersions, releaseType],
   );
 
-  if (!(filtersSet && filteredEntries.length)) {
+  if (!(filtersSet && filteredVersions.length)) {
     return (
       <div className={classes.root}>
         <KernelListToolbar />
@@ -46,8 +51,8 @@ const KernelList = () => {
       <KernelListToolbar />
       <PageContent>
         <Grid container spacing={3}>
-          {filteredEntries.map((entry) => (
-            <KernelListItem key={entry.version_slug} {...entry} />
+          {filteredVersions.map((version) => (
+            <KernelListItem key={version.toString()} version={version} />
           ))}
         </Grid>
       </PageContent>

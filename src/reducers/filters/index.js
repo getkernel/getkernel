@@ -12,8 +12,8 @@ export default (state, action) => {
     case 'SET_AVAILABLE_VERSIONS_FILTER': {
       const availableVersions = [];
       const versions = action.data.entries
-        .filter(({ version_slug }) => version_slug.startsWith('v'))
-        .map(({ version_slug }) => new Version(version_slug));
+        .filter(({ version_name }) => version_name.startsWith('v'))
+        .map(({ version_name }) => new Version(version_name));
 
       versions.forEach((version) => {
         if (!availableVersions.some(({ major }) => major === version.major)) {
@@ -30,7 +30,9 @@ export default (state, action) => {
       });
 
       // Sort by major in descending order.
-      availableVersions.sort(Compare.prop('major', 'desc'));
+      availableVersions.sort((a, b) =>
+        Compare.string('desc')(a.major, b.major),
+      );
 
       return {
         ...state,
