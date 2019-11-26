@@ -1,4 +1,5 @@
 module.exports = {
+  parser: 'babel-eslint',
   env: {
     browser: true,
     es6: true,
@@ -35,6 +36,8 @@ module.exports = {
     'react-hooks/exhaustive-deps': 'warn',
     'react/jsx-filename-extension': 'off',
     'react/jsx-props-no-spreading': 'off',
+    'react/forbid-prop-types': 'off',
+    'react/static-property-placement': ['warn'],
     camelcase: 'off',
   },
 };
