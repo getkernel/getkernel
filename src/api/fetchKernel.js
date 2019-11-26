@@ -1,23 +1,16 @@
 import fetch from 'isomorphic-unfetch';
 import cheerio from 'cheerio';
 import Compare from '../utils/Compare';
+import ApiResponseKernel from '../models/ApiResponseKernel';
 import { BASE_URL } from '../constants';
 
 const fetchVersion = async (version) => {
-  const versionStr = version.includes('v') ? version : `v${version}`;
-  const kernelBaseUrl = `${BASE_URL}/${versionStr}`;
+  const versionStr = version.toLowerCase().startsWith('v')
+    ? version
+    : `v${version}`;
+  const baseUrl = `${BASE_URL}/${versionStr}`;
 
-  const result = {
-    success: true,
-    data: {
-      version: versionStr,
-      base_url: `${kernelBaseUrl}/`,
-      changes: `${kernelBaseUrl}/CHANGES`,
-      checksums: `${kernelBaseUrl}/CHECKSUMS`,
-      gpg_key: `${kernelBaseUrl}/CHECKSUMS.gpg`,
-      files: [],
-    },
-  };
+  const apiResponse = new ApiResponseKernel(baseUrl, versionStr);
 
   const files = {};
   let builtInfo = [];
@@ -25,12 +18,12 @@ const fetchVersion = async (version) => {
 
   try {
     // Fetch main html file.
-    const resMain = await fetch(kernelBaseUrl);
+    const resMain = await fetch(baseUrl);
     const bodyMain = await resMain.text();
     const $_main = cheerio.load(bodyMain);
 
     // Fetch and parse BUILT file.
-    const resBuilt = await fetch(`${kernelBaseUrl}/BUILT`);
+    const resBuilt = await fetch(`${baseUrl}/BUILT`);
     const bodyBuilt = await resBuilt.text();
     builtInfo = bodyBuilt
       .split('\n')
@@ -46,7 +39,7 @@ const fetchVersion = async (version) => {
       });
 
     // Fetch and parse CHECKSUMS file.
-    const resChecksums = await fetch(`${kernelBaseUrl}/CHECKSUMS`);
+    const resChecksums = await fetch(`${baseUrl}/CHECKSUMS`);
     const bodyChecksums = await resChecksums.text();
     checksums = bodyChecksums
       .split('\n')
@@ -88,9 +81,9 @@ const fetchVersion = async (version) => {
         }
 
         return files[platform].push({
-          file_name: fileName,
-          file_size: fileSize,
-          last_modified: lastModified,
+          fileName,
+          fileSize,
+          lastModified,
         });
       });
 
@@ -105,14 +98,14 @@ const fetchVersion = async (version) => {
           .filter(({ platform }) => platform !== 'all')
           .sort((a, b) => Compare.string()(a.platform, b.platform));
 
-    result.data.files = platforms.map(({ platform, status }) => {
+    platforms.forEach(({ platform, status }) => {
       const platformFiles = [...files.all, ...(files[platform] || [])];
 
       // Build binaries array with checksums.
       const binaries = platformFiles
         .map((file) => {
           const [sha1, sha256] = checksums.filter(
-            (c) => c.file === file.file_name,
+            (c) => c.file === file.fileName,
           );
 
           if (!(sha1 && sha256)) {
@@ -127,28 +120,19 @@ const fetchVersion = async (version) => {
             sha256: sha256.sum,
           };
         })
-        .sort((a, b) =>
-          Compare.string('asc', '_all')(a.file_name, b.file_name),
-        );
+        .sort((a, b) => Compare.string('asc', '_all')(a.fileName, b.fileName));
 
-      return {
-        platform,
-        build_status: status,
-        binaries,
-        log: `BUILD.LOG.${platform}`,
-      };
+      return apiResponse.addBuildData(platform, status, binaries);
     });
 
-    if (!result.data.files.length) {
-      throw new Error('Unable to fetch data');
+    if (!apiResponse.isDataAvailable()) {
+      apiResponse.setFailed('Unable to fetch data', 400);
     }
   } catch (error) {
-    result.success = false;
-    result.error = error.message;
-    result.data = null;
+    apiResponse.setFailed(error.message);
   }
 
-  return result;
+  return apiResponse;
 };
 
 export default fetchVersion;
