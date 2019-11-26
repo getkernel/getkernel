@@ -1,7 +1,7 @@
 import fetch from 'isomorphic-unfetch';
 import cheerio from 'cheerio';
-import moment from 'moment';
-import { BASE_URL, SERVER_DATE_FORMAT } from '../constants';
+import Compare from '../utils/Compare';
+import { BASE_URL } from '../constants';
 
 const fetchIndex = async () => {
   const result = {
@@ -11,6 +11,8 @@ const fetchIndex = async () => {
       entries: [],
     },
   };
+
+  const entries = [];
 
   try {
     const response = await fetch(BASE_URL);
@@ -43,15 +45,19 @@ const fetchIndex = async () => {
 
         if (versionSlug.includes('~kernel-ppa')) return true;
 
-        return result.data.entries.push({
+        return entries.push({
           version_name: versionName,
           version_slug: versionSlug,
-          last_modified: moment(lastModified, SERVER_DATE_FORMAT),
+          last_modified: lastModified,
         });
       });
 
     // Sort data by date - descending order
-    result.data.entries.sort((a, b) => b.last_modified - a.last_modified);
+    entries.sort((a, b) =>
+      Compare.date('desc')(a.last_modified, b.last_modified),
+    );
+
+    result.data.entries = entries;
   } catch (error) {
     result.success = false;
     result.error = error.message;

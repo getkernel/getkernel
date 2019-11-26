@@ -1,8 +1,7 @@
 import fetch from 'isomorphic-unfetch';
 import cheerio from 'cheerio';
-import moment from 'moment';
 import Compare from '../utils/Compare';
-import { BASE_URL, SERVER_DATE_FORMAT } from '../constants';
+import { BASE_URL } from '../constants';
 
 const fetchVersion = async (version) => {
   const versionStr = version.includes('v') ? version : `v${version}`;
@@ -91,7 +90,7 @@ const fetchVersion = async (version) => {
         return files[platform].push({
           file_name: fileName,
           file_size: fileSize,
-          last_modified: moment(lastModified, SERVER_DATE_FORMAT),
+          last_modified: lastModified,
         });
       });
 
@@ -104,7 +103,7 @@ const fetchVersion = async (version) => {
             status: true,
           }))
           .filter(({ platform }) => platform !== 'all')
-          .sort(Compare.prop('platform'));
+          .sort((a, b) => Compare.string()(a.platform, b.platform));
 
     result.data.files = platforms.map(({ platform, status }) => {
       const platformFiles = [...files.all, ...(files[platform] || [])];
@@ -128,7 +127,9 @@ const fetchVersion = async (version) => {
             sha256: sha256.sum,
           };
         })
-        .sort(Compare.prop('file_name', 'asc', '_all'));
+        .sort((a, b) =>
+          Compare.string('asc', '_all')(a.file_name, b.file_name),
+        );
 
       return {
         platform,
