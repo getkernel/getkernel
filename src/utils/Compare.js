@@ -1,11 +1,12 @@
+import moment from 'moment';
+
 /**
  * Utility methods for sorting arrays of data.
  */
 export default class Compare {
   /**
    * String compare function.
-   * @param {String} order Compare order (asc|desc).
-   * asc by default.
+   * @param {String} order Compare order (asc|desc). asc by default.
    * @param {String} alwaysOnTop Item to keep on top of the list.
    */
   static string(order = 'asc', alwaysOnTop = null) {
@@ -33,21 +34,8 @@ export default class Compare {
   }
 
   /**
-   * Sorts objects by property name.
-   * @param {String} propName Property name to sort by.
-   * @param {String} order Compare order (asc|desc).
-   * asc by default.
-   * @param {String} alwaysOnTop Item to keep on top of the list.
-   */
-  static prop(propName, order = 'asc', alwaysOnTop = null) {
-    return (a, b) =>
-      Compare.string(order, alwaysOnTop)(a[propName], b[propName]);
-  }
-
-  /**
    * Comperator function for sorting Version objects.
-   * @param {String} order Compare order (asc|desc).
-   * asc by default.
+   * @param {String} order Compare order (asc|desc). asc by default.
    */
   static version(order = 'asc') {
     const props = ['major', 'minor', 'build', 'patch', 'extra', 'rc', 'distro'];
@@ -61,8 +49,7 @@ export default class Compare {
             if (typeof a === 'number' && typeof b === 'number') {
               if (a > b) return 1;
               if (a < b) return -1;
-              // eslint-disable-next-line no-continue
-              continue;
+              continue; // eslint-disable-line no-continue
             } else {
               return Compare.string(order)(a, b);
             }
@@ -77,6 +64,22 @@ export default class Compare {
       },
     };
 
+    return (a, b) => sort[order](a, b);
+  }
+
+  /**
+   * Comperator function for date objects.
+   * @param {String} order Compare order (asc|desc). asc by default.
+   */
+  static date(order = 'asc') {
+    const sort = {
+      asc(a, b) {
+        return moment(a) - moment(b);
+      },
+      desc(a, b) {
+        return sort.asc(b, a);
+      },
+    };
     return (a, b) => sort[order](a, b);
   }
 }
