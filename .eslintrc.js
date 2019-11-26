@@ -34,10 +34,11 @@ module.exports = {
     ],
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
+    'react/static-property-placement': ['warn'],
     'react/jsx-filename-extension': 'off',
     'react/jsx-props-no-spreading': 'off',
     'react/forbid-prop-types': 'off',
-    'react/static-property-placement': ['warn'],
+    'react/jsx-fragments': 'off',
     camelcase: 'off',
   },
 };

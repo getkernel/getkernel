@@ -1,7 +1,7 @@
 /**
  * MainLayout component.
  */
-import React, { useContext } from 'react';
+import React, { Fragment, useContext } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import Router from 'next/router';
@@ -61,7 +61,7 @@ const MainLayout = ({ children, pageTitle, contentTitle, showShadow }) => {
   };
 
   return (
-    <>
+    <Fragment>
       <DocumentHead pageTitle={pageTitle} />
       <InitApp />
       <div className={classes.root}>
@@ -138,18 +138,19 @@ const MainLayout = ({ children, pageTitle, contentTitle, showShadow }) => {
       <AlertDialog />
       <GlobalSnackbar />
       <WebViewerDialog />
-    </>
+    </Fragment>
   );
 };
 
 MainLayout.defaultProps = {
+  pageTitle: '',
   contentTitle: 'Available Kernels',
   showShadow: true,
 };
 
 MainLayout.propTypes = {
   children: PropTypes.any.isRequired,
-  pageTitle: PropTypes.string.isRequired,
+  pageTitle: PropTypes.string,
   contentTitle: PropTypes.string,
   showShadow: PropTypes.bool,
 };

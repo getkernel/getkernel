@@ -15,7 +15,7 @@ const PageContent = ({ children }) => {
 };
 
 PageContent.propTypes = {
-  children: PropTypes.object.isRequired,
+  children: PropTypes.node.isRequired,
 };
 
 export default PageContent;
