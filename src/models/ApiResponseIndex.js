@@ -3,17 +3,17 @@ import ServerIndexObject from './ServerIndexObject';
 import Compare from '../utils/Compare';
 
 /**
- * Reponse object for index items.
+ * Response class for index items.
  */
 export default class ApiResponseIndex extends ApiResponseBase {
   /**
    * Creates an API response object.
+   * @param {String} baseUrl The url that response was originated from
    * @param {String} statusCode HTTP status code
    * @param {Boolean} success Successful or not
-   * @param {String} baseUrl The url that response was originated from
    */
-  constructor(statusCode, success, baseUrl) {
-    super(statusCode, success, baseUrl);
+  constructor(baseUrl, statusCode, success) {
+    super(baseUrl, statusCode, success);
     this.data.entries = [];
   }
 

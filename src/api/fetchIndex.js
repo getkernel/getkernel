@@ -4,8 +4,7 @@ import ApiResponseIndex from '../models/ApiResponseIndex';
 import { BASE_URL } from '../constants';
 
 const fetchIndex = async () => {
-  const apiResponse = new ApiResponseIndex();
-  apiResponse.baseUrl = `${BASE_URL}/`;
+  const apiResponse = new ApiResponseIndex(`${BASE_URL}/`);
 
   try {
     const response = await fetch(BASE_URL);
