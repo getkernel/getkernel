@@ -35,7 +35,6 @@ const BinaryList = ({
   useEffect(() => {
     if (!selectedVariant) {
       setCheckedBinaryIndices([]);
-      onBinaryIndicesChange([]);
       return;
     }
 
@@ -54,8 +53,11 @@ const BinaryList = ({
       }
     });
     setCheckedBinaryIndices(newChecked);
-    onBinaryIndicesChange(newChecked);
   }, [binaries, selectedVariant]);
+
+  useEffect(() => {
+    onBinaryIndicesChange(checkedBinaryIndices);
+  }, [checkedBinaryIndices]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleToggleChecked = (value) => {
     const currentIndex = checkedBinaryIndices.indexOf(value);
