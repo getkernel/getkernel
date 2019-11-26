@@ -1,3 +1,6 @@
+import moment from 'moment';
+import { SERVER_DATE_FORMAT } from '../constants';
+
 /**
  * Version class that implements static parse method and
  * overridden toString method.
@@ -6,11 +9,12 @@ export default class Version {
   /* eslint-disable no-underscore-dangle, one-var-declaration-per-line, one-var */
 
   /**
-   * Creates a Version object from a Version string
-   * @param {String} versionString
+   * Creates a Version object from a Version string.
+   * @param {String} versionString Version string
+   * @param {String} lastModified Last modified date
    */
-  constructor(versionString) {
-    const versionObj = this.constructor.parse(versionString);
+  constructor(versionString, lastModified = '') {
+    const versionObj = this.constructor.parse(versionString, lastModified);
 
     // Attach properties to the instance.
     Object.keys(versionObj).forEach((key) => {
@@ -21,16 +25,17 @@ export default class Version {
   /**
    * Parses version string into an object.
    * @param {String} versionString Version string
+   * @param {String} lastModified Last modified date
    */
-  static parse(versionString) {
+  static parse(versionString, lastModified = '') {
     const regex = /^v?(\d+)\.(\d+)(?:\.(\d+))?(?:\.(\d+))?(?:\.(\d+))?(?:-(rc\d*|ckt\d*))?(?:-(.+))?/i;
-    let major, minor, build, patch, extra, rc, distro;
+    let major, minor, build, patch, extra, rc, distro, error;
     try {
       [, major, minor, build, patch, extra, rc, distro] = versionString.match(
         regex,
       );
-    } catch (error) {
-      this._error = error.message;
+    } catch (e) {
+      error = e.message;
     }
 
     return {
@@ -41,6 +46,10 @@ export default class Version {
       extra: extra && Number(extra),
       rc,
       distro,
+      lastModified: lastModified
+        ? moment(lastModified, SERVER_DATE_FORMAT)
+        : moment(0),
+      error,
     };
   }
 
@@ -76,6 +85,10 @@ export default class Version {
     return this._rc;
   }
 
+  get lastModified() {
+    return this._lastModified;
+  }
+
   get error() {
     return this._error;
   }
@@ -96,6 +109,14 @@ export default class Version {
    */
   isCKT() {
     return !!this.rc && this.rc.toLowerCase().includes('ckt');
+  }
+
+  /**
+   * Returns formatted last modified date.
+   * @param {String} format Format string
+   */
+  toFormattedLastModified(format = 'L LT') {
+    return this.lastModified.format(format);
   }
 
   /**
