@@ -34,7 +34,7 @@ describe('models/Version', () => {
     expect(version.toString()).toBe(versionWithV);
   });
 
-  test('should create an empty Version object when no argument is passed', () => {
+  test('should create an empty Version object populating error field when no argument is passed', () => {
     const version = new Version();
     expect(version.major).toBeUndefined();
     expect(version.minor).toBeUndefined();
@@ -42,7 +42,7 @@ describe('models/Version', () => {
     expect(version.patch).toBeUndefined();
     expect(version.extra).toBeUndefined();
     expect(version.distro).toBeUndefined();
-    expect(version.error).toBeUndefined();
+    expect(version.error).toBeDefined();
     expect(version.isRC()).toBeFalsy();
     expect(version.isCKT()).toBeFalsy();
   });
