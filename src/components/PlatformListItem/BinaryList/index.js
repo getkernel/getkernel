@@ -36,24 +36,25 @@ const BinaryList = ({
     if (!selectedVariant) {
       setCheckedBinaryIndices([]);
       onBinaryIndicesChange([]);
-    } else {
-      const newChecked = [];
-      binaries.forEach(({ file_name }, index) => {
-        if (selectedVariant === BUILD_VARIANT_ALL) {
-          newChecked.push(index);
-          return;
-        }
-
-        if (
-          file_name.includes(`${selectedVariant}_`) ||
-          file_name.includes(`_${BUILD_VARIANT_ALL}`)
-        ) {
-          newChecked.push(index);
-        }
-      });
-      setCheckedBinaryIndices(newChecked);
-      onBinaryIndicesChange(newChecked);
+      return;
     }
+
+    const newChecked = [];
+    binaries.forEach(({ file_name }, index) => {
+      if (selectedVariant === BUILD_VARIANT_ALL) {
+        newChecked.push(index);
+        return;
+      }
+
+      if (
+        file_name.includes(`${selectedVariant}_`) ||
+        file_name.includes(`_${BUILD_VARIANT_ALL}`)
+      ) {
+        newChecked.push(index);
+      }
+    });
+    setCheckedBinaryIndices(newChecked);
+    onBinaryIndicesChange(newChecked);
   }, [binaries, onBinaryIndicesChange, selectedVariant]);
 
   const handleToggleChecked = (value) => {
