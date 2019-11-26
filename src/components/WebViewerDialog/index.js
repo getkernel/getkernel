@@ -3,14 +3,14 @@
  * Rendered by MainLayout.
  */
 import React, { useContext } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { useTheme } from '@material-ui/core/styles';
+
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { GlobalContext, GlobalDispatchContext } from '../../contexts';
 import { closeWebViewer, showSnackbar } from '../../actions';
@@ -40,7 +40,7 @@ const WebViewerDialog = () => {
 
   return (
     <Dialog
-      fullWidth={true}
+      fullWidth
       maxWidth="md"
       fullScreen={fullScreen}
       open={open}
@@ -54,7 +54,7 @@ const WebViewerDialog = () => {
         {title}
       </DialogTitle>
       <DialogContent classes={{ root: classes.dialogRoot }}>
-        <iframe src={url} className={classes.iframe} />
+        <iframe src={url} className={classes.iframe} title={title} />
       </DialogContent>
       <DialogActions>
         <CopyToClipboard text={url} onCopy={handleCopyLink}>

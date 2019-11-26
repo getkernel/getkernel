@@ -5,13 +5,13 @@ import Compare from '../utils/Compare';
 import { BASE_URL, SERVER_DATE_FORMAT } from '../constants';
 
 const fetchVersion = async (version) => {
-  if (!version.includes('v')) version = `v${version}`;
-  const kernelBaseUrl = `${BASE_URL}/${version}`;
+  const versionStr = version.includes('v') ? version : `v${version}`;
+  const kernelBaseUrl = `${BASE_URL}/${versionStr}`;
 
   const result = {
     success: true,
     data: {
-      version,
+      version: versionStr,
       base_url: `${kernelBaseUrl}/`,
       changes: `${kernelBaseUrl}/CHANGES`,
       checksums: `${kernelBaseUrl}/CHECKSUMS`,
@@ -88,7 +88,7 @@ const fetchVersion = async (version) => {
           files[platform] = [];
         }
 
-        files[platform].push({
+        return files[platform].push({
           file_name: fileName,
           file_size: fileSize,
           last_modified: moment(lastModified, SERVER_DATE_FORMAT),
@@ -107,13 +107,13 @@ const fetchVersion = async (version) => {
           .sort(Compare.prop('platform'));
 
     result.data.files = platforms.map(({ platform, status }) => {
-      const platformFiles = [...files['all'], ...(files[platform] || [])];
+      const platformFiles = [...files.all, ...(files[platform] || [])];
 
       // Build binaries array with checksums.
       const binaries = platformFiles
         .map((file) => {
           const [sha1, sha256] = checksums.filter(
-            (c) => c.file === file.file_name
+            (c) => c.file === file.file_name,
           );
 
           if (!(sha1 && sha256)) {

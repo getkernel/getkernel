@@ -18,11 +18,11 @@ const BookmarksList = ({ bookmarks }) => {
 
   useEffect(() => {
     const newEntries = entries.filter(({ version_slug }) =>
-      bookmarks.includes(version_slug)
+      bookmarks.includes(version_slug),
     );
 
     setBookmarkedEntries(newEntries);
-  }, [bookmarks]);
+  }, [bookmarks, entries]);
 
   const handleAddBookmark = (versionStr) => {
     globalDispatch(addBookmark(versionStr));

@@ -19,21 +19,6 @@ export const fileDownload = (url, fileName) => {
 };
 
 /**
- * Initiates batch download process.
- * @param {Array} binaries Array of binaries
- * @param {String} baseUrl Base url to prepend to file names
- */
-export const batchDownload = (binaries, baseUrl) => {
-  const items = binaries.map(({ file_name }) => {
-    return {
-      url: baseUrl + file_name,
-      fileName: file_name,
-    };
-  });
-  doBatchDownload(items);
-};
-
-/**
  * Performs batch download.
  * @param {Array} items Items to download
  */
@@ -45,6 +30,20 @@ const doBatchDownload = (items) => {
       doBatchDownload(items);
     }, appConfig.downloadInterval);
   }
+  return null;
+};
+
+/**
+ * Initiates batch download process.
+ * @param {Array} binaries Array of binaries
+ * @param {String} baseUrl Base url to prepend to file names
+ */
+export const batchDownload = (binaries, baseUrl) => {
+  const items = binaries.map(({ file_name }) => ({
+    url: baseUrl + file_name,
+    fileName: file_name,
+  }));
+  doBatchDownload(items);
 };
 
 /**
@@ -70,7 +69,7 @@ export const calculateDownloadSize = (binaries) => {
 
   const total = sizes.reduce((acc, current) => acc + current, 0);
 
-  for (let i = 0; i < Object.keys(kbBasedUnitTable).length; i++) {
+  for (let i = 0; i < Object.keys(kbBasedUnitTable).length; i += 1) {
     const unit = Object.keys(kbBasedUnitTable)[i];
     const threshold = kbBasedUnitTable[unit];
     if (total >= threshold) {

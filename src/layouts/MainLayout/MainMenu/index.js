@@ -62,6 +62,7 @@ const MainMenu = ({ bookmarks, themeIcon, handleToggleTheme }) => {
   ];
 
   return menuItems.map((menuSet, index) => (
+    // eslint-disable-next-line
     <Fragment key={`menuset-${index}`}>
       <List>
         {menuSet.map(({ text, icon: Icon, handler, chip }) => (

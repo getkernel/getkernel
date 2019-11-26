@@ -2,9 +2,9 @@ import {
   setAvailableVersionsFilter,
   setSelectedVersionsFilter,
   setReleaseType,
-} from '../filters.actions';
+} from '../filters';
 
-describe('filters.actions', () => {
+describe('actions/filters', () => {
   test('should generate available versions filter object', () => {
     const data = { entries: ['some', 'data'] };
     const action = setAvailableVersionsFilter(data);

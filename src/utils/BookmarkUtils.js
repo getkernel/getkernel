@@ -29,7 +29,7 @@ export default class BookmarkUtils {
     const bookmarksArrayStr = atob(encodedBookmarks);
     const bookmarksArray = bookmarksArrayStr.split('|');
     return bookmarksArray.map((baseVersion) =>
-      new Version(baseVersion).toString()
+      new Version(baseVersion).toString(),
     );
   }
 }

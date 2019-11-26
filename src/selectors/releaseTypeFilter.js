@@ -12,5 +12,8 @@ export default (releaseType) => ({ version_slug }) => {
 
     case 'rc':
       return version.isRC();
+
+    default:
+      return true;
   }
 };

@@ -25,7 +25,7 @@ const KernelListToolbar = () => {
   const classes = useStyles();
 
   const { availableVersions, selectedVersions, releaseType } = useContext(
-    FiltersContext
+    FiltersContext,
   );
   const filtersDispatch = useContext(FiltersDispatchContext);
 

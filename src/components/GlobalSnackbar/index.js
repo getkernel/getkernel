@@ -4,7 +4,6 @@
  */
 import React, { useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
@@ -22,7 +21,7 @@ const GlobalSnackbar = () => {
   } = useContext(GlobalContext);
   const globalDispatch = useContext(GlobalDispatchContext);
 
-  const handleClose = (event, reason) => {
+  const handleClose = () => {
     globalDispatch(closeSnackbar());
   };
 

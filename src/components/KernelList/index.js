@@ -21,14 +21,16 @@ const KernelList = () => {
     index: { entries },
   } = useContext(KernelsContext);
   const { filtersSet, selectedVersions, releaseType } = useContext(
-    FiltersContext
+    FiltersContext,
   );
 
-  const filteredEntries = useMemo(() => {
-    return entries
-      .filter(versionsFilter(selectedVersions))
-      .filter(releaseTypeFilter(releaseType));
-  }, [entries, selectedVersions, releaseType]);
+  const filteredEntries = useMemo(
+    () =>
+      entries
+        .filter(versionsFilter(selectedVersions))
+        .filter(releaseTypeFilter(releaseType)),
+    [entries, selectedVersions, releaseType],
+  );
 
   if (!(filtersSet && filteredEntries.length)) {
     return (

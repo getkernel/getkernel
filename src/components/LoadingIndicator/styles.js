@@ -1,7 +1,7 @@
 /**
  * LoadingIndicator styles.
  */
-export default (theme) => ({
+export default () => ({
   root: {
     flexGrow: 1,
   },

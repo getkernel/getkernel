@@ -94,7 +94,7 @@ export const showAlert = (
   title,
   text,
   successCallback = null,
-  dismissCallback = null
+  dismissCallback = null,
 ) => ({
   type: 'SHOW_ALERT',
   alert: {

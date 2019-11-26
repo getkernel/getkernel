@@ -43,7 +43,7 @@ const fetchIndex = async () => {
 
         if (versionSlug.includes('~kernel-ppa')) return true;
 
-        result.data.entries.push({
+        return result.data.entries.push({
           version_name: versionName,
           version_slug: versionSlug,
           last_modified: moment(lastModified, SERVER_DATE_FORMAT),

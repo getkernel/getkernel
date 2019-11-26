@@ -19,11 +19,13 @@ const useStyles = makeStyles(styles);
 const SearchField = ({ entries }) => {
   const classes = useStyles();
 
-  const options = useMemo(() => {
-    return entries
-      .map(({ version_slug }) => version_slug)
-      .sort(Compare.string('desc'));
-  }, [entries]);
+  const options = useMemo(
+    () =>
+      entries
+        .map(({ version_slug }) => version_slug)
+        .sort(Compare.string('desc')),
+    [entries],
+  );
 
   const handleOnChange = (event, value) => {
     Router.push('/kernel/[version]', `/kernel/${value}`);

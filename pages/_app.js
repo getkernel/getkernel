@@ -1,7 +1,6 @@
 import React from 'react';
 import App from 'next/app';
-import { createMuiTheme } from '@material-ui/core/styles';
-import { ThemeProvider } from '@material-ui/core/styles';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { GlobalProvider, GlobalContext, withProvider } from '../src/contexts';
 import theme from '../src/theme';

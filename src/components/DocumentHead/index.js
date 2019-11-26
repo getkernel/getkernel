@@ -17,6 +17,10 @@ const DocumentHead = ({ pageTitle }) => {
   );
 };
 
+DocumentHead.defaultProps = {
+  pageTitle: '',
+};
+
 DocumentHead.propTypes = {
   pageTitle: PropTypes.string,
 };

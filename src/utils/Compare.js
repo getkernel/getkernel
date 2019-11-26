@@ -10,7 +10,7 @@ export default class Compare {
    */
   static string(order = 'asc', alwaysOnTop = null) {
     const sort = {
-      asc: function(a, b) {
+      asc(a, b) {
         const valueA = String(a).toLowerCase();
         const valueB = String(b).toLowerCase();
 
@@ -24,7 +24,7 @@ export default class Compare {
         if (valueA < valueB) return -1;
         return 0;
       },
-      desc: function(a, b) {
+      desc(a, b) {
         return sort.asc(b, a);
       },
     };
@@ -53,14 +53,15 @@ export default class Compare {
     const props = ['major', 'minor', 'build', 'patch', 'extra', 'rc', 'distro'];
 
     const sort = {
-      asc: function(verA, verB) {
-        for (let i = 0; i < props.length; i++) {
+      asc(verA, verB) {
+        for (let i = 0; i < props.length; i += 1) {
           const a = verA[props[i]];
           const b = verB[props[i]];
           if (a && b) {
             if (typeof a === 'number' && typeof b === 'number') {
               if (a > b) return 1;
               if (a < b) return -1;
+              // eslint-disable-next-line no-continue
               continue;
             } else {
               return Compare.string(order)(a, b);
@@ -71,7 +72,7 @@ export default class Compare {
         }
         return 0;
       },
-      desc: function(verA, verB) {
+      desc(verA, verB) {
         return sort.asc(verB, verA);
       },
     };

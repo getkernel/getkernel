@@ -11,7 +11,7 @@ function atob(encodedData) {
  * @param {String} stringToEncode The binary string to encode.
  */
 function btoa(stringToEncode) {
-  var buffer;
+  let buffer;
 
   if (stringToEncode instanceof Buffer) {
     buffer = stringToEncode;

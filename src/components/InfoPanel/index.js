@@ -25,6 +25,10 @@ const InfoPanel = ({ title, text, icon: Icon, children }) => {
   );
 };
 
+InfoPanel.defaultProps = {
+  children: null,
+};
+
 InfoPanel.propTypes = {
   title: PropTypes.string.isRequired,
   text: PropTypes.string.isRequired,

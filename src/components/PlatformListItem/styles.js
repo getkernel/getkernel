@@ -3,7 +3,7 @@
  */
 import { green, red } from '@material-ui/core/colors';
 
-export default (theme) => ({
+export default () => ({
   success: {
     backgroundColor: green[400],
   },

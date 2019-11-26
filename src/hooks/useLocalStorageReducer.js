@@ -5,7 +5,7 @@ export default (key, defaultValue, reducer) => {
     let value;
     try {
       value = JSON.parse(
-        window.localStorage.getItem(key) || String(defaultValue)
+        window.localStorage.getItem(key) || String(defaultValue),
       );
     } catch (e) {
       value = defaultValue;

@@ -37,7 +37,7 @@ const Bookmarks = () => {
     }
     const newEncoded = BookmarkUtils.encode(bookmarks);
     setEncoded(newEncoded);
-  }, [bookmarks]);
+  }, [bookmarks, router]);
 
   const handleCopyLink = () => {
     globalDispatch(showSnackbar('Link copied to clipboard!'));
@@ -59,7 +59,7 @@ const Bookmarks = () => {
         >
           <div className={classes.linkArea}>
             <Link href="/b/[encoded]" as={`/b/${encoded}`}>
-              <a>{link}</a>
+              <Typography variant="body2">{link}</Typography>
             </Link>
             <Tooltip
               title="Copy link to clipboard"

@@ -24,14 +24,8 @@ const BookmarkToggle = ({ version, size }) => {
   // Disable on saved bookmarks page.
   const disableBookmark = router.pathname === '/b/[encoded]';
 
-  const handleBookmarkClick = () => {
-    const versionStr = version.toString();
-    if (isBookmarked) {
-      handleRemoveBookmark(versionStr);
-    } else {
-      handleAddBookmark(versionStr);
-    }
-  };
+  let BookmarkButtonIcon = isBookmarked ? BookmarkIcon : BookmarkBorderIcon;
+  if (disableBookmark) BookmarkButtonIcon = CheckIcon;
 
   const handleAddBookmark = (versionStr) => {
     globalDispatch(addBookmark(versionStr));
@@ -41,6 +35,15 @@ const BookmarkToggle = ({ version, size }) => {
   const handleRemoveBookmark = (versionStr) => {
     globalDispatch(removeBookmark(versionStr));
     globalDispatch(showSnackbar(`${versionStr} removed from bookmarks.`));
+  };
+
+  const handleBookmarkClick = () => {
+    const versionStr = version.toString();
+    if (isBookmarked) {
+      handleRemoveBookmark(versionStr);
+    } else {
+      handleAddBookmark(versionStr);
+    }
   };
 
   return (
@@ -53,22 +56,20 @@ const BookmarkToggle = ({ version, size }) => {
     >
       <span>
         <IconButton
-          size={size || 'small'}
+          size={size}
           onClick={handleBookmarkClick}
           aria-label="toggle bookmark"
           disabled={disableBookmark}
         >
-          {disableBookmark ? (
-            <CheckIcon />
-          ) : isBookmarked ? (
-            <BookmarkIcon />
-          ) : (
-            <BookmarkBorderIcon />
-          )}
+          <BookmarkButtonIcon />
         </IconButton>
       </span>
     </Tooltip>
   );
+};
+
+BookmarkToggle.defaultProps = {
+  size: 'small',
 };
 
 BookmarkToggle.propTypes = {

@@ -4,10 +4,11 @@ export default async (req, res) => {
   const { method } = req;
 
   switch (method) {
-    case 'GET':
+    case 'GET': {
       const results = await fetchIndex();
       res.status(200).json(results);
       break;
+    }
 
     default:
       res.setHeader('Allow', ['GET']);

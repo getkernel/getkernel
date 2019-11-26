@@ -22,21 +22,20 @@ function renderRow(props) {
 }
 
 // Adapter for react-window
-const ListboxComponent = React.forwardRef(function ListboxComponent(
-  props,
-  ref
-) {
+const ListboxComponent = React.forwardRef((props, ref) => {
   const { children, ...other } = props;
   const theme = useTheme();
   const smUp = useMediaQuery(theme.breakpoints.up('sm'));
   const itemCount = Array.isArray(children) ? children.length : 0;
   const itemSize = smUp ? 36 : 48;
 
-  const outerElementType = React.useMemo(() => {
-    return React.forwardRef((props2, ref2) => (
-      <div ref={ref2} {...props2} {...other} />
-    ));
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  const outerElementType = React.useMemo(
+    () =>
+      React.forwardRef((props2, ref2) => (
+        <div ref={ref2} {...props2} {...other} />
+      )),
+    [other],
+  ); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div ref={ref}>
@@ -62,7 +61,7 @@ const ListboxComponent = React.forwardRef(function ListboxComponent(
 });
 
 ListboxComponent.propTypes = {
-  children: PropTypes.node,
+  children: PropTypes.node.isRequired,
 };
 
 export default ListboxComponent;

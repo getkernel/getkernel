@@ -44,7 +44,7 @@ const MainActions = ({
 
   useEffect(() => {
     onVariantChange(variants[0]);
-  }, []);
+  }, [onVariantChange, variants]);
 
   const handleVariantChange = (event, value) => {
     onVariantChange(value);
@@ -57,13 +57,13 @@ const MainActions = ({
       return batchDownload(checkedBinaries, baseUrl);
     }
 
-    globalDispatch(
+    return globalDispatch(
       showAlert(
         multipleDownloadsId,
         'About to download multiple files',
         'Allow your browser to initiate multiple downloads.',
-        () => batchDownload(checkedBinaries, baseUrl)
-      )
+        () => batchDownload(checkedBinaries, baseUrl),
+      ),
     );
   };
 
@@ -71,7 +71,7 @@ const MainActions = ({
     const { fileName, text } = buildChecksums(
       checkedBinaries,
       version,
-      platform
+      platform,
     );
     const contents = new Blob([text], { type: 'text/plain;charset=utf-8"' });
     saveAs(contents, fileName);
@@ -153,6 +153,10 @@ const MainActions = ({
       </div>
     </div>
   );
+};
+
+MainActions.defaultProps = {
+  selectedVariant: '',
 };
 
 MainActions.propTypes = {

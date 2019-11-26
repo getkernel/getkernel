@@ -13,7 +13,7 @@ export default (binaries) => {
   rest.forEach(({ file_name }) => {
     const variant = file_name.substring(
       file_name.indexOf(tokenStart) + tokenStart.length + 1,
-      file_name.indexOf(tokenFinish) - 1
+      file_name.indexOf(tokenFinish) - 1,
     );
     variants.add(variant);
   });

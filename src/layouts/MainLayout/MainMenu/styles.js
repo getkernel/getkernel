@@ -1,7 +1,7 @@
 /**
  * MainMenu component styles.
  */
-export default (theme) => ({
+export default () => ({
   listItemText: {
     width: '100%',
     display: 'flex',

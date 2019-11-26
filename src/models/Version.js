@@ -3,6 +3,8 @@
  * overridden toString method.
  */
 export default class Version {
+  /* eslint-disable no-underscore-dangle, one-var-declaration-per-line, one-var */
+
   /**
    * Creates a Version object from a Version string
    * @param {String} versionString
@@ -25,9 +27,11 @@ export default class Version {
     let major, minor, build, patch, extra, rc, distro;
     try {
       [, major, minor, build, patch, extra, rc, distro] = versionString.match(
-        regex
+        regex,
       );
-    } catch (_) {}
+    } catch (error) {
+      this._error = error.message;
+    }
 
     return {
       major: Number(major),
@@ -71,6 +75,8 @@ export default class Version {
   get ckt() {
     return this._rc;
   }
+
+  /* eslint-enable no-underscore-dangle, one-var-declaration-per-line, one-var */
 
   /**
    * Returns true if the version belongs to a Release Candidate,

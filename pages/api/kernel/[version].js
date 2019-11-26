@@ -7,10 +7,11 @@ export default async (req, res) => {
   } = req;
 
   switch (method) {
-    case 'GET':
+    case 'GET': {
       const results = await fetchVersion(version);
       res.status(200).json(results);
       break;
+    }
 
     default:
       res.setHeader('Allow', ['GET']);

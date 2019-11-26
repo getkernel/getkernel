@@ -12,7 +12,6 @@ import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
 import Chip from '@material-ui/core/Chip';
 import Typography from '@material-ui/core/Typography';
 import BookmarkToggle from '../BookmarkToggle';
@@ -31,22 +30,25 @@ const KernelListItem = ({ version_name, version_slug, last_modified }) => {
 
   const chips = useMemo(() => {
     const array = [];
-    version.distro &&
+    if (version.distro) {
       array.push({
         label: version.distro.toUpperCase(),
         title: version.distro,
       });
-    version.isCKT() &&
+    }
+    if (version.isCKT()) {
       array.push({
         label: version.ckt.toUpperCase(),
         title: version.ckt,
       });
-    version.isRC() &&
+    }
+    if (version.isRC()) {
       array.push({
         label: version.rc.toUpperCase(),
         title: 'Release Candidate',
         color: 'secondary',
       });
+    }
     return array;
   }, [version]);
 
@@ -75,7 +77,11 @@ const KernelListItem = ({ version_name, version_slug, last_modified }) => {
               </div>
 
               <div className={classes.cover}>
-                <img src="/images/deb.svg" title={version_name} />
+                <img
+                  src="/images/deb.svg"
+                  title={version_name}
+                  alt="deb package"
+                />
               </div>
             </div>
           </CardActionArea>
@@ -101,6 +107,10 @@ const KernelListItem = ({ version_name, version_slug, last_modified }) => {
   );
 };
 
-KernelListItem.propTypes = {};
+KernelListItem.propTypes = {
+  version_name: PropTypes.string.isRequired,
+  version_slug: PropTypes.string.isRequired,
+  last_modified: PropTypes.string.isRequired,
+};
 
 export default memo(KernelListItem);

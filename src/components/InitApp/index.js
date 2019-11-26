@@ -1,7 +1,7 @@
 /**
  * InitApp component.
  */
-import React, { useContext, useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import {
   KernelsContext,
@@ -46,7 +46,7 @@ const InitApp = () => {
     if (!entries.length) {
       getInitialData();
     }
-  }, []);
+  }, [entries.length, filtersDispatch, kernelsDispatch, router]);
 
   useEffect(() => {
     if (!filtersSet && availableVersions.length) {
@@ -54,7 +54,7 @@ const InitApp = () => {
       const [filterOne, filterTwo] = availableVersions[0].minors;
       filtersDispatch(setSelectedVersionsFilter([filterOne, filterTwo]));
     }
-  }, [availableVersions]);
+  }, [availableVersions, filtersDispatch, filtersSet]);
 
   return null;
 };

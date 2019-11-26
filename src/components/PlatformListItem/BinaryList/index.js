@@ -35,25 +35,26 @@ const BinaryList = ({
   useEffect(() => {
     if (!selectedVariant) {
       setCheckedBinaryIndices([]);
-      return onBinaryIndicesChange([]);
+      onBinaryIndicesChange([]);
+    } else {
+      const newChecked = [];
+      binaries.forEach(({ file_name }, index) => {
+        if (selectedVariant === BUILD_VARIANT_ALL) {
+          newChecked.push(index);
+          return;
+        }
+
+        if (
+          file_name.includes(`${selectedVariant}_`) ||
+          file_name.includes(`_${BUILD_VARIANT_ALL}`)
+        ) {
+          newChecked.push(index);
+        }
+      });
+      setCheckedBinaryIndices(newChecked);
+      onBinaryIndicesChange(newChecked);
     }
-
-    const newChecked = [];
-    binaries.forEach(({ file_name }, index) => {
-      if (selectedVariant === BUILD_VARIANT_ALL) {
-        return newChecked.push(index);
-      }
-
-      if (
-        file_name.includes(`${selectedVariant}_`) ||
-        file_name.includes(`_${BUILD_VARIANT_ALL}`)
-      ) {
-        newChecked.push(index);
-      }
-    });
-    setCheckedBinaryIndices(newChecked);
-    onBinaryIndicesChange(newChecked);
-  }, [selectedVariant]);
+  }, [binaries, onBinaryIndicesChange, selectedVariant]);
 
   const handleToggleChecked = (value) => {
     const currentIndex = checkedBinaryIndices.indexOf(value);
@@ -119,7 +120,12 @@ const BinaryList = ({
                     disabled={!buildStatus}
                     onClick={() => fileDownload(baseUrl + file_name, file_name)}
                   >
-                    <img src="/images/deb.svg" width="24" height="24" />
+                    <img
+                      src="/images/deb.svg"
+                      width="24"
+                      height="24"
+                      alt="deb package"
+                    />
                   </IconButton>
                 </span>
               </Tooltip>
@@ -129,6 +135,10 @@ const BinaryList = ({
       })}
     </List>
   );
+};
+
+BinaryList.defaultProps = {
+  selectedVariant: '',
 };
 
 BinaryList.propTypes = {

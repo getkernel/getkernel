@@ -15,7 +15,6 @@ import CloseIcon from '@material-ui/icons/Close';
 import Scroll from 'react-scroll';
 import PageContent from '../PageContent';
 import {
-  GlobalContext,
   KernelsContext,
   KernelsDispatchContext,
   GlobalDispatchContext,
@@ -33,7 +32,6 @@ const useStyles = makeStyles(styles);
 const KernelVersion = ({ version }) => {
   const classes = useStyles();
 
-  const { bookmarks } = useContext(GlobalContext);
   const { kernels } = useContext(KernelsContext);
   const kernelsDispatch = useContext(KernelsDispatchContext);
   const globalDispatch = useContext(GlobalDispatchContext);
@@ -61,7 +59,7 @@ const KernelVersion = ({ version }) => {
     if (kernel) {
       setSelectedKernel(kernel);
     }
-  }, [kernels, version]);
+  }, [kernels, kernelsDispatch, version]);
 
   const handleShowWebViewer = (url, title) => {
     globalDispatch(showWebViewer(url, title));
@@ -102,9 +100,9 @@ const KernelVersion = ({ version }) => {
                 activeClass={classes.linkActive}
                 key={`platform-chip-${platform}`}
                 to={platform}
-                spy={true}
-                hashSpy={true}
-                smooth={true}
+                spy
+                hashSpy
+                smooth
                 offset={-70}
                 duration={appConfig.smoothScrollDuration}
               >
@@ -147,7 +145,7 @@ const KernelVersion = ({ version }) => {
 };
 
 KernelVersion.propTypes = {
-  version: PropTypes.string,
+  version: PropTypes.string.isRequired,
 };
 
 export default KernelVersion;
