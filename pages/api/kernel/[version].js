@@ -1,4 +1,4 @@
-import { fetchVersion } from '../../../src/api';
+import { fetchKernel } from '../../../src/api';
 
 export default async (req, res) => {
   const {
@@ -8,7 +8,7 @@ export default async (req, res) => {
 
   switch (method) {
     case 'GET': {
-      const results = await fetchVersion(version);
+      const results = await fetchKernel(version);
       res.status(200).json(results);
       break;
     }

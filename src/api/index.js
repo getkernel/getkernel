@@ -1,4 +1,4 @@
 import fetchIndex from './fetchIndex';
-import fetchVersion from './fetchVersion';
+import fetchKernel from './fetchKernel';
 
-export { fetchIndex, fetchVersion };
+export { fetchIndex, fetchKernel };
