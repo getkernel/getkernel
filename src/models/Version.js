@@ -9,12 +9,34 @@ export default class Version {
   /* eslint-disable no-underscore-dangle, one-var-declaration-per-line, one-var */
 
   /**
-   * Creates a Version object from a Version string.
+   * Creates a Version object from a Version string and a last modified date (optional).
    * @param {String} versionString Version string
    * @param {String} lastModified Last modified date
    */
   constructor(versionString, lastModified = '') {
-    const versionObj = this.constructor.parse(versionString, lastModified);
+    const regex = /^v?(\d+)\.(\d+)(?:\.(\d+))?(?:\.(\d+))?(?:\.(\d+))?(?:-(rc\d*|ckt\d*))?(?:-(.+))?/i;
+    let major, minor, build, patch, extra, rc, distro, error;
+    try {
+      [, major, minor, build, patch, extra, rc, distro] = versionString.match(
+        regex,
+      );
+    } catch (e) {
+      error = e.message;
+    }
+
+    const versionObj = {
+      major: major && Number(major),
+      minor: minor && Number(minor),
+      build: build && Number(build),
+      patch: patch && Number(patch),
+      extra: extra && Number(extra),
+      rc,
+      distro,
+      lastModified: lastModified
+        ? moment(lastModified, SERVER_DATE_FORMAT)
+        : moment(0),
+      error,
+    };
 
     // Attach properties to the instance.
     Object.keys(versionObj).forEach((key) => {
@@ -28,29 +50,7 @@ export default class Version {
    * @param {String} lastModified Last modified date
    */
   static parse(versionString, lastModified = '') {
-    const regex = /^v?(\d+)\.(\d+)(?:\.(\d+))?(?:\.(\d+))?(?:\.(\d+))?(?:-(rc\d*|ckt\d*))?(?:-(.+))?/i;
-    let major, minor, build, patch, extra, rc, distro, error;
-    try {
-      [, major, minor, build, patch, extra, rc, distro] = versionString.match(
-        regex,
-      );
-    } catch (e) {
-      error = e.message;
-    }
-
-    return {
-      major: major && Number(major),
-      minor: minor && Number(minor),
-      build: build && Number(build),
-      patch: patch && Number(patch),
-      extra: extra && Number(extra),
-      rc,
-      distro,
-      lastModified: lastModified
-        ? moment(lastModified, SERVER_DATE_FORMAT)
-        : moment(0),
-      error,
-    };
+    return new this(versionString, lastModified);
   }
 
   get major() {
