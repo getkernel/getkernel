@@ -6,8 +6,8 @@ import React, { useMemo, memo } from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import { makeStyles } from '@material-ui/core/styles';
+import Fade from '@material-ui/core/Fade';
 import Grid from '@material-ui/core/Grid';
-import Grow from '@material-ui/core/Grow';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
@@ -55,7 +55,7 @@ const KernelListItem = ({ version, index, animate }) => {
 
   return (
     <Grid item xs={6} md={4} lg={3} xl={2}>
-      <Grow in={animate} timeout={growTimeout}>
+      <Fade in={animate} timeout={growTimeout}>
         <Card>
           <Link href="/kernel/[version]" as={`/kernel/${versionStr}`}>
             <CardActionArea title={versionStr}>
@@ -105,7 +105,7 @@ const KernelListItem = ({ version, index, animate }) => {
             </div>
           </CardActions>
         </Card>
-      </Grow>
+      </Fade>
     </Grid>
   );
 };
