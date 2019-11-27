@@ -16,7 +16,7 @@ const BookmarksList = ({ bookmarks }) => {
   const bookmarkedVersions = useMemo(() => {
     return entries
       .filter(({ versionName }) => bookmarks.includes(versionName))
-      .map((entry) => ServerIndexObject.parseObj(entry).toVersion());
+      .map((entry) => ServerIndexObject.parse(entry).toVersion());
   }, [bookmarks, entries]);
 
   return (
