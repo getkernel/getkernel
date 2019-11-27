@@ -1,5 +1,6 @@
+import './typedef';
 import moment from 'moment';
-import { SERVER_DATE_FORMAT } from '../constants';
+import { SERVER_DATE_FORMAT } from '../../constants';
 
 /**
  * Version class that implements static parse method and
@@ -47,6 +48,7 @@ export default class Version {
   /**
    * Parses an object into a Version object.
    * @param {Object} param0 Source object
+   * @returns {Version} Version instance
    */
   static parse({ versionString, lastModified } = {}) {
     return new this(versionString, lastModified);
@@ -113,6 +115,7 @@ export default class Version {
   /**
    * Returns formatted last modified date.
    * @param {String} format Format string
+   * @returns {String} Formatted date string
    */
   toFormattedLastModified(format = 'L LT') {
     return this.lastModified.format(format);

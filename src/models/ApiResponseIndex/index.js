@@ -1,6 +1,7 @@
-import ApiResponseBase from './ApiResponseBase';
-import ServerIndexObject from './ServerIndexObject';
-import Compare from '../utils/Compare';
+import './typedef';
+import ApiResponseBase from '../ApiResponseBase';
+import ServerIndexObject from '../ServerIndexObject';
+import Compare from '../../utils/Compare';
 
 /**
  * Response class for index items.

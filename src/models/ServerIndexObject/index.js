@@ -1,4 +1,5 @@
-import Version from './Version';
+import './typedef';
+import Version from '../Version';
 
 /**
  * Object definition for server's index listing.
@@ -17,6 +18,7 @@ export default class ServerIndexObject {
   /**
    * Creates a new instance by parsing an object.
    * @param {Object} param0 Source object
+   * @returns {ServerIndexObject} ServerIndexObject instance
    */
   static parse({ versionName, lastModified } = {}) {
     return new this(versionName, lastModified);
@@ -24,6 +26,7 @@ export default class ServerIndexObject {
 
   /**
    * Returns the Version representation of the object.
+   * @returns {Version} Version instance
    */
   toVersion() {
     return new Version(this.versionName, this.lastModified);

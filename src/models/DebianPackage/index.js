@@ -1,3 +1,5 @@
+import './typedef';
+
 /**
  * Class for storing binary file details.
  */
@@ -21,6 +23,7 @@ export default class DebianPackage {
   /**
    * Parses an object into a DebianPackage object.
    * @param {Object} param0 Source object
+   * @returns {DebianPackage} DebianPackage instance
    */
   static parse({ fileName, fileSize, lastModified, sha1, sha256 }) {
     return new this(fileName, fileSize, lastModified, sha1, sha256);

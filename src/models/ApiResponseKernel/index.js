@@ -1,4 +1,6 @@
-import ApiResponseBase from './ApiResponseBase';
+import './typedef';
+import ApiResponseBase from '../ApiResponseBase';
+import BuildObject from '../BuildObject';
 
 /**
  * Response class for kernel items.
@@ -26,15 +28,10 @@ export default class ApiResponseKernel extends ApiResponseBase {
    * Adds build data to data.files array.
    * @param {String} platform Build platform
    * @param {Boolean} buildStatus Build succeeded or not
-   * @param {Array} binaries Array of binaries
+   * @param {Array<DebianPackage>} binaries Array of DebianPackage objects
    */
   addBuildData(platform, buildStatus, binaries) {
-    this.data.files.push({
-      platform,
-      buildStatus,
-      binaries,
-      log: `BUILD.LOG.${platform}`,
-    });
+    this.data.files.push(new BuildObject(platform, buildStatus, binaries));
   }
 
   /**

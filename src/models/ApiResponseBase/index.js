@@ -1,3 +1,5 @@
+import './typedef';
+
 /**
  * Base class for API responses.
  */

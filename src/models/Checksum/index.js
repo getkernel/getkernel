@@ -1,3 +1,5 @@
+import './typedef';
+
 /**
  * Class for storing checksum details.
  */
@@ -17,6 +19,7 @@ export default class Checksum {
   /**
    * Parses a line of CHECKSUMS and returns a new Checksum object.
    * @param {String} line Line of text
+   * @returns {Checksum} Checksum instance
    */
   static parseLine(line) {
     let sha1 = null;
