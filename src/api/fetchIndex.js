@@ -1,10 +1,12 @@
 import fetch from 'isomorphic-unfetch';
 import cheerio from 'cheerio';
-import ApiResponseIndex from '../models/ApiResponseIndex';
+import ApiResponse from '../models/ApiResponse';
+import ServerIndexObject from '../models/ServerIndexObject';
+import Compare from '../utils/Compare';
 import { BASE_URL } from '../constants';
 
 const fetchIndex = async () => {
-  const apiResponse = new ApiResponseIndex(`${BASE_URL}/`);
+  const apiResponse = new ApiResponse(`${BASE_URL}/`);
 
   try {
     const response = await fetch(BASE_URL);
@@ -37,12 +39,15 @@ const fetchIndex = async () => {
 
         if (versionSlug.includes('~kernel-ppa')) return true;
 
-        return apiResponse.addEntry(versionName, lastModified);
+        const siObject = new ServerIndexObject(versionName, lastModified);
+        return apiResponse.addData(siObject);
       });
 
-    if (apiResponse.isDataAvailable()) {
+    if (apiResponse.hasData()) {
       // Sort data by date - descending order
-      apiResponse.sortEntries('date', 'desc');
+      apiResponse.sortData((a, b) =>
+        Compare.date('desc')(a.lastModified, b.lastModified),
+      );
     } else {
       // Set response as failed.
       apiResponse.setFailed('Unable to get data', 400);

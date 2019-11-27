@@ -1,9 +1,10 @@
 import fetch from 'isomorphic-unfetch';
 import cheerio from 'cheerio';
 import Compare from '../utils/Compare';
-import ApiResponseKernel from '../models/ApiResponseKernel';
+import ApiResponse from '../models/ApiResponse';
 import DebianPackage from '../models/DebianPackage';
 import Checksum from '../models/Checksum';
+import Kernel from '../models/Kernel';
 import { BASE_URL } from '../constants';
 
 const fetchVersion = async (version) => {
@@ -12,7 +13,8 @@ const fetchVersion = async (version) => {
     : `v${version}`;
   const baseUrl = `${BASE_URL}/${versionStr}`;
 
-  const apiResponse = new ApiResponseKernel(baseUrl, versionStr);
+  const apiResponse = new ApiResponse(baseUrl);
+  const kernel = new Kernel(versionStr, baseUrl);
 
   const files = {};
   let builtInfo = [];
@@ -105,10 +107,13 @@ const fetchVersion = async (version) => {
         Compare.string('asc', '_all')(a.fileName, b.fileName),
       );
 
-      return apiResponse.addBuildData(platform, status, binaries);
+      kernel.addBuild(platform, status, binaries);
     });
 
-    if (!apiResponse.isDataAvailable()) {
+    // Append kernel data to response.
+    apiResponse.addData(kernel);
+
+    if (!kernel.hasBuilds()) {
       apiResponse.setFailed('Unable to fetch data', 400);
     }
   } catch (error) {

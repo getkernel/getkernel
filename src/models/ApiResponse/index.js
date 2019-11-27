@@ -1,11 +1,11 @@
 import './typedef';
 
 /**
- * Base class for API responses.
+ * Base class for an API response.
  */
-export default class ApiResponseBase {
+export default class ApiResponse {
   /**
-   * Creates a base object for the API response.
+   * Creates an API response object.
    * @param {String} baseUrl The url that response was originated from
    * @param {Number} statusCode HTTP status code
    * @param {Boolean} success Successful or not
@@ -15,8 +15,36 @@ export default class ApiResponseBase {
     this.success = success || true;
     this.data = {
       baseUrl: baseUrl || '',
+      count: 0,
+      results: [],
     };
     this.error = null;
+  }
+
+  /**
+   * Adds arbitrary data to results.
+   * @param {Object} data Data to be added
+   */
+  addData(data) {
+    this.data.results.push(data);
+    this.data.count += 1;
+  }
+
+  /**
+   * Sorts data with the help of a comperator function.
+   * @param {Function} comperator Comperator function
+   */
+  sortData(comperator) {
+    if (typeof comperator === 'function') {
+      this.data.results.sort(comperator);
+    }
+  }
+
+  /**
+   * Returns true if results data is available, otherwise false.
+   */
+  hasData() {
+    return this.data.count > 0;
   }
 
   /**
