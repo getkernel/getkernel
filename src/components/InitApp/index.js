@@ -4,6 +4,7 @@
 import { useContext, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import {
+  GlobalDispatchContext,
   KernelsContext,
   KernelsDispatchContext,
   FiltersContext,
@@ -16,6 +17,7 @@ import {
   hydrateIndexData,
   setAvailableVersionsFilter,
   setSelectedVersionsFilter,
+  setIsLoading,
 } from '../../actions';
 
 const InitApp = () => {
@@ -26,6 +28,7 @@ const InitApp = () => {
   } = useContext(KernelsContext);
   const { filtersSet, availableVersions } = useContext(FiltersContext);
 
+  const globalDispatch = useContext(GlobalDispatchContext);
   const kernelsDispatch = useContext(KernelsDispatchContext);
   const filtersDispatch = useContext(FiltersDispatchContext);
 
@@ -37,6 +40,7 @@ const InitApp = () => {
       if (json.success) {
         kernelsDispatch(hydrateIndexData(json.data));
         filtersDispatch(setAvailableVersionsFilter(json.data));
+        globalDispatch(setIsLoading(false));
 
         // TODO: FIX THIS!!!
         router.reload();
@@ -45,6 +49,7 @@ const InitApp = () => {
 
     if (!items.length) {
       getInitialData();
+      globalDispatch(setIsLoading(true));
     }
   }, [items.length, filtersDispatch, kernelsDispatch, router]);
 

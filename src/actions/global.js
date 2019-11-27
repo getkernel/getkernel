@@ -17,6 +17,15 @@ export const toggleTheme = () => ({
 });
 
 /**
+ * Generates an action object -> Sets isLoading state.
+ * @param {Boolean} isLoading Is loading or not
+ */
+export const setIsLoading = (isLoading) => ({
+  type: 'SET_IS_LOADING',
+  isLoading,
+});
+
+/**
  * Generates an action object -> Adds kernel to bookmarks.
  * @param {String} bookmark Kernel version
  */

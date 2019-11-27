@@ -8,7 +8,7 @@ import PageContent from '../PageContent';
 import LoadingIndicator from '../LoadingIndicator';
 import KernelListToolbar from '../KernelListToolbar';
 import KernelListItem from '../KernelListItem';
-import { KernelsContext, FiltersContext } from '../../contexts';
+import { GlobalContext, KernelsContext, FiltersContext } from '../../contexts';
 import { versionsFilter, releaseTypeFilter } from '../../selectors';
 import ServerIndexObject from '../../models/ServerIndexObject';
 import styles from './styles';
@@ -18,12 +18,11 @@ const useStyles = makeStyles(styles);
 const KernelList = () => {
   const classes = useStyles();
 
+  const { isLoading } = useContext(GlobalContext);
   const {
     index: { items },
   } = useContext(KernelsContext);
-  const { filtersSet, selectedVersions, releaseType } = useContext(
-    FiltersContext,
-  );
+  const { selectedVersions, releaseType } = useContext(FiltersContext);
 
   const filteredVersions = useMemo(
     () =>
@@ -34,7 +33,7 @@ const KernelList = () => {
     [items, selectedVersions, releaseType],
   );
 
-  if (!(filtersSet && filteredVersions.length)) {
+  if (isLoading) {
     return (
       <div className={classes.root}>
         <KernelListToolbar />

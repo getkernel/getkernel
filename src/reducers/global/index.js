@@ -19,6 +19,12 @@ export default (state, action) => {
         theme: state.theme === 'dark' ? 'light' : 'dark',
       };
 
+    case 'SET_IS_LOADING':
+      return {
+        ...state,
+        isLoading: action.isLoading,
+      };
+
     case 'ADD_BOOKMARK':
       return {
         ...state,

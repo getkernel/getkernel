@@ -2,6 +2,7 @@
  * Global default state.
  */
 export default {
+  isLoading: true,
   drawerOpen: true,
   bookmarks: [],
   webViewer: {

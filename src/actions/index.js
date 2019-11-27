@@ -1,6 +1,7 @@
 import {
   toggleDrawer,
   toggleTheme,
+  setIsLoading,
   addBookmark,
   removeBookmark,
   clearBookmarks,
@@ -23,6 +24,7 @@ import {
 export {
   toggleDrawer,
   toggleTheme,
+  setIsLoading,
   addBookmark,
   removeBookmark,
   clearBookmarks,
