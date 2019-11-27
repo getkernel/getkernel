@@ -47,8 +47,13 @@ const KernelList = () => {
       <KernelListToolbar />
       <PageContent>
         <Grid container spacing={3}>
-          {filteredVersions.map((version) => (
-            <KernelListItem key={version.toString()} version={version} />
+          {filteredVersions.map((version, index) => (
+            <KernelListItem
+              key={version.toString()}
+              version={version}
+              index={index}
+              animate
+            />
           ))}
         </Grid>
       </PageContent>

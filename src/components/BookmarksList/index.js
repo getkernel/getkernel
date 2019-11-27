@@ -21,8 +21,13 @@ const BookmarksList = ({ bookmarks }) => {
 
   return (
     <Grid container spacing={3}>
-      {bookmarkedVersions.map((version) => (
-        <KernelListItem key={version.toString()} version={version} />
+      {bookmarkedVersions.map((version, index) => (
+        <KernelListItem
+          key={version.toString()}
+          version={version}
+          index={index}
+          animate
+        />
       ))}
     </Grid>
   );
