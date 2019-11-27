@@ -11,7 +11,7 @@ export default (state, action) => {
   switch (action.type) {
     case 'SET_AVAILABLE_VERSIONS_FILTER': {
       const availableVersions = [];
-      const versions = action.data.entries
+      const versions = action.data.results
         .filter(({ versionName }) => versionName.startsWith('v'))
         .map(({ versionName }) => new Version(versionName));
 

@@ -44,7 +44,7 @@ const MainLayout = ({ children, pageTitle, contentTitle, showShadow }) => {
 
   const { drawerOpen, theme: themePref, bookmarks } = useContext(GlobalContext);
   const {
-    index: { entries },
+    index: { items },
   } = useContext(KernelsContext);
   const dispatch = useContext(GlobalDispatchContext);
 
@@ -85,7 +85,7 @@ const MainLayout = ({ children, pageTitle, contentTitle, showShadow }) => {
             <Typography variant="h6" noWrap className={classes.title}>
               {contentTitle}
             </Typography>
-            <SearchField entries={entries} />
+            <SearchField items={items} />
             <Tooltip
               title="Toggle light/dark theme"
               aria-label="Toggle light/dark theme"

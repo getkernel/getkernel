@@ -22,7 +22,7 @@ const InitApp = () => {
   const router = useRouter();
 
   const {
-    index: { entries },
+    index: { items },
   } = useContext(KernelsContext);
   const { filtersSet, availableVersions } = useContext(FiltersContext);
 
@@ -43,10 +43,10 @@ const InitApp = () => {
       }
     };
 
-    if (!entries.length) {
+    if (!items.length) {
       getInitialData();
     }
-  }, [entries.length, filtersDispatch, kernelsDispatch, router]);
+  }, [items.length, filtersDispatch, kernelsDispatch, router]);
 
   useEffect(() => {
     if (!filtersSet && availableVersions.length) {

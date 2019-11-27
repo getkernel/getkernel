@@ -10,7 +10,9 @@ export default (state, action) => {
     case 'HYDRATE_INDEX_DATA':
       return {
         ...state,
-        index: { ...action.data },
+        index: {
+          items: action.data.results,
+        },
       };
 
     case 'ADD_KERNEL_DATA':

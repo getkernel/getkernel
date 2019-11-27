@@ -3,7 +3,7 @@
  */
 export default {
   index: {
-    entries: [],
+    items: [],
   },
   kernels: [],
 };

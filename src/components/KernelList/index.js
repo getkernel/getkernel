@@ -19,7 +19,7 @@ const KernelList = () => {
   const classes = useStyles();
 
   const {
-    index: { entries },
+    index: { items },
   } = useContext(KernelsContext);
   const { filtersSet, selectedVersions, releaseType } = useContext(
     FiltersContext,
@@ -27,11 +27,11 @@ const KernelList = () => {
 
   const filteredVersions = useMemo(
     () =>
-      entries
+      items
         .map((entry) => ServerIndexObject.parse(entry).toVersion())
         .filter(versionsFilter(selectedVersions))
         .filter(releaseTypeFilter(releaseType)),
-    [entries, selectedVersions, releaseType],
+    [items, selectedVersions, releaseType],
   );
 
   if (!(filtersSet && filteredVersions.length)) {

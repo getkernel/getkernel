@@ -16,15 +16,13 @@ import styles from './styles';
 
 const useStyles = makeStyles(styles);
 
-const SearchField = ({ entries }) => {
+const SearchField = ({ items }) => {
   const classes = useStyles();
 
   const options = useMemo(
     () =>
-      entries
-        .map(({ versionName }) => versionName)
-        .sort(Compare.string('desc')),
-    [entries],
+      items.map(({ versionName }) => versionName).sort(Compare.string('desc')),
+    [items],
   );
 
   const handleOnChange = (event, value) => {
@@ -75,7 +73,12 @@ const SearchField = ({ entries }) => {
 };
 
 SearchField.propTypes = {
-  entries: PropTypes.array.isRequired,
+  items: PropTypes.arrayOf(
+    PropTypes.exact({
+      versionName: PropTypes.string.isRequired,
+      lastModified: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
 };
 
 export default memo(SearchField);
