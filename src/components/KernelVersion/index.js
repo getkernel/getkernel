@@ -21,9 +21,10 @@ import {
 } from '../../contexts';
 import { addKernelData, showWebViewer } from '../../actions';
 import LoadingIndicator from '../LoadingIndicator';
-import PlatformListItem from '../PlatformListItem';
+import BuildListItem from '../BuildListItem';
 import BookmarkToggle from '../BookmarkToggle';
 import Version from '../../models/Version';
+import Kernel from '../../models/Kernel';
 import styles from './styles';
 import appConfig from '../../app.config';
 
@@ -36,7 +37,8 @@ const KernelVersion = ({ version }) => {
   const kernelsDispatch = useContext(KernelsDispatchContext);
   const globalDispatch = useContext(GlobalDispatchContext);
 
-  const [selectedKernel, setSelectedKernel] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [selectedKernel, setSelectedKernel] = useState(new Kernel());
 
   const versionObj = new Version(version);
 
@@ -50,14 +52,15 @@ const KernelVersion = ({ version }) => {
       }
     };
 
-    const kernel = version && kernels.find((k) => k.version === version);
+    const kernelItem = version && kernels.find((k) => k.version === version);
 
-    if (version && !kernel) {
+    if (version && !kernelItem) {
       getKernelData();
     }
 
-    if (kernel) {
-      setSelectedKernel(kernel);
+    if (kernelItem) {
+      setSelectedKernel(Kernel.parse(kernelItem));
+      setLoading(false);
     }
   }, [kernels, kernelsDispatch, version]);
 
@@ -65,11 +68,11 @@ const KernelVersion = ({ version }) => {
     globalDispatch(showWebViewer(url, title));
   };
 
-  if (!(version && selectedKernel)) {
+  if (loading) {
     return <LoadingIndicator />;
   }
 
-  const { baseUrl, files, urls } = selectedKernel;
+  const { kernelUrl, builds, urls } = selectedKernel;
 
   const toolbarButtons = [
     {
@@ -86,8 +89,8 @@ const KernelVersion = ({ version }) => {
     },
   ];
 
-  const platforms = files
-    ? files.map(({ platform, buildStatus }) => ({ platform, buildStatus }))
+  const platforms = builds
+    ? builds.map(({ platform, buildStatus }) => ({ platform, buildStatus }))
     : [];
 
   return (
@@ -128,13 +131,13 @@ const KernelVersion = ({ version }) => {
       </AppBar>
       <PageContent>
         <Grid container spacing={3}>
-          {files &&
-            files.map((file) => (
-              <PlatformListItem
-                key={file.platform}
-                {...file}
+          {builds &&
+            builds.map((build) => (
+              <BuildListItem
+                key={build.platform}
+                build={build}
                 version={version}
-                baseUrl={baseUrl}
+                kernelUrl={kernelUrl}
                 handleShowWebViewer={handleShowWebViewer}
               />
             ))}

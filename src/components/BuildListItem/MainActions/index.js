@@ -26,7 +26,7 @@ const useStyles = makeStyles(styles);
 
 const MainActions = ({
   version,
-  baseUrl,
+  kernelUrl,
   platform,
   buildStatus,
   variants,
@@ -47,7 +47,7 @@ const MainActions = ({
     const multipleDownloadsId = 'multipleDownloadsAlert';
 
     if (doNotAskList.some((id) => id === multipleDownloadsId)) {
-      return batchDownload(checkedBinaries, baseUrl);
+      return batchDownload(checkedBinaries, kernelUrl);
     }
 
     return globalDispatch(
@@ -55,7 +55,7 @@ const MainActions = ({
         multipleDownloadsId,
         'About to download multiple files',
         'Allow your browser to initiate multiple downloads.',
-        () => batchDownload(checkedBinaries, baseUrl),
+        () => batchDownload(checkedBinaries, kernelUrl),
       ),
     );
   };
@@ -154,7 +154,7 @@ MainActions.defaultProps = {
 
 MainActions.propTypes = {
   version: PropTypes.string.isRequired,
-  baseUrl: PropTypes.string.isRequired,
+  kernelUrl: PropTypes.string.isRequired,
   platform: PropTypes.string.isRequired,
   buildStatus: PropTypes.bool.isRequired,
   variants: PropTypes.array.isRequired,

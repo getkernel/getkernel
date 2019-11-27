@@ -15,11 +15,13 @@ export default (state, action) => {
         },
       };
 
-    case 'ADD_KERNEL_DATA':
+    case 'ADD_KERNEL_DATA': {
+      const [kernel] = action.data.results;
       return {
         ...state,
-        kernels: [...state.kernels, action.data],
+        kernels: [...state.kernels, kernel],
       };
+    }
 
     default:
       return state;

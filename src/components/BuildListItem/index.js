@@ -1,5 +1,5 @@
 /**
- * PlatformListItem component.
+ * BuildListItem component.
  * Rendered by KernelVersion.
  */
 import React, { useState, useMemo, memo } from 'react';
@@ -24,16 +24,10 @@ import styles from './styles';
 
 const useStyles = makeStyles(styles);
 
-const PlatformListItem = ({
-  version,
-  baseUrl,
-  platform,
-  buildStatus,
-  binaries,
-  log,
-  handleShowWebViewer,
-}) => {
+const BuildListItem = ({ version, kernelUrl, build, handleShowWebViewer }) => {
   const classes = useStyles();
+
+  const { platform, buildStatus, binaries, log } = build;
 
   const variants = useMemo(() => {
     return [...buildVariants(binaries), BUILD_VARIANT_ALL];
@@ -45,7 +39,7 @@ const PlatformListItem = ({
 
   const buildText = `Build ${buildStatus ? 'succeeded' : 'failed'}.`;
   const platformText = platform !== 'i386' ? platform.toUpperCase() : platform;
-  const logUrl = `${baseUrl}/${log}`;
+  const logUrl = `${kernelUrl}/${log}`;
 
   const handleBinaryIndicesChange = (indices) => {
     const items = indices.map((index) => binaries[index]);
@@ -102,13 +96,13 @@ const PlatformListItem = ({
           <BinaryList
             binaries={binaries}
             buildStatus={buildStatus}
-            baseUrl={baseUrl}
+            kernelUrl={kernelUrl}
             selectedVariant={selectedVariant}
             onBinaryIndicesChange={handleBinaryIndicesChange}
           />
           <MainActions
             version={version}
-            baseUrl={baseUrl}
+            kernelUrl={kernelUrl}
             platform={platform}
             buildStatus={buildStatus}
             variants={variants}
@@ -122,14 +116,16 @@ const PlatformListItem = ({
   );
 };
 
-PlatformListItem.propTypes = {
+BuildListItem.propTypes = {
   version: PropTypes.string.isRequired,
-  baseUrl: PropTypes.string.isRequired,
-  platform: PropTypes.string.isRequired,
-  buildStatus: PropTypes.bool.isRequired,
-  binaries: PropTypes.array.isRequired,
-  log: PropTypes.string.isRequired,
+  kernelUrl: PropTypes.string.isRequired,
+  build: PropTypes.exact({
+    platform: PropTypes.string.isRequired,
+    buildStatus: PropTypes.bool.isRequired,
+    binaries: PropTypes.array.isRequired,
+    log: PropTypes.string.isRequired,
+  }).isRequired,
   handleShowWebViewer: PropTypes.func.isRequired,
 };
 
-export default memo(PlatformListItem);
+export default memo(BuildListItem);

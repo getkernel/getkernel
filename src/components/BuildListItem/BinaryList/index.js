@@ -24,7 +24,7 @@ const useStyles = makeStyles(styles);
 const BinaryList = ({
   binaries,
   buildStatus,
-  baseUrl,
+  kernelUrl,
   selectedVariant,
   onBinaryIndicesChange,
 }) => {
@@ -122,7 +122,7 @@ const BinaryList = ({
                     aria-label="deb package"
                     disabled={!buildStatus}
                     onClick={() =>
-                      fileDownload(`${baseUrl}/${fileName}`, fileName)
+                      fileDownload(`${kernelUrl}/${fileName}`, fileName)
                     }
                   >
                     <img
@@ -149,7 +149,7 @@ BinaryList.defaultProps = {
 BinaryList.propTypes = {
   binaries: PropTypes.array.isRequired,
   buildStatus: PropTypes.bool.isRequired,
-  baseUrl: PropTypes.string.isRequired,
+  kernelUrl: PropTypes.string.isRequired,
   selectedVariant: PropTypes.string,
   onBinaryIndicesChange: PropTypes.func.isRequired,
 };
