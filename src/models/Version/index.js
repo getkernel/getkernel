@@ -90,6 +90,14 @@ export default class Version {
     return this._lastModified;
   }
 
+  set lastModified(value) {
+    if (value instanceof moment) {
+      this._lastModified = value;
+    } else {
+      this._lastModified = moment(value, SERVER_DATE_FORMAT);
+    }
+  }
+
   get error() {
     return this._error;
   }
