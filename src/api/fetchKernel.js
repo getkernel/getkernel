@@ -2,6 +2,8 @@ import fetch from 'isomorphic-unfetch';
 import cheerio from 'cheerio';
 import Compare from '../utils/Compare';
 import ApiResponseKernel from '../models/ApiResponseKernel';
+import DebianPackage from '../models/DebianPackage';
+import Checksum from '../models/Checksum';
 import { BASE_URL } from '../constants';
 
 const fetchVersion = async (version) => {
@@ -44,10 +46,7 @@ const fetchVersion = async (version) => {
     checksums = bodyChecksums
       .split('\n')
       .filter((line) => line.includes('.deb'))
-      .map((line) => {
-        const [sum, file] = line.split('  ');
-        return { file, sum };
-      });
+      .map((line) => Checksum.parseLine(line));
 
     // Loop over table rows and extract necessary information.
     $('table')
@@ -80,11 +79,14 @@ const fetchVersion = async (version) => {
           files[platform] = [];
         }
 
-        return files[platform].push({
-          fileName,
-          fileSize,
-          lastModified,
-        });
+        // Grab checksums
+        const [c1, c2] = checksums.filter((c) => c.fileName === fileName);
+        const sha1 = c1.sha1 || null;
+        const sha256 = c2.sha256 || null;
+
+        return files[platform].push(
+          new DebianPackage(fileName, fileSize, lastModified, sha1, sha256),
+        );
       });
 
     // Decide platforms data to use to generate files array.
@@ -99,28 +101,9 @@ const fetchVersion = async (version) => {
           .sort((a, b) => Compare.string()(a.platform, b.platform));
 
     platforms.forEach(({ platform, status }) => {
-      const platformFiles = [...files.all, ...(files[platform] || [])];
-
-      // Build binaries array with checksums.
-      const binaries = platformFiles
-        .map((file) => {
-          const [sha1, sha256] = checksums.filter(
-            (c) => c.file === file.fileName,
-          );
-
-          if (!(sha1 && sha256)) {
-            return {
-              ...file,
-            };
-          }
-
-          return {
-            ...file,
-            sha1: sha1.sum,
-            sha256: sha256.sum,
-          };
-        })
-        .sort((a, b) => Compare.string('asc', '_all')(a.fileName, b.fileName));
+      const binaries = [...files.all, ...(files[platform] || [])].sort((a, b) =>
+        Compare.string('asc', '_all')(a.fileName, b.fileName),
+      );
 
       return apiResponse.addBuildData(platform, status, binaries);
     });
