@@ -6,7 +6,7 @@ import moment from 'moment';
 export default class Compare {
   /**
    * String compare function.
-   * @param {String} order Compare order (asc|desc). asc by default.
+   * @param {('asc'|'desc')} order Compare order. Asc by default.
    * @param {String} alwaysOnTop Item to keep on top of the list.
    */
   static string(order = 'asc', alwaysOnTop = null) {
@@ -29,13 +29,12 @@ export default class Compare {
         return sort.asc(b, a);
       },
     };
-
-    return (a, b) => sort[order](a, b);
+    return (a, b) => sort[order.toLowerCase()](a, b);
   }
 
   /**
    * Comperator function for sorting Version objects.
-   * @param {String} order Compare order (asc|desc). asc by default.
+   * @param {('asc'|'desc')} order Compare order. Asc by default.
    */
   static version(order = 'asc') {
     const props = ['major', 'minor', 'build', 'patch', 'extra', 'rc', 'distro'];
@@ -63,13 +62,12 @@ export default class Compare {
         return sort.asc(verB, verA);
       },
     };
-
-    return (a, b) => sort[order](a, b);
+    return (a, b) => sort[order.toLowerCase()](a, b);
   }
 
   /**
    * Comperator function for date objects.
-   * @param {String} order Compare order (asc|desc). asc by default.
+   * @param {('asc'|'desc')} order Compare order. Asc by default.
    */
   static date(order = 'asc') {
     const sort = {
@@ -80,6 +78,31 @@ export default class Compare {
         return sort.asc(b, a);
       },
     };
-    return (a, b) => sort[order](a, b);
+    return (a, b) => sort[order.toLowerCase()](a, b);
+  }
+
+  /**
+   * Comperator function for ServerIndexObject objects.
+   * @param {('asc'|'desc')} order Compare order. Asc by default.
+   * @param {('date'|'name'|'versionName')} sortBy Sort entries by. Date by default.
+   */
+  static serverIndex(order = 'asc', sortBy = 'date') {
+    const sort = {
+      asc(a, b) {
+        switch (sortBy.toLowerCase()) {
+          default:
+          case 'date':
+            return Compare.date(order)(a.lastModified, b.lastModified);
+
+          case 'name':
+          case 'versionName':
+            return Compare.string(order)(a.versionName, b.versionName);
+        }
+      },
+      desc(a, b) {
+        return sort.asc(b, a);
+      },
+    };
+    return (a, b) => sort[order.toLowerCase()](a, b);
   }
 }
