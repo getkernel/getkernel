@@ -10,7 +10,7 @@ export default class ApiResponseIndex extends ApiResponseBase {
   /**
    * Creates an API response object.
    * @param {String} baseUrl The url that response was originated from
-   * @param {String} statusCode HTTP status code
+   * @param {Number} statusCode HTTP status code
    * @param {Boolean} success Successful or not
    */
   constructor(baseUrl, statusCode, success) {

@@ -10,7 +10,7 @@ export default class ApiResponseKernel extends ApiResponseBase {
    * Creates a base object for the API response.
    * @param {String} baseUrl The url that response was originated from
    * @param {String} version Version name
-   * @param {String} statusCode HTTP status code
+   * @param {Number} statusCode HTTP status code
    * @param {Boolean} success Successful or not
    */
   constructor(baseUrl, version, statusCode, success) {
