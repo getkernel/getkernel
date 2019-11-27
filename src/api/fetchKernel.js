@@ -113,7 +113,7 @@ const fetchVersion = async (version) => {
     // Append kernel data to response.
     apiResponse.addData(kernel);
 
-    if (!kernel.hasBuilds()) {
+    if (!(apiResponse.hasData() && kernel.hasBuilds())) {
       apiResponse.setFailed('Unable to fetch data', 400);
     }
   } catch (error) {
