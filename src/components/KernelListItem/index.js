@@ -51,11 +51,11 @@ const KernelListItem = ({ version, index, animate }) => {
     return array;
   }, [version]);
 
-  const growTimeout = Math.min((index + 1) * 250, 2000);
+  const timeout = Math.min((index + 1) * 250, 1000);
 
   return (
     <Grid item xs={6} md={4} lg={3} xl={2}>
-      <Fade in={animate} timeout={growTimeout}>
+      <Fade in={animate} timeout={timeout}>
         <Card>
           <Link href="/kernel/[version]" as={`/kernel/${versionStr}`}>
             <CardActionArea title={versionStr}>
@@ -110,10 +110,14 @@ const KernelListItem = ({ version, index, animate }) => {
   );
 };
 
+KernelListItem.defaultProps = {
+  animate: true,
+};
+
 KernelListItem.propTypes = {
   version: PropTypes.instanceOf(Version).isRequired,
   index: PropTypes.number.isRequired,
-  animate: PropTypes.bool.isRequired,
+  animate: PropTypes.bool,
 };
 
 export default memo(KernelListItem);

@@ -3,6 +3,7 @@
  */
 import React, { useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import Fade from '@material-ui/core/Fade';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import FormGroup from '@material-ui/core/FormGroup';
@@ -30,52 +31,58 @@ const KernelListToolbar = () => {
   const filtersDispatch = useContext(FiltersDispatchContext);
 
   return (
-    <AppBar position="sticky" color="default">
-      <Toolbar>
-        <FormGroup row>
-          <FormControl className={classes.formControl}>
-            <InputLabel id="version-select-label">Version</InputLabel>
-            <Select
-              labelId="version-select-label"
-              id="version-select"
-              multiple
-              value={selectedVersions}
-              onChange={(e) =>
-                filtersDispatch(setSelectedVersionsFilter(e.target.value))
-              }
-              input={<Input />}
-              renderValue={(selected) => selected.join(', ')}
-              // MenuProps={MenuProps}
-            >
-              {availableVersions.map(({ major, count, minors }) => [
-                <ListSubheader>{`v${major} (${count} items)`}</ListSubheader>,
-                minors.map((minor) => (
-                  <MenuItem key={`${major}-${minor}`} value={minor}>
-                    <Checkbox checked={selectedVersions.indexOf(minor) > -1} />
-                    <ListItemText primary={minor} />
+    <Fade in timeout={500}>
+      <AppBar position="sticky" color="default">
+        <Toolbar>
+          <FormGroup row>
+            <FormControl className={classes.formControl}>
+              <InputLabel id="version-select-label">Version</InputLabel>
+              <Select
+                labelId="version-select-label"
+                id="version-select"
+                multiple
+                value={selectedVersions}
+                onChange={(e) =>
+                  filtersDispatch(setSelectedVersionsFilter(e.target.value))
+                }
+                input={<Input />}
+                renderValue={(selected) => selected.join(', ')}
+                // MenuProps={MenuProps}
+              >
+                {availableVersions.map(({ major, count, minors }) => [
+                  <ListSubheader>{`v${major} (${count} items)`}</ListSubheader>,
+                  minors.map((minor) => (
+                    <MenuItem key={`${major}-${minor}`} value={minor}>
+                      <Checkbox
+                        checked={selectedVersions.indexOf(minor) > -1}
+                      />
+                      <ListItemText primary={minor} />
+                    </MenuItem>
+                  )),
+                ])}
+              </Select>
+            </FormControl>
+            <FormControl className={classes.formControl}>
+              <InputLabel id="release-type-label">Release Type</InputLabel>
+              <Select
+                labelId="release-type-label"
+                id="release-type-select"
+                value={releaseType}
+                onChange={(e) =>
+                  filtersDispatch(setReleaseType(e.target.value))
+                }
+              >
+                {releaseTypes.map(({ value, text }) => (
+                  <MenuItem value={value} key={`release-type-${value}`}>
+                    {text}
                   </MenuItem>
-                )),
-              ])}
-            </Select>
-          </FormControl>
-          <FormControl className={classes.formControl}>
-            <InputLabel id="release-type-label">Release Type</InputLabel>
-            <Select
-              labelId="release-type-label"
-              id="release-type-select"
-              value={releaseType}
-              onChange={(e) => filtersDispatch(setReleaseType(e.target.value))}
-            >
-              {releaseTypes.map(({ value, text }) => (
-                <MenuItem value={value} key={`release-type-${value}`}>
-                  {text}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </FormGroup>
-      </Toolbar>
-    </AppBar>
+                ))}
+              </Select>
+            </FormControl>
+          </FormGroup>
+        </Toolbar>
+      </AppBar>
+    </Fade>
   );
 };
 

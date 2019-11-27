@@ -5,6 +5,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import fetch from 'isomorphic-unfetch';
 import { makeStyles } from '@material-ui/core/styles';
+import Fade from '@material-ui/core/Fade';
 import Grid from '@material-ui/core/Grid';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -95,49 +96,52 @@ const KernelVersion = ({ version }) => {
 
   return (
     <div className={classes.root}>
-      <AppBar position="sticky" color="default">
-        <Toolbar className={classes.toolbar}>
-          <div className={classes.platformChips}>
-            {platforms.map(({ platform, buildStatus }) => (
-              <Scroll.Link
-                activeClass={classes.linkActive}
-                key={`platform-chip-${platform}`}
-                to={platform}
-                spy
-                hashSpy
-                smooth
-                offset={-70}
-                duration={appConfig.smoothScrollDuration}
-              >
-                <Chip
-                  label={platform}
-                  icon={buildStatus ? <CheckIcon /> : <CloseIcon />}
-                  variant="outlined"
-                  size="small"
-                  clickable
-                />
-              </Scroll.Link>
-            ))}
-          </div>
-          <div>
-            {toolbarButtons.map(({ text, handler }) => (
-              <Button key={`toolbar-button-${text}`} onClick={handler}>
-                {text}
-              </Button>
-            ))}
-            <BookmarkToggle version={versionObj} size="medium" />
-          </div>
-        </Toolbar>
-      </AppBar>
+      <Fade in timeout={500}>
+        <AppBar position="sticky" color="default">
+          <Toolbar className={classes.toolbar}>
+            <div className={classes.platformChips}>
+              {platforms.map(({ platform, buildStatus }) => (
+                <Scroll.Link
+                  activeClass={classes.linkActive}
+                  key={`platform-chip-${platform}`}
+                  to={platform}
+                  spy
+                  hashSpy
+                  smooth
+                  offset={-70}
+                  duration={appConfig.smoothScrollDuration}
+                >
+                  <Chip
+                    label={platform}
+                    icon={buildStatus ? <CheckIcon /> : <CloseIcon />}
+                    variant="outlined"
+                    size="small"
+                    clickable
+                  />
+                </Scroll.Link>
+              ))}
+            </div>
+            <div>
+              {toolbarButtons.map(({ text, handler }) => (
+                <Button key={`toolbar-button-${text}`} onClick={handler}>
+                  {text}
+                </Button>
+              ))}
+              <BookmarkToggle version={versionObj} size="medium" />
+            </div>
+          </Toolbar>
+        </AppBar>
+      </Fade>
       <PageContent>
         <Grid container spacing={3}>
           {builds &&
-            builds.map((build) => (
+            builds.map((build, index) => (
               <BuildListItem
                 key={build.platform}
                 build={build}
                 version={version}
                 kernelUrl={kernelUrl}
+                index={index}
                 handleShowWebViewer={handleShowWebViewer}
               />
             ))}

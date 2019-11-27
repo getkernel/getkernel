@@ -5,6 +5,7 @@
 import React, { useState, useMemo, memo } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
+import Fade from '@material-ui/core/Fade';
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
@@ -24,7 +25,14 @@ import styles from './styles';
 
 const useStyles = makeStyles(styles);
 
-const BuildListItem = ({ version, kernelUrl, build, handleShowWebViewer }) => {
+const BuildListItem = ({
+  version,
+  kernelUrl,
+  build,
+  index: itemIndex,
+  animate,
+  handleShowWebViewer,
+}) => {
   const classes = useStyles();
 
   const { platform, buildStatus, binaries, log } = build;
@@ -63,57 +71,65 @@ const BuildListItem = ({ version, kernelUrl, build, handleShowWebViewer }) => {
     setSelectedVariant(variant);
   };
 
+  const timeout = Math.min((itemIndex + 1) * 300, 1500);
+
   return (
     <Grid item id={platform} xs={12} md={12}>
-      <Card>
-        <CardHeader
-          avatar={
-            <Avatar
-              aria-label="build status"
-              className={buildStatus ? classes.success : classes.fail}
-            >
-              {buildStatus ? <CheckIcon /> : <CloseIcon />}
-            </Avatar>
-          }
-          action={
-            <IconButton aria-label="more options" onClick={handleMenuClick}>
-              <MoreVertIcon />
-            </IconButton>
-          }
-          title={platformText}
-          subheader={buildText}
-        />
-        <Menu
-          id="vertical-menu"
-          anchorEl={menuAnchorEl}
-          keepMounted
-          open={Boolean(menuAnchorEl)}
-          onClose={handleMenuClose}
-        >
-          <MenuItem onClick={handleBuildLogsClick}>Build logs</MenuItem>
-        </Menu>
-        <CardContent>
-          <BinaryList
-            binaries={binaries}
-            buildStatus={buildStatus}
-            kernelUrl={kernelUrl}
-            selectedVariant={selectedVariant}
-            onBinaryIndicesChange={handleBinaryIndicesChange}
+      <Fade in={animate} timeout={timeout}>
+        <Card>
+          <CardHeader
+            avatar={
+              <Avatar
+                aria-label="build status"
+                className={buildStatus ? classes.success : classes.fail}
+              >
+                {buildStatus ? <CheckIcon /> : <CloseIcon />}
+              </Avatar>
+            }
+            action={
+              <IconButton aria-label="more options" onClick={handleMenuClick}>
+                <MoreVertIcon />
+              </IconButton>
+            }
+            title={platformText}
+            subheader={buildText}
           />
-          <MainActions
-            version={version}
-            kernelUrl={kernelUrl}
-            platform={platform}
-            buildStatus={buildStatus}
-            variants={variants}
-            checkedBinaries={checkedBinaries}
-            selectedVariant={selectedVariant}
-            onVariantChange={handleVariantChange}
-          />
-        </CardContent>
-      </Card>
+          <Menu
+            id="vertical-menu"
+            anchorEl={menuAnchorEl}
+            keepMounted
+            open={Boolean(menuAnchorEl)}
+            onClose={handleMenuClose}
+          >
+            <MenuItem onClick={handleBuildLogsClick}>Build logs</MenuItem>
+          </Menu>
+          <CardContent>
+            <BinaryList
+              binaries={binaries}
+              buildStatus={buildStatus}
+              kernelUrl={kernelUrl}
+              selectedVariant={selectedVariant}
+              onBinaryIndicesChange={handleBinaryIndicesChange}
+            />
+            <MainActions
+              version={version}
+              kernelUrl={kernelUrl}
+              platform={platform}
+              buildStatus={buildStatus}
+              variants={variants}
+              checkedBinaries={checkedBinaries}
+              selectedVariant={selectedVariant}
+              onVariantChange={handleVariantChange}
+            />
+          </CardContent>
+        </Card>
+      </Fade>
     </Grid>
   );
+};
+
+BuildListItem.defaultProps = {
+  animate: true,
 };
 
 BuildListItem.propTypes = {
@@ -125,6 +141,8 @@ BuildListItem.propTypes = {
     binaries: PropTypes.array.isRequired,
     log: PropTypes.string.isRequired,
   }).isRequired,
+  index: PropTypes.number.isRequired,
+  animate: PropTypes.bool,
   handleShowWebViewer: PropTypes.func.isRequired,
 };
 
