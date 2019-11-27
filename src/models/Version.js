@@ -45,11 +45,10 @@ export default class Version {
   }
 
   /**
-   * Parses version string into an object.
-   * @param {String} versionString Version string
-   * @param {String} lastModified Last modified date
+   * Parses an object into a Version object.
+   * @param {Object} param0 Source object
    */
-  static parse(versionString, lastModified = '') {
+  static parse({ versionString, lastModified } = {}) {
     return new this(versionString, lastModified);
   }
 

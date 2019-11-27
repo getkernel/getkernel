@@ -28,7 +28,7 @@ const KernelList = () => {
   const filteredVersions = useMemo(
     () =>
       entries
-        .map((entry) => ServerIndexObject.parseObj(entry).toVersion())
+        .map((entry) => ServerIndexObject.parse(entry).toVersion())
         .filter(versionsFilter(selectedVersions))
         .filter(releaseTypeFilter(releaseType)),
     [entries, selectedVersions, releaseType],

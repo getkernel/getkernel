@@ -15,19 +15,10 @@ export default class ServerIndexObject {
   }
 
   /**
-   * Creates a new instance by parsing the values provided.
-   * @param {String} versionName Version string
-   * @param {String} lastModified Last modified date
-   */
-  static parse(versionName, lastModified) {
-    return new this(versionName, lastModified);
-  }
-
-  /**
    * Creates a new instance by parsing an object.
-   * @param {Object} param0 Server index object
+   * @param {Object} param0 Source object
    */
-  static parseObj({ versionName, lastModified }) {
+  static parse({ versionName, lastModified } = {}) {
     return new this(versionName, lastModified);
   }
 
