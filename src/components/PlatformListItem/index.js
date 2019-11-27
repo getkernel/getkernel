@@ -26,9 +26,9 @@ const useStyles = makeStyles(styles);
 
 const PlatformListItem = ({
   version,
-  base_url: baseUrl,
+  baseUrl,
   platform,
-  build_status: buildStatus,
+  buildStatus,
   binaries,
   log,
   handleShowWebViewer,
@@ -45,7 +45,7 @@ const PlatformListItem = ({
 
   const buildText = `Build ${buildStatus ? 'succeeded' : 'failed'}.`;
   const platformText = platform !== 'i386' ? platform.toUpperCase() : platform;
-  const logUrl = baseUrl + log;
+  const logUrl = `${baseUrl}/${log}`;
 
   const handleBinaryIndicesChange = (indices) => {
     const items = indices.map((index) => binaries[index]);
@@ -124,9 +124,9 @@ const PlatformListItem = ({
 
 PlatformListItem.propTypes = {
   version: PropTypes.string.isRequired,
-  base_url: PropTypes.string.isRequired,
+  baseUrl: PropTypes.string.isRequired,
   platform: PropTypes.string.isRequired,
-  build_status: PropTypes.bool.isRequired,
+  buildStatus: PropTypes.bool.isRequired,
   binaries: PropTypes.array.isRequired,
   log: PropTypes.string.isRequired,
   handleShowWebViewer: PropTypes.func.isRequired,

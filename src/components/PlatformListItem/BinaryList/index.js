@@ -39,15 +39,15 @@ const BinaryList = ({
     }
 
     const newChecked = [];
-    binaries.forEach(({ file_name }, index) => {
+    binaries.forEach(({ fileName }, index) => {
       if (selectedVariant === BUILD_VARIANT_ALL) {
         newChecked.push(index);
         return;
       }
 
       if (
-        file_name.includes(`${selectedVariant}_`) ||
-        file_name.includes(`_${BUILD_VARIANT_ALL}`)
+        fileName.includes(`${selectedVariant}_`) ||
+        fileName.includes(`_${BUILD_VARIANT_ALL}`)
       ) {
         newChecked.push(index);
       }
@@ -74,12 +74,12 @@ const BinaryList = ({
 
   return (
     <List>
-      {binaries.map(({ file_name, file_size, last_modified }, index) => {
-        const labelId = `checkbox-list-label-${file_name}`;
+      {binaries.map(({ fileName, fileSize, lastModified }, index) => {
+        const labelId = `checkbox-list-label-${fileName}`;
 
         return (
           <ListItem
-            key={file_name}
+            key={fileName}
             role={undefined}
             dense
             button
@@ -100,7 +100,7 @@ const BinaryList = ({
               primary={
                 <span>
                   <Typography variant="inherit" component="span">
-                    {file_name}
+                    {fileName}
                   </Typography>
                   <Typography
                     variant="subtitle2"
@@ -108,20 +108,22 @@ const BinaryList = ({
                     component="span"
                     className={classes.fileSize}
                   >
-                    ({file_size})
+                    ({fileSize})
                   </Typography>
                 </span>
               }
-              secondary={moment(last_modified).format('L LT')}
+              secondary={moment(lastModified).format('L LT')}
             />
             <ListItemSecondaryAction>
-              <Tooltip title={`Download ${file_name}`}>
+              <Tooltip title={`Download ${fileName}`}>
                 <span>
                   <IconButton
                     edge="end"
                     aria-label="deb package"
                     disabled={!buildStatus}
-                    onClick={() => fileDownload(baseUrl + file_name, file_name)}
+                    onClick={() =>
+                      fileDownload(`${baseUrl}/${fileName}`, fileName)
+                    }
                   >
                     <img
                       src="/images/deb.svg"

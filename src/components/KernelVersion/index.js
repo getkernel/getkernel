@@ -69,25 +69,25 @@ const KernelVersion = ({ version }) => {
     return <LoadingIndicator />;
   }
 
-  const { base_url, changes, checksums, gpg_key, files } = selectedKernel;
+  const { baseUrl, files, urls } = selectedKernel;
 
   const toolbarButtons = [
     {
       text: 'Changes',
-      handler: () => handleShowWebViewer(changes, 'Changes'),
+      handler: () => handleShowWebViewer(urls.changes, 'Changes'),
     },
     {
       text: 'Checksums',
-      handler: () => handleShowWebViewer(checksums, 'Checksums (All)'),
+      handler: () => handleShowWebViewer(urls.checksums, 'Checksums (All)'),
     },
     {
       text: 'GPG Key',
-      handler: () => handleShowWebViewer(gpg_key, 'GPG Key'),
+      handler: () => handleShowWebViewer(urls.gpgKey, 'GPG Key'),
     },
   ];
 
   const platforms = files
-    ? files.map(({ platform, build_status }) => ({ platform, build_status }))
+    ? files.map(({ platform, buildStatus }) => ({ platform, buildStatus }))
     : [];
 
   return (
@@ -95,7 +95,7 @@ const KernelVersion = ({ version }) => {
       <AppBar position="sticky" color="default">
         <Toolbar className={classes.toolbar}>
           <div className={classes.platformChips}>
-            {platforms.map(({ platform, build_status }) => (
+            {platforms.map(({ platform, buildStatus }) => (
               <Scroll.Link
                 activeClass={classes.linkActive}
                 key={`platform-chip-${platform}`}
@@ -108,7 +108,7 @@ const KernelVersion = ({ version }) => {
               >
                 <Chip
                   label={platform}
-                  icon={build_status ? <CheckIcon /> : <CloseIcon />}
+                  icon={buildStatus ? <CheckIcon /> : <CloseIcon />}
                   variant="outlined"
                   size="small"
                   clickable
@@ -134,7 +134,7 @@ const KernelVersion = ({ version }) => {
                 key={file.platform}
                 {...file}
                 version={version}
-                base_url={base_url}
+                baseUrl={baseUrl}
                 handleShowWebViewer={handleShowWebViewer}
               />
             ))}

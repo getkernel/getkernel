@@ -39,9 +39,9 @@ const doBatchDownload = (items) => {
  * @param {String} baseUrl Base url to prepend to file names
  */
 export const batchDownload = (binaries, baseUrl) => {
-  const items = binaries.map(({ file_name }) => ({
-    url: baseUrl + file_name,
-    fileName: file_name,
+  const items = binaries.map(({ fileName }) => ({
+    url: `${baseUrl}/${fileName}`,
+    fileName,
   }));
   doBatchDownload(items);
 };
@@ -57,10 +57,10 @@ export const calculateDownloadSize = (binaries) => {
     k: 1,
   };
 
-  const sizes = binaries.map(({ file_size }) => {
+  const sizes = binaries.map(({ fileSize }) => {
     // Grab unit and size.
-    const unit = file_size.match(/[A-Z]/i)[0];
-    let size = Number(file_size.replace(unit, ''));
+    const unit = fileSize.match(/[A-Z]/i)[0];
+    let size = Number(fileSize.replace(unit, ''));
 
     // Convert everything to KB.
     size *= kbBasedUnitTable[unit.toLowerCase()];
