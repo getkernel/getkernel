@@ -20,7 +20,7 @@ const fetchVersion = async (version) => {
     // Fetch main html file.
     const resMain = await fetch(baseUrl);
     const bodyMain = await resMain.text();
-    const $_main = cheerio.load(bodyMain);
+    const $ = cheerio.load(bodyMain);
 
     // Fetch and parse BUILT file.
     const resBuilt = await fetch(`${baseUrl}/BUILT`);
@@ -50,10 +50,10 @@ const fetchVersion = async (version) => {
       });
 
     // Loop over table rows and extract necessary information.
-    $_main('table')
+    $('table')
       .find('tr')
       .each((_, elem) => {
-        const tds = $_main(elem).find('td');
+        const tds = $(elem).find('td');
         if (tds.length === 0) return true;
 
         // Extract file name, file size, platform and last modified date.

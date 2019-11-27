@@ -38,6 +38,5 @@ module.exports = {
     'react/jsx-props-no-spreading': 'off',
     'react/forbid-prop-types': 'off',
     'react/jsx-fragments': 'off',
-    camelcase: 'off',
   },
 };

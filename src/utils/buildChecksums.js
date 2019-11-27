@@ -11,12 +11,12 @@ export default (checkedBinaries, version, platform) => {
 
   text += '\n#\n# Checksums-Sha1:\n';
   text += checkedBinaries
-    .map(({ fileName: file_name, sha1 }) => `${sha1}  ${file_name}`)
+    .map(({ fileName: file, sha1 }) => `${sha1}  ${file}`)
     .join('\n');
 
   text += '\n#\n# Checksums-Sha256:\n';
   text += checkedBinaries
-    .map(({ fileName: file_name, sha256 }) => `${sha256}  ${file_name}`)
+    .map(({ fileName: file, sha256 }) => `${sha256}  ${file}`)
     .join('\n');
 
   text += `\n#\n# https://getkernel.sh/kernel/${version}\n`;
