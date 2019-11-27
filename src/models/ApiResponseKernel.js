@@ -13,15 +13,13 @@ export default class ApiResponseKernel extends ApiResponseBase {
    */
   constructor(baseUrl, version, statusCode, success) {
     super(baseUrl, statusCode, success);
-    this.data = {
-      version,
-      urls: {
-        changes: `${baseUrl}/CHANGES`,
-        checksums: `${baseUrl}/CHECKSUMS`,
-        gpgKey: `${baseUrl}/CHECKSUMS.gpg`,
-      },
-      files: [],
+    this.data.version = version;
+    this.data.urls = {
+      changes: `${baseUrl}/CHANGES`,
+      checksums: `${baseUrl}/CHECKSUMS`,
+      gpgKey: `${baseUrl}/CHECKSUMS.gpg`,
     };
+    this.data.files = [];
   }
 
   /**

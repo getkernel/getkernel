@@ -11,8 +11,9 @@ export default class ApiResponseBase {
   constructor(baseUrl, statusCode, success) {
     this.statusCode = statusCode || 200;
     this.success = success || true;
-    this.baseUrl = baseUrl || '';
-    this.data = {};
+    this.data = {
+      baseUrl: baseUrl || '',
+    };
     this.error = null;
   }
 
