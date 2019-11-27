@@ -10,14 +10,14 @@ import ServerIndexObject from '../../models/ServerIndexObject';
 
 const BookmarksList = ({ bookmarks }) => {
   const {
-    index: { entries },
+    index: { items },
   } = useContext(KernelsContext);
 
   const bookmarkedVersions = useMemo(() => {
-    return entries
+    return items
       .filter(({ versionName }) => bookmarks.includes(versionName))
       .map((entry) => ServerIndexObject.parse(entry).toVersion());
-  }, [bookmarks, entries]);
+  }, [bookmarks, items]);
 
   return (
     <Grid container spacing={3}>
