@@ -17,11 +17,11 @@ export const KernelsProvider = ({ children }) => {
   );
 
   return (
-    <KernelsContext.Provider value={state}>
-      <KernelsDispatchContext.Provider value={dispatch}>
+    <KernelsDispatchContext.Provider value={dispatch}>
+      <KernelsContext.Provider value={state}>
         {children}
-      </KernelsDispatchContext.Provider>
-    </KernelsContext.Provider>
+      </KernelsContext.Provider>
+    </KernelsDispatchContext.Provider>
   );
 };
 

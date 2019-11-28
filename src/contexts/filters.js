@@ -17,11 +17,11 @@ export const FiltersProvider = ({ children }) => {
   );
 
   return (
-    <FiltersContext.Provider value={state}>
-      <FiltersDispatchContext.Provider value={dispatch}>
+    <FiltersDispatchContext.Provider value={dispatch}>
+      <FiltersContext.Provider value={state}>
         {children}
-      </FiltersDispatchContext.Provider>
-    </FiltersContext.Provider>
+      </FiltersContext.Provider>
+    </FiltersDispatchContext.Provider>
   );
 };
 

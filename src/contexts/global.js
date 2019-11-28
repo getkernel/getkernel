@@ -17,11 +17,9 @@ export const GlobalProvider = ({ children }) => {
   );
 
   return (
-    <GlobalContext.Provider value={state}>
-      <GlobalDispatchContext.Provider value={dispatch}>
-        {children}
-      </GlobalDispatchContext.Provider>
-    </GlobalContext.Provider>
+    <GlobalDispatchContext.Provider value={dispatch}>
+      <GlobalContext.Provider value={state}>{children}</GlobalContext.Provider>
+    </GlobalDispatchContext.Provider>
   );
 };
 
