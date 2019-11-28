@@ -20,8 +20,7 @@ import {
   KernelsDispatchContext,
   GlobalDispatchContext,
 } from '../../contexts';
-import { addKernelData, showWebViewer } from '../../actions';
-import LoadingIndicator from '../LoadingIndicator';
+import { addKernelData, showWebViewer, setIsLoading } from '../../actions';
 import BuildListItem from '../BuildListItem';
 import BookmarkToggle from '../BookmarkToggle';
 import Version from '../../models/Version';
@@ -38,7 +37,6 @@ const KernelVersion = ({ version }) => {
   const kernelsDispatch = useContext(KernelsDispatchContext);
   const globalDispatch = useContext(GlobalDispatchContext);
 
-  const [loading, setLoading] = useState(true);
   const [selectedKernel, setSelectedKernel] = useState(new Kernel());
 
   const versionObj = new Version(version);
@@ -57,11 +55,12 @@ const KernelVersion = ({ version }) => {
 
     if (version && !kernelItem) {
       getKernelData();
+      globalDispatch(setIsLoading(true));
     }
 
     if (kernelItem) {
       setSelectedKernel(Kernel.parse(kernelItem));
-      setLoading(false);
+      globalDispatch(setIsLoading(false));
     }
   }, [kernels, kernelsDispatch, version]);
 
@@ -69,28 +68,26 @@ const KernelVersion = ({ version }) => {
     globalDispatch(showWebViewer(url, title));
   };
 
-  if (loading) {
-    return <LoadingIndicator />;
-  }
-
   const { kernelUrl, builds, urls } = selectedKernel;
 
-  const toolbarButtons = [
-    {
-      text: 'Changes',
-      handler: () => handleShowWebViewer(urls.changes, 'Changes'),
-    },
-    {
-      text: 'Checksums',
-      handler: () => handleShowWebViewer(urls.checksums, 'Checksums (All)'),
-    },
-    {
-      text: 'GPG Key',
-      handler: () => handleShowWebViewer(urls.gpgKey, 'GPG Key'),
-    },
-  ];
+  const toolbarButtons = selectedKernel.hasBuilds()
+    ? [
+        {
+          text: 'Changes',
+          handler: () => handleShowWebViewer(urls.changes, 'Changes'),
+        },
+        {
+          text: 'Checksums',
+          handler: () => handleShowWebViewer(urls.checksums, 'Checksums (All)'),
+        },
+        {
+          text: 'GPG Key',
+          handler: () => handleShowWebViewer(urls.gpgKey, 'GPG Key'),
+        },
+      ]
+    : [];
 
-  const platforms = builds
+  const platforms = selectedKernel.hasBuilds()
     ? builds.map(({ platform, buildStatus }) => ({ platform, buildStatus }))
     : [];
 
