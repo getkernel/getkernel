@@ -51,10 +51,9 @@ const Bookmarks = () => {
     <div className={classes.root}>
       <PageContent>
         <InfoPanel
-          title="Usage"
+          title="Quick Tip!"
           text="This application is not using any form of persistent data storage
-        whatsoever. This means if you'd like to keep your selections around, you
-        can do so by literally bookmarking the link below."
+        whatsoever. However, you can keep your selections around by literally bookmarking the link below."
           icon={EmojiPeopleIcon}
         >
           <div className={classes.linkArea}>
