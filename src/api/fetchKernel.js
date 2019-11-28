@@ -99,8 +99,10 @@ const fetchVersion = async (version) => {
             platform,
             status: true,
           }))
-          .filter(({ platform }) => platform !== 'all')
-          .sort((a, b) => Compare.string()(a.platform, b.platform));
+          .filter(({ platform }) => platform !== 'all');
+
+    // Sort by platform - ascending order
+    platforms.sort((a, b) => Compare.string()(a.platform, b.platform));
 
     platforms.forEach(({ platform, status }) => {
       const binaries = [...files.all, ...(files[platform] || [])].sort((a, b) =>
