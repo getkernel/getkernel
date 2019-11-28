@@ -1,10 +1,13 @@
 import React from 'react';
 
 /**
- * withProvider HOC.
+ * Higher order component that wraps Component with Provider.
+ * @param {Object} Provider Provider component
  */
-export default (Provider) => (Component) => (props) => (
+const withProvider = (Provider) => (Component) => (props) => (
   <Provider>
     <Component {...props} />
   </Provider>
 );
+
+export default withProvider;
