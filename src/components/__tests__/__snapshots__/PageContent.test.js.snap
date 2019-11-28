@@ -1,16 +1,135 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<PageContent /> should correctly render PageContent component 1`] = `
-<ForwardRef(Fade)
-  in={true}
-  timeout={250}
->
-  <div
-    className="makeStyles-root-1"
-  >
-    <h1>
-      Hello Jest!
-    </h1>
-  </div>
-</ForwardRef(Fade)>
+exports[`<PageContent /> should not render children if isLoading is set to true 1`] = `
+<TestComponent>
+  <GlobalProvider>
+    <PageContent>
+      <ForwardRef(Fade)
+        in={true}
+        timeout={250}
+      >
+        <Transition
+          appear={true}
+          enter={true}
+          exit={true}
+          in={true}
+          mountOnEnter={false}
+          onEnter={[Function]}
+          onEntered={[Function]}
+          onEntering={[Function]}
+          onExit={[Function]}
+          onExited={[Function]}
+          onExiting={[Function]}
+          timeout={250}
+          unmountOnExit={false}
+        >
+          <LoadingIndicator
+            style={
+              Object {
+                "opacity": 1,
+                "visibility": undefined,
+              }
+            }
+          >
+            <div
+              className="makeStyles-root-2"
+            >
+              <WithStyles(ForwardRef(LinearProgress))>
+                <ForwardRef(LinearProgress)
+                  classes={
+                    Object {
+                      "bar": "MuiLinearProgress-bar",
+                      "bar1Buffer": "MuiLinearProgress-bar1Buffer",
+                      "bar1Determinate": "MuiLinearProgress-bar1Determinate",
+                      "bar1Indeterminate": "MuiLinearProgress-bar1Indeterminate",
+                      "bar2Buffer": "MuiLinearProgress-bar2Buffer",
+                      "bar2Indeterminate": "MuiLinearProgress-bar2Indeterminate",
+                      "barColorPrimary": "MuiLinearProgress-barColorPrimary",
+                      "barColorSecondary": "MuiLinearProgress-barColorSecondary",
+                      "buffer": "MuiLinearProgress-buffer",
+                      "colorPrimary": "MuiLinearProgress-colorPrimary",
+                      "colorSecondary": "MuiLinearProgress-colorSecondary",
+                      "dashed": "MuiLinearProgress-dashed",
+                      "dashedColorPrimary": "MuiLinearProgress-dashedColorPrimary",
+                      "dashedColorSecondary": "MuiLinearProgress-dashedColorSecondary",
+                      "determinate": "MuiLinearProgress-determinate",
+                      "indeterminate": "MuiLinearProgress-indeterminate",
+                      "query": "MuiLinearProgress-query",
+                      "root": "MuiLinearProgress-root",
+                    }
+                  }
+                >
+                  <div
+                    className="MuiLinearProgress-root MuiLinearProgress-colorPrimary MuiLinearProgress-indeterminate"
+                    role="progressbar"
+                  >
+                    <div
+                      className="MuiLinearProgress-bar MuiLinearProgress-barColorPrimary MuiLinearProgress-bar1Indeterminate"
+                      style={Object {}}
+                    />
+                    <div
+                      className="MuiLinearProgress-bar MuiLinearProgress-bar2Indeterminate MuiLinearProgress-barColorPrimary"
+                      style={Object {}}
+                    />
+                  </div>
+                </ForwardRef(LinearProgress)>
+              </WithStyles(ForwardRef(LinearProgress))>
+            </div>
+          </LoadingIndicator>
+        </Transition>
+      </ForwardRef(Fade)>
+    </PageContent>
+  </GlobalProvider>
+</TestComponent>
+`;
+
+exports[`<PageContent /> should render children if isLoading is set to false 1`] = `
+<TestComponent>
+  <PageContent>
+    <ForwardRef(Fade)
+      in={true}
+      timeout={250}
+    >
+      <Transition
+        appear={true}
+        enter={true}
+        exit={true}
+        in={true}
+        mountOnEnter={false}
+        onEnter={[Function]}
+        onEntered={[Function]}
+        onEntering={[Function]}
+        onExit={[Function]}
+        onExited={[Function]}
+        onExiting={[Function]}
+        timeout={250}
+        unmountOnExit={false}
+      >
+        <Styled(MuiBox)
+          className="makeStyles-root-1"
+          style={
+            Object {
+              "opacity": 1,
+              "visibility": undefined,
+            }
+          }
+        >
+          <div
+            className="MuiBox-root MuiBox-root-25 makeStyles-root-1"
+            style={
+              Object {
+                "opacity": 1,
+                "visibility": undefined,
+              }
+            }
+          >
+            <h1>
+              Hello Jest!
+            </h1>
+          </div>
+        </Styled(MuiBox)>
+      </Transition>
+    </ForwardRef(Fade)>
+  </PageContent>
+</TestComponent>
 `;
