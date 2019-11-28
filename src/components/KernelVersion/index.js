@@ -1,32 +1,23 @@
 /**
  * KernelVersion component.
  */
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import fetch from 'isomorphic-unfetch';
 import { makeStyles } from '@material-ui/core/styles';
-import Fade from '@material-ui/core/Fade';
 import Grid from '@material-ui/core/Grid';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Button from '@material-ui/core/Button';
-import Chip from '@material-ui/core/Chip';
-import CheckIcon from '@material-ui/icons/Check';
-import CloseIcon from '@material-ui/icons/Close';
-import Scroll from 'react-scroll';
 import PageContent from '../PageContent';
+import KernelVersionToolbar from '../KernelVersionToolbar';
+import BuildListItem from '../BuildListItem';
 import {
   KernelsContext,
   KernelsDispatchContext,
   GlobalDispatchContext,
 } from '../../contexts';
 import { addKernelData, showWebViewer, setIsLoading } from '../../actions';
-import BuildListItem from '../BuildListItem';
-import BookmarkToggle from '../BookmarkToggle';
 import Version from '../../models/Version';
 import Kernel from '../../models/Kernel';
 import styles from './styles';
-import appConfig from '../../app.config';
 
 const useStyles = makeStyles(styles);
 
@@ -64,71 +55,19 @@ const KernelVersion = ({ version }) => {
     }
   }, [kernels, kernelsDispatch, version]);
 
-  const handleShowWebViewer = (url, title) => {
+  const handleShowWebViewer = useCallback((url, title) => {
     globalDispatch(showWebViewer(url, title));
-  };
+  });
 
-  const { kernelUrl, builds, urls } = selectedKernel;
-
-  const toolbarButtons = selectedKernel.hasBuilds()
-    ? [
-        {
-          text: 'Changes',
-          handler: () => handleShowWebViewer(urls.changes, 'Changes'),
-        },
-        {
-          text: 'Checksums',
-          handler: () => handleShowWebViewer(urls.checksums, 'Checksums (All)'),
-        },
-        {
-          text: 'GPG Key',
-          handler: () => handleShowWebViewer(urls.gpgKey, 'GPG Key'),
-        },
-      ]
-    : [];
-
-  const platforms = selectedKernel.hasBuilds()
-    ? builds.map(({ platform, buildStatus }) => ({ platform, buildStatus }))
-    : [];
+  const { builds, kernelUrl } = selectedKernel;
 
   return (
     <div className={classes.root}>
-      <Fade in timeout={500}>
-        <AppBar position="sticky" color="default">
-          <Toolbar className={classes.toolbar}>
-            <div className={classes.platformChips}>
-              {platforms.map(({ platform, buildStatus }) => (
-                <Scroll.Link
-                  activeClass={classes.linkActive}
-                  key={`platform-chip-${platform}`}
-                  to={platform}
-                  spy
-                  hashSpy
-                  smooth
-                  offset={-70}
-                  duration={appConfig.smoothScrollDuration}
-                >
-                  <Chip
-                    label={platform}
-                    icon={buildStatus ? <CheckIcon /> : <CloseIcon />}
-                    variant="outlined"
-                    size="small"
-                    clickable
-                  />
-                </Scroll.Link>
-              ))}
-            </div>
-            <div>
-              {toolbarButtons.map(({ text, handler }) => (
-                <Button key={`toolbar-button-${text}`} onClick={handler}>
-                  {text}
-                </Button>
-              ))}
-              <BookmarkToggle version={versionObj} size="medium" />
-            </div>
-          </Toolbar>
-        </AppBar>
-      </Fade>
+      <KernelVersionToolbar
+        kernel={selectedKernel}
+        version={versionObj}
+        handleShowWebViewer={handleShowWebViewer}
+      />
       <PageContent>
         <Grid container spacing={3}>
           {builds &&
