@@ -1,7 +1,7 @@
 /**
  * BookmarkToggle component.
  */
-import React, { useContext, memo } from 'react';
+import React, { useCallback, useContext, memo } from 'react';
 import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -11,6 +11,7 @@ import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 import CheckIcon from '@material-ui/icons/Check';
 import { GlobalContext, GlobalDispatchContext } from '../../contexts';
 import { addBookmark, removeBookmark, showSnackbar } from '../../actions';
+import Version from '../../models/Version';
 
 const BookmarkToggle = ({ version, size }) => {
   const router = useRouter();
@@ -27,24 +28,24 @@ const BookmarkToggle = ({ version, size }) => {
   let BookmarkButtonIcon = isBookmarked ? BookmarkIcon : BookmarkBorderIcon;
   if (disableBookmark) BookmarkButtonIcon = CheckIcon;
 
-  const handleAddBookmark = (versionStr) => {
+  const handleAddBookmark = useCallback((versionStr) => {
     globalDispatch(addBookmark(versionStr));
     globalDispatch(showSnackbar(`${versionStr} added to bookmarks.`));
-  };
+  });
 
-  const handleRemoveBookmark = (versionStr) => {
+  const handleRemoveBookmark = useCallback((versionStr) => {
     globalDispatch(removeBookmark(versionStr));
     globalDispatch(showSnackbar(`${versionStr} removed from bookmarks.`));
-  };
+  });
 
-  const handleBookmarkClick = () => {
+  const handleBookmarkClick = useCallback(() => {
     const versionStr = version.toString();
     if (isBookmarked) {
       handleRemoveBookmark(versionStr);
     } else {
       handleAddBookmark(versionStr);
     }
-  };
+  });
 
   return (
     <Tooltip
@@ -73,7 +74,7 @@ BookmarkToggle.defaultProps = {
 };
 
 BookmarkToggle.propTypes = {
-  version: PropTypes.object.isRequired,
+  version: PropTypes.instanceOf(Version).isRequired,
   size: PropTypes.oneOf(['small', 'medium']),
 };
 
