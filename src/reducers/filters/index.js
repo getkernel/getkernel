@@ -9,7 +9,7 @@ export { defaultState, releaseTypes };
 
 export default (state, action) => {
   switch (action.type) {
-    case 'SET_AVAILABLE_VERSIONS_FILTER': {
+    case 'SET_AVAILABLE_VERSIONS': {
       const availableVersions = [];
       const versions = action.data.results
         .filter(({ versionName }) => versionName.startsWith('v'))
@@ -40,7 +40,7 @@ export default (state, action) => {
       };
     }
 
-    case 'SET_SELECTED_VERSIONS_FILTER':
+    case 'SET_SELECTED_VERSIONS':
       return {
         ...state,
         selectedVersions: action.filters,

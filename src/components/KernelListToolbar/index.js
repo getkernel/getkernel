@@ -16,7 +16,7 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import Select from '@material-ui/core/Select';
 import Checkbox from '@material-ui/core/Checkbox';
 import { FiltersContext, FiltersDispatchContext } from '../../contexts';
-import { setSelectedVersionsFilter, setReleaseType } from '../../actions';
+import { setSelectedVersions, setReleaseType } from '../../actions';
 import { releaseTypes } from '../../reducers/filters/defaultState';
 import styles from './styles';
 
@@ -30,6 +30,14 @@ const KernelListToolbar = () => {
   );
   const filtersDispatch = useContext(FiltersDispatchContext);
 
+  const handleVersionChange = (e) => {
+    filtersDispatch(setSelectedVersions(e.target.value));
+  };
+
+  const handleReleaseTypeChange = (e) => {
+    filtersDispatch(setReleaseType(e.target.value));
+  };
+
   return (
     <Fade in timeout={500}>
       <AppBar position="sticky" color="default">
@@ -42,9 +50,7 @@ const KernelListToolbar = () => {
                 id="version-select"
                 multiple
                 value={selectedVersions}
-                onChange={(e) =>
-                  filtersDispatch(setSelectedVersionsFilter(e.target.value))
-                }
+                onChange={handleVersionChange}
                 input={<Input />}
                 renderValue={(selected) => selected.join(', ')}
                 // MenuProps={MenuProps}
@@ -68,9 +74,7 @@ const KernelListToolbar = () => {
                 labelId="release-type-label"
                 id="release-type-select"
                 value={releaseType}
-                onChange={(e) =>
-                  filtersDispatch(setReleaseType(e.target.value))
-                }
+                onChange={handleReleaseTypeChange}
               >
                 {releaseTypes.map(({ value, text }) => (
                   <MenuItem value={value} key={`release-type-${value}`}>

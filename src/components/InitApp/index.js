@@ -15,8 +15,8 @@ import {
 } from '../../contexts';
 import {
   hydrateIndexData,
-  setAvailableVersionsFilter,
-  setSelectedVersionsFilter,
+  setAvailableVersions,
+  setSelectedVersions,
   setIsLoading,
 } from '../../actions';
 
@@ -39,7 +39,7 @@ const InitApp = () => {
 
       if (json.success) {
         kernelsDispatch(hydrateIndexData(json.data));
-        filtersDispatch(setAvailableVersionsFilter(json.data));
+        filtersDispatch(setAvailableVersions(json.data));
         globalDispatch(setIsLoading(false));
 
         // TODO: FIX THIS!!!
@@ -57,7 +57,7 @@ const InitApp = () => {
     if (!filtersSet && availableVersions.length) {
       // Set default filters to latest two minor versions of the latest kernel
       const [filterOne, filterTwo] = availableVersions[0].minors;
-      filtersDispatch(setSelectedVersionsFilter([filterOne, filterTwo]));
+      filtersDispatch(setSelectedVersions([filterOne, filterTwo]));
     }
   }, [availableVersions, filtersDispatch, filtersSet]);
 

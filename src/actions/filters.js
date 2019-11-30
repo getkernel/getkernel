@@ -3,20 +3,20 @@
  */
 
 /**
- * setAvailableVersionsFilter action generator.
+ * setAvailableVersions action generator.
  * @param {Object} data Index data.
  */
-export const setAvailableVersionsFilter = (data) => ({
-  type: 'SET_AVAILABLE_VERSIONS_FILTER',
+export const setAvailableVersions = (data) => ({
+  type: 'SET_AVAILABLE_VERSIONS',
   data,
 });
 
 /**
- * setSelectedVersionsFilter action generator.
+ * setSelectedVersions action generator.
  * @param {Array} filters Filters array
  */
-export const setSelectedVersionsFilter = (filters) => ({
-  type: 'SET_SELECTED_VERSIONS_FILTER',
+export const setSelectedVersions = (filters) => ({
+  type: 'SET_SELECTED_VERSIONS',
   filters,
 });
 

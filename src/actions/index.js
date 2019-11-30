@@ -16,8 +16,8 @@ import {
 } from './global';
 import { addKernelData, hydrateIndexData } from './kernels';
 import {
-  setAvailableVersionsFilter,
-  setSelectedVersionsFilter,
+  setAvailableVersions,
+  setSelectedVersions,
   setReleaseType,
 } from './filters';
 
@@ -38,7 +38,7 @@ export {
   removeDoNotAskItem,
   addKernelData,
   hydrateIndexData,
-  setAvailableVersionsFilter,
-  setSelectedVersionsFilter,
+  setAvailableVersions,
+  setSelectedVersions,
   setReleaseType,
 };
