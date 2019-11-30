@@ -8,8 +8,9 @@
     "start": "next start",
     "test": "jest --config=jest.config.js",
     "test:watch": "npm run test -- --watch",
-    "lint": "eslint \"pages/**/*.js\" \"src/**/*.js\"",
-    "lint:fix": "npm run lint -- --fix"
+    "lint": "eslint \"pages/**/*.js\" \"scripts/**/*.js\" \"src/**/*.js\"",
+    "lint:fix": "npm run lint -- --fix",
+    "ngrok": "node scripts/ngrok.js"
   },
   "husky": {
     "hooks": {
@@ -49,11 +50,12 @@
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-prettier": "^3.1.1",
-    "eslint-plugin-react": "^7.16.0",
+    "eslint-plugin-react": "^7.17.0",
     "eslint-plugin-react-hooks": "^1.7.0",
     "husky": "^3.1.0",
     "jest": "^24.9.0",
+    "ngrok": "^3.2.5",
     "prettier": "^1.19.1",
-    "react-test-renderer": "^16.9.0"
+    "react-test-renderer": "^16.12.0"
   }
 }
