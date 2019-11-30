@@ -7,8 +7,8 @@ import PropTypes from 'prop-types';
 import appConfig from '../../app.config';
 
 const DocumentHead = ({ pageTitle }) => {
-  const staticText = `${appConfig.slogan} | ${appConfig.name}`;
-  const title = pageTitle ? `${pageTitle} | ${staticText}` : staticText;
+  const staticText = `${appConfig.slogan} - ${appConfig.name}`;
+  const title = pageTitle ? `${pageTitle} - ${staticText}` : staticText;
 
   return (
     <Head>
