@@ -7,7 +7,6 @@ import {
   GlobalDispatchContext,
   KernelsContext,
   KernelsDispatchContext,
-  FiltersContext,
   FiltersDispatchContext,
   KernelsProvider,
   FiltersProvider,
@@ -17,7 +16,6 @@ import {
   hydrateIndexData,
   setAvailableVersions,
   setAvailableDistros,
-  setSelectedVersions,
   setIsLoading,
 } from '../../actions';
 
@@ -27,7 +25,6 @@ const InitApp = () => {
   const {
     index: { items },
   } = useContext(KernelsContext);
-  const { filtersSet, availableVersions } = useContext(FiltersContext);
 
   const globalDispatch = useContext(GlobalDispatchContext);
   const kernelsDispatch = useContext(KernelsDispatchContext);
@@ -54,14 +51,6 @@ const InitApp = () => {
       globalDispatch(setIsLoading(true));
     }
   }, [items.length, filtersDispatch, kernelsDispatch, router]);
-
-  useEffect(() => {
-    if (!filtersSet && availableVersions.length) {
-      // Set default filters to latest two minor versions of the latest kernel
-      const [filterOne, filterTwo] = availableVersions[0].minors;
-      filtersDispatch(setSelectedVersions([filterOne, filterTwo]));
-    }
-  }, [availableVersions, filtersDispatch, filtersSet]);
 
   return null;
 };

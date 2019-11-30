@@ -11,7 +11,9 @@ export default (state, action) => {
       return {
         ...state,
         index: {
-          items: action.data.results,
+          items: action.data.results.filter(({ versionName }) =>
+            versionName.startsWith('v'),
+          ),
         },
       };
 

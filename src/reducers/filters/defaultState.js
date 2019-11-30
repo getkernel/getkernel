@@ -17,10 +17,9 @@ export const releaseTypes = [
 ];
 
 export default {
-  filtersSet: false,
   releaseType: releaseTypes[0].value,
   availableVersions: [],
-  selectedVersions: [],
+  selectedVersions: [null],
   availableDistros: [],
   selectedDistros: [null],
 };

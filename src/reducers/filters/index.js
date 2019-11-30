@@ -44,7 +44,6 @@ export default (state, action) => {
       return {
         ...state,
         selectedVersions: action.filters,
-        filtersSet: true,
       };
 
     case 'SET_AVAILABLE_DISTROS': {

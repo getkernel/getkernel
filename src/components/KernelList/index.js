@@ -1,7 +1,7 @@
 /**
  * KernelList component.
  */
-import React, { useContext, useMemo, memo } from 'react';
+import React, { useContext, useMemo, useState, memo } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import PageContent from '../PageContent';
@@ -28,26 +28,38 @@ const KernelList = () => {
     FiltersContext,
   );
 
+  const itemsPerPage = 30;
+  const [page] = useState(0);
+
   const filteredVersions = useMemo(() => {
     const [, distrosRest] = selectedDistros;
-    if (distrosRest) {
-      return items
-        .map((entry) => ServerIndexObject.parse(entry).toVersion())
-        .filter(distrosFilter(selectedDistros))
-        .filter(releaseTypeFilter(releaseType));
-    }
-    return items
+    const [, versionsRest] = selectedVersions;
+
+    const filtered = items
       .map((entry) => ServerIndexObject.parse(entry).toVersion())
-      .filter(versionsFilter(selectedVersions))
       .filter(releaseTypeFilter(releaseType));
+
+    if (distrosRest) {
+      return filtered.filter(distrosFilter(distrosRest));
+    }
+    if (versionsRest) {
+      return filtered.filter(versionsFilter(versionsRest));
+    }
+    return filtered;
   }, [items, selectedVersions, selectedDistros, releaseType]);
+
+  const pageContents = useMemo(() => {
+    const start = page * itemsPerPage;
+    const end = start + itemsPerPage;
+    return filteredVersions.slice(start, end);
+  }, [filteredVersions]);
 
   return (
     <div className={classes.root}>
       <KernelListToolbar />
       <PageContent>
         <Grid container spacing={3}>
-          {filteredVersions.map((version, index) => (
+          {pageContents.map((version, index) => (
             <KernelListItem
               key={version.toString()}
               version={version}

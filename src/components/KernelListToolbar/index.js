@@ -53,96 +53,110 @@ const KernelListToolbar = () => {
 
   const disableVersionFilter = selectedDistros.length > 1;
 
+  const mainFilters = [
+    {
+      id: 'version-select',
+      label: 'Version',
+      value: selectedVersions,
+      disabled: disableVersionFilter,
+      onChange: handleVersionChange,
+      options: availableVersions.map(({ major, count, minors }) => [
+        <ListSubheader>{`v${major} (${count} items)`}</ListSubheader>,
+        minors.map((minor) => (
+          <MenuItem key={`${major}-${minor}`} value={minor}>
+            <Checkbox checked={selectedVersions.indexOf(minor) > -1} />
+            <ListItemText primary={minor} />
+          </MenuItem>
+        )),
+      ]),
+    },
+    {
+      id: 'distro-select',
+      label: 'Distro',
+      value: selectedDistros,
+      disabled: false,
+      onChange: handleDistroChange,
+      options: availableDistros.map(({ distro, count, minors }) => [
+        <ListSubheader>{`${StringUtils.toUpperFirst(
+          distro,
+        )} (${count} items)`}</ListSubheader>,
+        minors.map((minor) => {
+          const filterToken = `${distro}@${minor}`;
+          return (
+            <MenuItem key={filterToken} value={filterToken}>
+              <Checkbox checked={selectedDistros.indexOf(filterToken) > -1} />
+              <ListItemText primary={minor} />
+            </MenuItem>
+          );
+        }),
+      ]),
+    },
+  ];
+
   return (
     <Fade in timeout={500}>
       <AppBar position="sticky" color="default">
         <Toolbar>
           <FormGroup row>
-            {/* Versions filter */}
-            <FormControl
-              className={classes.formControl}
-              disabled={disableVersionFilter}
-            >
-              <InputLabel id="version-select-label">Version</InputLabel>
-              <Select
-                labelId="version-select-label"
-                id="version-select"
-                multiple
-                value={selectedVersions}
-                onChange={handleVersionChange}
-                input={<Input />}
-                renderValue={(selected) => selected.join(', ')}
-              >
-                {availableVersions.map(({ major, count, minors }) => [
-                  <ListSubheader>{`v${major} (${count} items)`}</ListSubheader>,
-                  minors.map((minor) => (
-                    <MenuItem key={`${major}-${minor}`} value={minor}>
-                      <Checkbox
-                        checked={selectedVersions.indexOf(minor) > -1}
-                      />
-                      <ListItemText primary={minor} />
-                    </MenuItem>
-                  )),
-                ])}
-              </Select>
-            </FormControl>
+            {/* Main filters */}
+            {mainFilters.map((filterItem) => {
+              const {
+                id,
+                label,
+                value,
+                disabled,
+                onChange,
+                options,
+              } = filterItem;
 
-            {/* Distros filter */}
+              return (
+                <FormControl
+                  key={`main-filter-${id}`}
+                  className={classes.formControl}
+                  disabled={disabled}
+                >
+                  <InputLabel id={`${id}-label`}>{label}</InputLabel>
+                  <Select
+                    labelId={`${id}-label`}
+                    id={id}
+                    multiple
+                    value={value}
+                    onChange={onChange}
+                    input={<Input />}
+                    renderValue={(selected) => {
+                      const [, ...rest] = selected;
+                      if (rest.length === 0) {
+                        return <span>All</span>;
+                      }
+                      return rest.join(', ');
+                    }}
+                  >
+                    <MenuItem value="" disabled>
+                      All
+                    </MenuItem>
+                    {options}
+                  </Select>
+                </FormControl>
+              );
+            })}
+
+            {/* Release type filter */}
             <FormControl className={classes.formControl}>
-              <InputLabel id="distro-label">Distro</InputLabel>
+              <InputLabel id="release-type-label">Release Type</InputLabel>
               <Select
-                labelId="distro-label"
-                id="distro-select"
-                multiple
-                value={selectedDistros}
-                onChange={handleDistroChange}
-                renderValue={(selected) => {
-                  const [, ...rest] = selected;
-                  if (rest.length === 0) {
-                    return <span>All</span>;
-                  }
-                  return rest.join(', ');
-                }}
+                labelId="release-type-label"
+                id="release-type-select"
+                value={releaseType}
+                onChange={handleReleaseTypeChange}
               >
-                <MenuItem value="" disabled>
-                  All
-                </MenuItem>
-                {availableDistros.map(({ distro, count, minors }) => [
-                  <ListSubheader>{`${StringUtils.toUpperFirst(
-                    distro,
-                  )} (${count} items)`}</ListSubheader>,
-                  minors.map((minor) => {
-                    const filterToken = `${distro}@${minor}`;
-                    return (
-                      <MenuItem key={filterToken} value={filterToken}>
-                        <Checkbox
-                          checked={selectedDistros.indexOf(filterToken) > -1}
-                        />
-                        <ListItemText primary={minor} />
-                      </MenuItem>
-                    );
-                  }),
-                ])}
+                {releaseTypes.map(({ value, text }) => (
+                  <MenuItem value={value} key={`release-type-${value}`}>
+                    {text}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
           </FormGroup>
-
-          {/* Release type filter */}
-          <FormControl className={classes.formControl}>
-            <InputLabel id="release-type-label">Release Type</InputLabel>
-            <Select
-              labelId="release-type-label"
-              id="release-type-select"
-              value={releaseType}
-              onChange={handleReleaseTypeChange}
-            >
-              {releaseTypes.map(({ value, text }) => (
-                <MenuItem value={value} key={`release-type-${value}`}>
-                  {text}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
         </Toolbar>
       </AppBar>
     </Fade>
