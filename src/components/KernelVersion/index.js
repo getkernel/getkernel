@@ -34,7 +34,9 @@ const KernelVersion = ({ version }) => {
 
   useEffect(() => {
     const getKernelData = async () => {
-      const res = await fetch(`http://localhost:3000/api/kernel/${version}`);
+      const res = await fetch(
+        `${window.location.origin}/api/kernel/${version}`,
+      );
       const json = await res.json();
 
       if (json.success) {

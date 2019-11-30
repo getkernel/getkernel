@@ -32,7 +32,7 @@ const InitApp = () => {
 
   useEffect(() => {
     const getInitialData = async () => {
-      const res = await fetch('http://localhost:3000/api/kernels');
+      const res = await fetch(`${window.location.origin}/api/kernels`);
       const json = await res.json();
 
       if (json.success) {
