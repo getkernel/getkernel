@@ -12,6 +12,15 @@ export const setAvailableVersions = (data) => ({
 });
 
 /**
+ * setAvailableDistros action generator.
+ * @param {Object} data Index data.
+ */
+export const setAvailableDistros = (data) => ({
+  type: 'SET_AVAILABLE_DISTROS',
+  data,
+});
+
+/**
  * setSelectedVersions action generator.
  * @param {Array} filters Filters array
  */

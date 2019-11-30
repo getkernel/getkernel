@@ -16,6 +16,7 @@ import {
 import {
   hydrateIndexData,
   setAvailableVersions,
+  setAvailableDistros,
   setSelectedVersions,
   setIsLoading,
 } from '../../actions';
@@ -40,6 +41,7 @@ const InitApp = () => {
       if (json.success) {
         kernelsDispatch(hydrateIndexData(json.data));
         filtersDispatch(setAvailableVersions(json.data));
+        filtersDispatch(setAvailableDistros(json.data));
         globalDispatch(setIsLoading(false));
 
         // TODO: FIX THIS!!!

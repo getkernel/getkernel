@@ -17,6 +17,7 @@ import {
 import { addKernelData, hydrateIndexData } from './kernels';
 import {
   setAvailableVersions,
+  setAvailableDistros,
   setSelectedVersions,
   setReleaseType,
 } from './filters';
@@ -39,6 +40,7 @@ export {
   addKernelData,
   hydrateIndexData,
   setAvailableVersions,
+  setAvailableDistros,
   setSelectedVersions,
   setReleaseType,
 };
