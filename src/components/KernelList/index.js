@@ -8,7 +8,11 @@ import PageContent from '../PageContent';
 import KernelListToolbar from '../KernelListToolbar';
 import KernelListItem from '../KernelListItem';
 import { KernelsContext, FiltersContext } from '../../contexts';
-import { versionsFilter, releaseTypeFilter } from '../../selectors';
+import {
+  versionsFilter,
+  distrosFilter,
+  releaseTypeFilter,
+} from '../../selectors';
 import ServerIndexObject from '../../models/ServerIndexObject';
 import styles from './styles';
 
@@ -20,16 +24,23 @@ const KernelList = () => {
   const {
     index: { items },
   } = useContext(KernelsContext);
-  const { selectedVersions, releaseType } = useContext(FiltersContext);
-
-  const filteredVersions = useMemo(
-    () =>
-      items
-        .map((entry) => ServerIndexObject.parse(entry).toVersion())
-        .filter(versionsFilter(selectedVersions))
-        .filter(releaseTypeFilter(releaseType)),
-    [items, selectedVersions, releaseType],
+  const { selectedVersions, selectedDistros, releaseType } = useContext(
+    FiltersContext,
   );
+
+  const filteredVersions = useMemo(() => {
+    const [, distrosRest] = selectedDistros;
+    if (distrosRest) {
+      return items
+        .map((entry) => ServerIndexObject.parse(entry).toVersion())
+        .filter(distrosFilter(selectedDistros))
+        .filter(releaseTypeFilter(releaseType));
+    }
+    return items
+      .map((entry) => ServerIndexObject.parse(entry).toVersion())
+      .filter(versionsFilter(selectedVersions))
+      .filter(releaseTypeFilter(releaseType));
+  }, [items, selectedVersions, selectedDistros, releaseType]);
 
   return (
     <div className={classes.root}>

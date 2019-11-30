@@ -71,9 +71,9 @@ export default (state, action) => {
         }
       });
 
-      // Sort by distro in ascending order.
+      // Sort by distro in descending order.
       availableDistros.sort((a, b) =>
-        Compare.string('asc')(a.distro, b.distro),
+        Compare.string('desc')(a.distro, b.distro),
       );
 
       return {

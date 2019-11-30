@@ -22,5 +22,5 @@ export default {
   availableVersions: [],
   selectedVersions: [],
   availableDistros: [],
-  selectedDistros: [],
+  selectedDistros: [null],
 };

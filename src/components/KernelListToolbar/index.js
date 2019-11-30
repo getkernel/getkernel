@@ -16,8 +16,13 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import Select from '@material-ui/core/Select';
 import Checkbox from '@material-ui/core/Checkbox';
 import { FiltersContext, FiltersDispatchContext } from '../../contexts';
-import { setSelectedVersions, setReleaseType } from '../../actions';
+import {
+  setSelectedVersions,
+  setSelectedDistros,
+  setReleaseType,
+} from '../../actions';
 import { releaseTypes } from '../../reducers/filters/defaultState';
+import StringUtils from '../../utils/StringUtils';
 import styles from './styles';
 
 const useStyles = makeStyles(styles);
@@ -25,25 +30,39 @@ const useStyles = makeStyles(styles);
 const KernelListToolbar = () => {
   const classes = useStyles();
 
-  const { availableVersions, selectedVersions, releaseType } = useContext(
-    FiltersContext,
-  );
+  const {
+    availableVersions,
+    selectedVersions,
+    availableDistros,
+    selectedDistros,
+    releaseType,
+  } = useContext(FiltersContext);
   const filtersDispatch = useContext(FiltersDispatchContext);
+
+  const handleReleaseTypeChange = (e) => {
+    filtersDispatch(setReleaseType(e.target.value));
+  };
 
   const handleVersionChange = (e) => {
     filtersDispatch(setSelectedVersions(e.target.value));
   };
 
-  const handleReleaseTypeChange = (e) => {
-    filtersDispatch(setReleaseType(e.target.value));
+  const handleDistroChange = (e) => {
+    filtersDispatch(setSelectedDistros(e.target.value));
   };
+
+  const disableVersionFilter = selectedDistros.length > 1;
 
   return (
     <Fade in timeout={500}>
       <AppBar position="sticky" color="default">
         <Toolbar>
           <FormGroup row>
-            <FormControl className={classes.formControl}>
+            {/* Versions filter */}
+            <FormControl
+              className={classes.formControl}
+              disabled={disableVersionFilter}
+            >
               <InputLabel id="version-select-label">Version</InputLabel>
               <Select
                 labelId="version-select-label"
@@ -53,7 +72,6 @@ const KernelListToolbar = () => {
                 onChange={handleVersionChange}
                 input={<Input />}
                 renderValue={(selected) => selected.join(', ')}
-                // MenuProps={MenuProps}
               >
                 {availableVersions.map(({ major, count, minors }) => [
                   <ListSubheader>{`v${major} (${count} items)`}</ListSubheader>,
@@ -68,22 +86,63 @@ const KernelListToolbar = () => {
                 ])}
               </Select>
             </FormControl>
+
+            {/* Distros filter */}
             <FormControl className={classes.formControl}>
-              <InputLabel id="release-type-label">Release Type</InputLabel>
+              <InputLabel id="distro-label">Distro</InputLabel>
               <Select
-                labelId="release-type-label"
-                id="release-type-select"
-                value={releaseType}
-                onChange={handleReleaseTypeChange}
+                labelId="distro-label"
+                id="distro-select"
+                multiple
+                value={selectedDistros}
+                onChange={handleDistroChange}
+                renderValue={(selected) => {
+                  const [, ...rest] = selected;
+                  if (rest.length === 0) {
+                    return <span>All</span>;
+                  }
+                  return rest.join(', ');
+                }}
               >
-                {releaseTypes.map(({ value, text }) => (
-                  <MenuItem value={value} key={`release-type-${value}`}>
-                    {text}
-                  </MenuItem>
-                ))}
+                <MenuItem value="" disabled>
+                  All
+                </MenuItem>
+                {availableDistros.map(({ distro, count, minors }) => [
+                  <ListSubheader>{`${StringUtils.toUpperFirst(
+                    distro,
+                  )} (${count} items)`}</ListSubheader>,
+                  minors.map((minor) => {
+                    const filterToken = `${distro}@${minor}`;
+                    return (
+                      <MenuItem key={filterToken} value={filterToken}>
+                        <Checkbox
+                          checked={selectedDistros.indexOf(filterToken) > -1}
+                        />
+                        <ListItemText primary={minor} />
+                      </MenuItem>
+                    );
+                  }),
+                ])}
               </Select>
             </FormControl>
           </FormGroup>
+
+          {/* Release type filter */}
+          <FormControl className={classes.formControl}>
+            <InputLabel id="release-type-label">Release Type</InputLabel>
+            <Select
+              labelId="release-type-label"
+              id="release-type-select"
+              value={releaseType}
+              onChange={handleReleaseTypeChange}
+            >
+              {releaseTypes.map(({ value, text }) => (
+                <MenuItem value={value} key={`release-type-${value}`}>
+                  {text}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </Toolbar>
       </AppBar>
     </Fade>

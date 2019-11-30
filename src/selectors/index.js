@@ -1,4 +1,5 @@
 import versionsFilter from './versionsFilter';
 import releaseTypeFilter from './releaseTypeFilter';
+import distrosFilter from './distrosFilter';
 
-export { versionsFilter, releaseTypeFilter };
+export { versionsFilter, distrosFilter, releaseTypeFilter };
