@@ -15,6 +15,7 @@ import {
 } from '../../selectors';
 import ServerIndexObject from '../../models/ServerIndexObject';
 import styles from './styles';
+import Pagination from '../Pagination';
 
 const useStyles = makeStyles(styles);
 
@@ -28,8 +29,8 @@ const KernelList = () => {
     FiltersContext,
   );
 
-  const itemsPerPage = 30;
-  const [page] = useState(0);
+  const itemsPerPage = 36;
+  const [page, setPage] = useState(0);
 
   const filteredVersions = useMemo(() => {
     const [, distrosRest] = selectedDistros;
@@ -52,7 +53,9 @@ const KernelList = () => {
     const start = page * itemsPerPage;
     const end = start + itemsPerPage;
     return filteredVersions.slice(start, end);
-  }, [filteredVersions]);
+  }, [filteredVersions, page]);
+
+  const totalPages = Math.ceil(filteredVersions.length / itemsPerPage);
 
   return (
     <div className={classes.root}>
@@ -68,6 +71,7 @@ const KernelList = () => {
             />
           ))}
         </Grid>
+        <Pagination page={page} setPage={setPage} totalPages={totalPages} />
       </PageContent>
     </div>
   );
