@@ -20,6 +20,7 @@ export default {
   filtersSet: false,
   releaseType: releaseTypes[0].value,
   availableVersions: [],
-  availableDistros: [],
   selectedVersions: [],
+  availableDistros: [],
+  selectedDistros: [],
 };

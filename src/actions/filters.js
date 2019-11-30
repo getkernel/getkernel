@@ -12,6 +12,15 @@ export const setAvailableVersions = (data) => ({
 });
 
 /**
+ * setSelectedVersions action generator.
+ * @param {Array} filters Filters array
+ */
+export const setSelectedVersions = (filters) => ({
+  type: 'SET_SELECTED_VERSIONS',
+  filters,
+});
+
+/**
  * setAvailableDistros action generator.
  * @param {Object} data Index data.
  */
@@ -21,11 +30,11 @@ export const setAvailableDistros = (data) => ({
 });
 
 /**
- * setSelectedVersions action generator.
+ * setSelectedDistros action generator.
  * @param {Array} filters Filters array
  */
-export const setSelectedVersions = (filters) => ({
-  type: 'SET_SELECTED_VERSIONS',
+export const setSelectedDistros = (filters) => ({
+  type: 'SET_SELECTED_DISTROS',
   filters,
 });
 
