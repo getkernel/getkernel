@@ -2,7 +2,7 @@
  * BuildListItem component.
  * Rendered by KernelVersion.
  */
-import React, { useState, useMemo, memo } from 'react';
+import React, { useState, memo } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Fade from '@material-ui/core/Fade';
@@ -19,8 +19,7 @@ import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
 import BinaryList from './BinaryList';
 import MainActions from './MainActions';
-import { buildVariants } from '../../utils';
-import { BUILD_VARIANT_ALL } from '../../constants';
+import BuildObject from '../../models/BuildObject';
 import styles from './styles';
 
 const useStyles = makeStyles(styles);
@@ -37,11 +36,7 @@ const BuildListItem = ({
 
   const { platform, buildStatus, binaries, log } = build;
 
-  const variants = useMemo(() => {
-    return [...buildVariants(binaries), BUILD_VARIANT_ALL];
-  }, [binaries]);
-
-  const [selectedVariant, setSelectedVariant] = useState(variants[0]);
+  const [selectedVariant, setSelectedVariant] = useState(build.variants[0]);
   const [checkedBinaries, setCheckedBinaries] = useState([]);
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
 
@@ -116,7 +111,7 @@ const BuildListItem = ({
               kernelUrl={kernelUrl}
               platform={platform}
               buildStatus={buildStatus}
-              variants={variants}
+              variants={build.variants}
               checkedBinaries={checkedBinaries}
               selectedVariant={selectedVariant}
               onVariantChange={handleVariantChange}
@@ -135,12 +130,7 @@ BuildListItem.defaultProps = {
 BuildListItem.propTypes = {
   version: PropTypes.string.isRequired,
   kernelUrl: PropTypes.string.isRequired,
-  build: PropTypes.exact({
-    platform: PropTypes.string.isRequired,
-    buildStatus: PropTypes.bool.isRequired,
-    binaries: PropTypes.array.isRequired,
-    log: PropTypes.string.isRequired,
-  }).isRequired,
+  build: PropTypes.instanceOf(BuildObject).isRequired,
   index: PropTypes.number.isRequired,
   animate: PropTypes.bool,
   handleShowWebViewer: PropTypes.func.isRequired,

@@ -17,6 +17,7 @@ import {
 import { addKernelData, showWebViewer, setIsLoading } from '../../actions';
 import Version from '../../models/Version';
 import Kernel from '../../models/Kernel';
+import BuildObject from '../../models/BuildObject';
 import styles from './styles';
 
 const useStyles = makeStyles(styles);
@@ -76,7 +77,7 @@ const KernelVersion = ({ version }) => {
             builds.map((build, index) => (
               <BuildListItem
                 key={build.platform}
-                build={build}
+                build={BuildObject.parse(build)}
                 version={version}
                 kernelUrl={kernelUrl}
                 index={index}
