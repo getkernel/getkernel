@@ -71,8 +71,8 @@ const KernelListToolbar = () => {
       ]),
     },
     {
-      id: 'distro-select',
-      label: 'Distro',
+      id: 'flavor-select',
+      label: 'Flavor',
       value: selectedDistros,
       disabled: false,
       onChange: handleDistroChange,
