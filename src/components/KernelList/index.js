@@ -33,17 +33,17 @@ const KernelList = () => {
   const [page, setPage] = useState(0);
 
   const filteredVersions = useMemo(() => {
-    const [, distrosRest] = selectedDistros;
-    const [, versionsRest] = selectedVersions;
+    const [, ...distrosRest] = selectedDistros;
+    const [, ...versionsRest] = selectedVersions;
 
     const filtered = items
       .map((entry) => ServerIndexObject.parse(entry).toVersion())
       .filter(releaseTypeFilter(releaseType));
 
-    if (distrosRest) {
+    if (distrosRest.length) {
       return filtered.filter(distrosFilter(distrosRest));
     }
-    if (versionsRest) {
+    if (versionsRest.length) {
       return filtered.filter(versionsFilter(versionsRest));
     }
     return filtered;
