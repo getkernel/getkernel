@@ -7,11 +7,11 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 
-const Pagination = ({ page, totalPages, setPage }) => {
+const Pagination = ({ currentPage, totalPages, goToPage }) => {
   const limit = 10;
   const spectrum = Math.min(totalPages, limit);
 
-  const buttons = Array.from({ length: spectrum }, (v, k) => k).map(
+  const buttons = Array.from({ length: spectrum }, (v, k) => k + 1).map(
     (btnIndex) => ({
       button: true,
       index: btnIndex,
@@ -36,10 +36,10 @@ const Pagination = ({ page, totalPages, setPage }) => {
           {buttons.map(({ button, index }) => (
             <Button
               key={`pagination-btn-${index}`}
-              disabled={button ? index === page : true}
-              onClick={() => setPage(index)}
+              disabled={button ? index === currentPage : true}
+              onClick={() => goToPage(index)}
             >
-              {button ? index + 1 : '...'}
+              {button ? index : '...'}
             </Button>
           ))}
         </ButtonGroup>
@@ -49,9 +49,9 @@ const Pagination = ({ page, totalPages, setPage }) => {
 };
 
 Pagination.propTypes = {
-  page: PropTypes.number.isRequired,
+  currentPage: PropTypes.number.isRequired,
   totalPages: PropTypes.number.isRequired,
-  setPage: PropTypes.func.isRequired,
+  goToPage: PropTypes.func.isRequired,
 };
 
 export default Pagination;

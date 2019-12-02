@@ -1,7 +1,8 @@
 /**
  * KernelList component.
  */
-import React, { useContext, useMemo, useState, memo } from 'react';
+import React, { useContext, useMemo, memo } from 'react';
+import { useRouter } from 'next/router';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import PageContent from '../PageContent';
@@ -22,6 +23,11 @@ const useStyles = makeStyles(styles);
 const KernelList = () => {
   const classes = useStyles();
 
+  const router = useRouter();
+  const {
+    query: { p },
+  } = router;
+
   const {
     index: { items },
   } = useContext(KernelsContext);
@@ -29,8 +35,8 @@ const KernelList = () => {
     FiltersContext,
   );
 
+  const currentPage = p ? Number(p) : 1;
   const itemsPerPage = 36;
-  const [page, setPage] = useState(0);
 
   const filteredVersions = useMemo(() => {
     const [, ...distrosRest] = selectedDistros;
@@ -50,10 +56,14 @@ const KernelList = () => {
   }, [items, selectedVersions, selectedDistros, releaseType]);
 
   const pageContents = useMemo(() => {
-    const start = page * itemsPerPage;
+    const start = currentPage * itemsPerPage;
     const end = start + itemsPerPage;
     return filteredVersions.slice(start, end);
-  }, [filteredVersions, page]);
+  }, [filteredVersions, currentPage]);
+
+  const goToPage = (page) => {
+    router.push(`/kernels?p=${page}`);
+  };
 
   const totalPages = Math.ceil(filteredVersions.length / itemsPerPage);
 
@@ -71,7 +81,11 @@ const KernelList = () => {
             />
           ))}
         </Grid>
-        <Pagination page={page} setPage={setPage} totalPages={totalPages} />
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          goToPage={goToPage}
+        />
       </PageContent>
     </div>
   );
