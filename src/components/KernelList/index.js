@@ -1,7 +1,7 @@
 /**
  * KernelList component.
  */
-import React, { useContext, useMemo, memo } from 'react';
+import React, { useContext, useEffect, useMemo, memo } from 'react';
 import { useRouter } from 'next/router';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -35,9 +35,6 @@ const KernelList = () => {
     FiltersContext,
   );
 
-  const currentPage = p ? Number(p) : 1;
-  const itemsPerPage = 36;
-
   const filteredVersions = useMemo(() => {
     const [, ...distrosRest] = selectedDistros;
     const [, ...versionsRest] = selectedVersions;
@@ -55,17 +52,25 @@ const KernelList = () => {
     return filtered;
   }, [items, selectedVersions, selectedDistros, releaseType]);
 
+  const currentPage = p ? Number(p) : 1;
+  const itemsPerPage = 36;
+  const totalPages = Math.ceil(filteredVersions.length / itemsPerPage);
+
+  const goToPage = (page) => {
+    router.push(`/kernels?p=${page}`);
+  };
+
   const pageContents = useMemo(() => {
     const start = (currentPage - 1) * itemsPerPage;
     const end = start + itemsPerPage;
     return filteredVersions.slice(start, end);
   }, [filteredVersions, currentPage]);
 
-  const goToPage = (page) => {
-    router.push(`/kernels?p=${page}`);
-  };
-
-  const totalPages = Math.ceil(filteredVersions.length / itemsPerPage);
+  useEffect(() => {
+    if ((currentPage - 1) * itemsPerPage > filteredVersions.length) {
+      goToPage(1);
+    }
+  }, [filteredVersions.length]);
 
   return (
     <div className={classes.root}>
