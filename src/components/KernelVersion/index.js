@@ -35,10 +35,10 @@ const KernelVersion = ({ version }) => {
 
   useEffect(() => {
     const getKernelData = async () => {
-      const json = await getKernel(version);
+      const { success, data } = await getKernel(version);
 
-      if (json.success) {
-        kernelsDispatch(addKernelData(json.data));
+      if (success) {
+        kernelsDispatch(addKernelData(data));
       }
     };
 

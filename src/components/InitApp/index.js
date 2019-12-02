@@ -33,12 +33,12 @@ const InitApp = () => {
 
   useEffect(() => {
     const getInitialData = async () => {
-      const json = await getKernels();
+      const { success, data } = await getKernels();
 
-      if (json.success) {
-        kernelsDispatch(hydrateIndexData(json.data));
-        filtersDispatch(setAvailableVersions(json.data));
-        filtersDispatch(setAvailableDistros(json.data));
+      if (success) {
+        kernelsDispatch(hydrateIndexData(data));
+        filtersDispatch(setAvailableVersions(data));
+        filtersDispatch(setAvailableDistros(data));
         globalDispatch(setIsLoading(false));
 
         // TODO: FIX THIS!!!
