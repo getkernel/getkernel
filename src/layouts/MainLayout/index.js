@@ -144,14 +144,13 @@ const MainLayout = ({ children, pageTitle, contentTitle, showShadow }) => {
 
 MainLayout.defaultProps = {
   pageTitle: '',
-  contentTitle: 'Available Kernels',
   showShadow: true,
 };
 
 MainLayout.propTypes = {
   children: PropTypes.any.isRequired,
   pageTitle: PropTypes.string,
-  contentTitle: PropTypes.string,
+  contentTitle: PropTypes.string.isRequired,
   showShadow: PropTypes.bool,
 };
 
