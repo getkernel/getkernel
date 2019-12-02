@@ -15,7 +15,11 @@ import {
   addDoNotAskItem,
   removeDoNotAskItem,
 } from './global';
-import { addKernelData, hydrateIndexData } from './kernels';
+import {
+  addKernelData,
+  hydrateIndexData,
+  hydrateKernelOrgData,
+} from './kernels';
 import {
   setAvailableVersions,
   setSelectedVersions,
@@ -42,6 +46,7 @@ export {
   removeDoNotAskItem,
   addKernelData,
   hydrateIndexData,
+  hydrateKernelOrgData,
   setAvailableVersions,
   setSelectedVersions,
   setAvailableDistros,

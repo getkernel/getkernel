@@ -6,4 +6,5 @@ export default {
     items: [],
   },
   kernels: [],
+  kernelorg: {},
 };

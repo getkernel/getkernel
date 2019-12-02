@@ -17,6 +17,12 @@ export default (state, action) => {
         },
       };
 
+    case 'HYDRATE_KERNEL_ORG_DATA':
+      return {
+        ...state,
+        kernelorg: action.data,
+      };
+
     case 'ADD_KERNEL_DATA': {
       const [kernel] = action.data.results;
       return {

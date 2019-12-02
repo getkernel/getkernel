@@ -12,6 +12,15 @@ export const hydrateIndexData = (data) => ({
 });
 
 /**
+ * hydrateKernelOrgData action generator.
+ * @param {Object} data Kernel.org data
+ */
+export const hydrateKernelOrgData = (data) => ({
+  type: 'HYDRATE_KERNEL_ORG_DATA',
+  data,
+});
+
+/**
  * addKernelData action generator.
  * @param {Object} data Kernel data
  */

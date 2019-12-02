@@ -1,4 +1,5 @@
 import fetch from 'isomorphic-unfetch';
+import { corsAnywhere } from '../utils';
 import { KERNEL_ORG_RELEASES_URL } from '../constants';
 
 /**
@@ -6,7 +7,7 @@ import { KERNEL_ORG_RELEASES_URL } from '../constants';
  * @returns {KernelOrgResponse} KernelOrgResponse object
  */
 const getKernelOrg = async () => {
-  const res = await fetch(KERNEL_ORG_RELEASES_URL);
+  const res = await fetch(corsAnywhere(KERNEL_ORG_RELEASES_URL));
   const json = await res.json();
   return json;
 };
