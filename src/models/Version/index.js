@@ -86,6 +86,14 @@ export default class Version {
     return this._rc;
   }
 
+  get lts() {
+    return !!this._lts;
+  }
+
+  set lts(isLts) {
+    this._lts = isLts;
+  }
+
   get lastModified() {
     return this._lastModified;
   }
