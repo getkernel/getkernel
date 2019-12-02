@@ -56,7 +56,7 @@ const KernelList = () => {
   }, [items, selectedVersions, selectedDistros, releaseType]);
 
   const pageContents = useMemo(() => {
-    const start = currentPage * itemsPerPage;
+    const start = (currentPage - 1) * itemsPerPage;
     const end = start + itemsPerPage;
     return filteredVersions.slice(start, end);
   }, [filteredVersions, currentPage]);
