@@ -13,7 +13,12 @@ export const API_ORIGIN = process.browser
   : appConfig.baseUrl;
 
 /**
- * Default date format of the build server.
+ * Base url for latest release information from kernel.org.
+ */
+export const KERNEL_ORG_RELEASES_URL = 'https://www.kernel.org/releases.json';
+
+/**
+ * Default date format of Ubuntu build server.
  */
 export const SERVER_DATE_FORMAT = 'YYYY-MM-DD HH:mm';
 
