@@ -1,4 +1,5 @@
 import './typedef';
+import Version from '../Version';
 
 /**
  * Class that models release objects returned from kernel.org api.
@@ -73,5 +74,13 @@ export default class KernelOrgRelease {
       diffview,
       patch,
     );
+  }
+
+  /**
+   * Returns the Version representation of the object.
+   * @returns {Version} Version instance
+   */
+  toVersion() {
+    return new Version(this.version, this.released.isodate);
   }
 }
