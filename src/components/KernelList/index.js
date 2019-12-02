@@ -70,7 +70,7 @@ const KernelList = () => {
     if ((currentPage - 1) * itemsPerPage > filteredVersions.length) {
       goToPage(1);
     }
-  }, [filteredVersions.length]);
+  }, [filteredVersions.length, currentPage, itemsPerPage]);
 
   return (
     <div className={classes.root}>
