@@ -1,7 +1,16 @@
+import appConfig from './app.config';
+
 /**
  * Base url for Ubuntu build server.
  */
 export const BASE_URL = 'https://kernel.ubuntu.com/~kernel-ppa/mainline';
+
+/**
+ * Base url for the API.
+ */
+export const API_ORIGIN = process.browser
+  ? window.location.origin
+  : appConfig.baseUrl;
 
 /**
  * Default date format of the build server.

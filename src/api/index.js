@@ -1,29 +1,6 @@
-import fetch from 'isomorphic-unfetch';
 import fetchIndex from './fetchIndex';
 import fetchKernel from './fetchKernel';
-import appConfig from '../app.config';
-
-const ORIGIN = process.browser ? window.location.origin : appConfig.baseUrl;
-
-/**
- * Fetches kernels index data from API.
- * @returns {ApiResponse} ApiResponse object
- */
-const getKernels = async () => {
-  const res = await fetch(`${ORIGIN}/api/kernels`);
-  const json = await res.json();
-  return json;
-};
-
-/**
- * Fetches specified kernel data from API.
- * @param {String} versionStr Version string
- * @returns {ApiResponse} ApiResponse object
- */
-const getKernel = async (versionStr) => {
-  const res = await fetch(`${ORIGIN}/api/kernel/${versionStr}`);
-  const json = await res.json();
-  return json;
-};
+import getKernels from './getKernels';
+import getKernel from './getKernel';
 
 export { getKernels, getKernel, fetchIndex, fetchKernel };
