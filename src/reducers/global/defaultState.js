@@ -2,6 +2,7 @@
  * Global default state.
  */
 export default {
+  isInitialized: false,
   isLoading: true,
   drawerOpen: true,
   bookmarks: [],

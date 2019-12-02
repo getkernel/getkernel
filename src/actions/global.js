@@ -17,6 +17,17 @@ export const toggleTheme = () => ({
 });
 
 /**
+ * Generates an action object -> Sets bool state.
+ * @param {String} field Field name
+ * @param {Boolean} value Value to set
+ */
+export const setBoolState = (field, value) => ({
+  type: 'SET_BOOL_STATE',
+  field,
+  value,
+});
+
+/**
  * Generates an action object -> Sets isLoading state.
  * @param {Boolean} isLoading Is loading or not
  */

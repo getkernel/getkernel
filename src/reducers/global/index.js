@@ -19,6 +19,14 @@ export default (state, action) => {
         theme: state.theme === 'dark' ? 'light' : 'dark',
       };
 
+    case 'SET_BOOL_STATE': {
+      const { field, value } = action;
+      return {
+        ...state,
+        [field]: value,
+      };
+    }
+
     case 'SET_IS_LOADING':
       return {
         ...state,

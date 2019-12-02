@@ -1,11 +1,11 @@
 /**
  * InitApp component.
  */
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import {
+  GlobalContext,
   GlobalDispatchContext,
-  KernelsContext,
   KernelsDispatchContext,
   FiltersDispatchContext,
   KernelsProvider,
@@ -16,6 +16,7 @@ import {
   hydrateIndexData,
   setAvailableVersions,
   setAvailableDistros,
+  setBoolState,
   setIsLoading,
 } from '../../actions';
 import { getKernels } from '../../api';
@@ -23,34 +24,33 @@ import { getKernels } from '../../api';
 const InitApp = () => {
   const router = useRouter();
 
-  const {
-    index: { items },
-  } = useContext(KernelsContext);
+  const { isInitialized } = useContext(GlobalContext);
 
   const globalDispatch = useContext(GlobalDispatchContext);
   const kernelsDispatch = useContext(KernelsDispatchContext);
   const filtersDispatch = useContext(FiltersDispatchContext);
 
+  const getInitialData = useCallback(async () => {
+    const { success, data } = await getKernels();
+
+    if (success) {
+      kernelsDispatch(hydrateIndexData(data));
+      filtersDispatch(setAvailableVersions(data));
+      filtersDispatch(setAvailableDistros(data));
+      globalDispatch(setIsLoading(false));
+      globalDispatch(setBoolState('isInitialized', true));
+
+      // TODO: FIX THIS!!!
+      router.reload();
+    }
+  });
+
   useEffect(() => {
-    const getInitialData = async () => {
-      const { success, data } = await getKernels();
-
-      if (success) {
-        kernelsDispatch(hydrateIndexData(data));
-        filtersDispatch(setAvailableVersions(data));
-        filtersDispatch(setAvailableDistros(data));
-        globalDispatch(setIsLoading(false));
-
-        // TODO: FIX THIS!!!
-        router.reload();
-      }
-    };
-
-    if (!items.length) {
+    if (!isInitialized) {
       getInitialData();
       globalDispatch(setIsLoading(true));
     }
-  }, [items.length, filtersDispatch, kernelsDispatch, router]);
+  }, [isInitialized, router]);
 
   return null;
 };
