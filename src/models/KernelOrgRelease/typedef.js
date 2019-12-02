@@ -2,7 +2,7 @@
  * @typedef {Object} KernelOrgRelease
  * @property {Boolean} iseol Is EOL or not
  * @property {String} version Version string
- * @property {('mainline'|'stable'|'longterm'|'linux-next')} moniker Kernel category
+ * @property {('mainline'|'stable'|'longterm'|'prepatch'|'linux-next')} moniker Kernel category
  * @property {String} source Source url
  * @property {String} pgp Pgp url
  * @property {Object} released Release date object

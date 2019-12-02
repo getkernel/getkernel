@@ -8,7 +8,7 @@ export default class KernelOrgRelease {
    * Creates a new instance.
    * @param {Boolean} iseol Is EOL or not
    * @param {String} version Version string
-   * @param {('mainline'|'stable'|'longterm'|'linux-next')} moniker Kernel category
+   * @param {('mainline'|'stable'|'longterm'|'prepatch'|'linux-next')} moniker Kernel category
    * @param {String} source Source url
    * @param {String} pgp Pgp url
    * @param {Object} released Release date object
