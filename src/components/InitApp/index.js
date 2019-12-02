@@ -18,6 +18,7 @@ import {
   setAvailableDistros,
   setIsLoading,
 } from '../../actions';
+import { getKernels } from '../../api';
 
 const InitApp = () => {
   const router = useRouter();
@@ -32,8 +33,7 @@ const InitApp = () => {
 
   useEffect(() => {
     const getInitialData = async () => {
-      const res = await fetch(`${window.location.origin}/api/kernels`);
-      const json = await res.json();
+      const json = await getKernels();
 
       if (json.success) {
         kernelsDispatch(hydrateIndexData(json.data));

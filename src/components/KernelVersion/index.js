@@ -3,7 +3,6 @@
  */
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import fetch from 'isomorphic-unfetch';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import PageContent from '../PageContent';
@@ -18,6 +17,7 @@ import { addKernelData, showWebViewer, setIsLoading } from '../../actions';
 import Version from '../../models/Version';
 import Kernel from '../../models/Kernel';
 import BuildObject from '../../models/BuildObject';
+import { getKernel } from '../../api';
 import styles from './styles';
 
 const useStyles = makeStyles(styles);
@@ -35,10 +35,7 @@ const KernelVersion = ({ version }) => {
 
   useEffect(() => {
     const getKernelData = async () => {
-      const res = await fetch(
-        `${window.location.origin}/api/kernel/${version}`,
-      );
-      const json = await res.json();
+      const json = await getKernel(version);
 
       if (json.success) {
         kernelsDispatch(addKernelData(json.data));
