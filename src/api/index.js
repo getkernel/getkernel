@@ -6,7 +6,7 @@ import appConfig from '../app.config';
 const ORIGIN = process.browser ? window.location.origin : appConfig.baseUrl;
 
 /**
- * Fetches kernels index data from Ubuntu build server.
+ * Fetches kernels index data from API.
  * @returns {ApiResponse} ApiResponse object
  */
 const getKernels = async () => {
@@ -16,7 +16,7 @@ const getKernels = async () => {
 };
 
 /**
- * Fetches specified kernel data from Ubuntu build server.
+ * Fetches specified kernel data from API.
  * @param {String} versionStr Version string
  * @returns {ApiResponse} ApiResponse object
  */
