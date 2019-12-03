@@ -15,6 +15,6 @@ const { controller } = require('./controllers/generateInstallScript');
 
   server.get('*', (req, res) => handle(req, res));
 
-  const s = await server.listen(port);
-  console.log(`> Ready on http://localhost:${s.address().port}`); // eslint-disable-line no-console
+  await server.listen(port);
+  console.log(`> Ready on http://localhost:${port}`); // eslint-disable-line no-console
 })();
