@@ -13,7 +13,10 @@
     "ngrok": "node scripts/ngrok.js"
   },
   "nodemonConfig": {
-    "watch": "src/server.js"
+    "watch": [
+      "src/server.js",
+      "src/controllers/*"
+    ]
   },
   "husky": {
     "hooks": {
