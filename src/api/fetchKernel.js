@@ -2,7 +2,7 @@ import fetch from 'isomorphic-unfetch';
 import cheerio from 'cheerio';
 import Compare from '../utils/Compare';
 import ApiResponse from '../models/ApiResponse';
-import DebianPackage from '../models/DebianPackage';
+import BinaryPackage from '../models/BinaryPackage';
 import Checksum from '../models/Checksum';
 import Kernel from '../models/Kernel';
 import { BASE_URL } from '../constants';
@@ -87,7 +87,7 @@ const fetchVersion = async (version) => {
         const sha256 = c2.sha256 || null;
 
         return files[platform].push(
-          new DebianPackage(fileName, fileSize, lastModified, sha1, sha256),
+          new BinaryPackage(fileName, fileSize, lastModified, sha1, sha256),
         );
       });
 

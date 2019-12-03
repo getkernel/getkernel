@@ -10,7 +10,7 @@ export default class BuildObject {
    * Creates a new BuildObject object.
    * @param {String} platform Build platform
    * @param {Boolean} buildStatus Build succeeded or not
-   * @param {Array<DebianPackage>} binaries Array of DebianPackage objects
+   * @param {Array<BinaryPackage>} binaries Array of BinaryPackage objects
    */
   constructor(platform, buildStatus, binaries) {
     this.platform = platform;

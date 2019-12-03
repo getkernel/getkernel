@@ -1,5 +1,5 @@
 /**
- * @typedef {Object} DebianPackage
+ * @typedef {Object} BinaryPackage
  * @property {String} fileName - File name
  * @property {String} fileSize - File size
  * @property {String} lastModified - Last modified date
