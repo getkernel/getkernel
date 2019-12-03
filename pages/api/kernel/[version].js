@@ -1,4 +1,4 @@
-import { fetchKernel } from '../../../src/api';
+import { fetchKernel } from '../../../src/controllers';
 
 export default async (req, res) => {
   const {
