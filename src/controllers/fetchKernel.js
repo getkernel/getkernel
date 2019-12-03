@@ -7,7 +7,7 @@ import Checksum from '../models/Checksum';
 import Kernel from '../models/Kernel';
 import { BASE_URL } from '../constants';
 
-const fetchVersion = async (version) => {
+const fetchKernel = async (version) => {
   const versionStr = version.toLowerCase().startsWith('v')
     ? version
     : `v${version}`;
@@ -125,4 +125,4 @@ const fetchVersion = async (version) => {
   return apiResponse;
 };
 
-export default fetchVersion;
+export default fetchKernel;
