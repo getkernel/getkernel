@@ -25,7 +25,7 @@ const Pagination = ({ currentPage, totalPages, goToPage }) => {
     });
     buttons.push({
       button: true,
-      index: totalPages - 1,
+      index: totalPages,
     });
   }
 
