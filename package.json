@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "node src/server.js",
+    "dev": "nodemon src/server.js",
     "build": "next build",
     "start": "NODE_ENV=production node src/server.js",
     "test": "jest --config=jest.config.js",
@@ -11,6 +11,9 @@
     "lint": "eslint \"pages/**/*.js\" \"scripts/**/*.js\" \"src/**/*.js\"",
     "lint:fix": "npm run lint -- --fix",
     "ngrok": "node scripts/ngrok.js"
+  },
+  "nodemonConfig": {
+    "watch": "src/server.js"
   },
   "husky": {
     "hooks": {
@@ -57,6 +60,7 @@
     "husky": "^3.1.0",
     "jest": "^24.9.0",
     "ngrok": "^3.2.5",
+    "nodemon": "^2.0.1",
     "prettier": "^1.19.1",
     "react-test-renderer": "^16.12.0"
   }
