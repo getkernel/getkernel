@@ -6,11 +6,11 @@ import appConfig from './app.config';
 export const BASE_URL = 'https://kernel.ubuntu.com/~kernel-ppa/mainline';
 
 /**
- * Base url for the API.
+ * Base url for the app.
  */
-export const API_ORIGIN = process.browser
+export const ORIGIN = process.browser
   ? window.location.origin
-  : appConfig.baseUrl;
+  : appConfig.origin;
 
 /**
  * Base url for latest release information from kernel.org.
