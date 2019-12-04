@@ -45,37 +45,3 @@ export const batchDownload = (binaries, baseUrl) => {
   }));
   doBatchDownload(items);
 };
-
-/**
- * Calculates download size for selected binaries.
- * @param {Array} binaries Array of binaries
- */
-export const calculateDownloadSize = (binaries) => {
-  const kbBasedUnitTable = {
-    g: 1024 * 1024,
-    m: 1024,
-    k: 1,
-  };
-
-  const sizes = binaries.map(({ fileSize }) => {
-    // Grab unit and size.
-    const unit = fileSize.match(/[A-Z]/i)[0];
-    let size = Number(fileSize.replace(unit, ''));
-
-    // Convert everything to KB.
-    size *= kbBasedUnitTable[unit.toLowerCase()];
-    return size;
-  });
-
-  const total = sizes.reduce((acc, current) => acc + current, 0);
-
-  for (let i = 0; i < Object.keys(kbBasedUnitTable).length; i += 1) {
-    const unit = Object.keys(kbBasedUnitTable)[i];
-    const threshold = kbBasedUnitTable[unit];
-    if (total >= threshold) {
-      const fixed = Number.parseFloat(total / threshold).toFixed(1);
-      return `${fixed}${unit.toUpperCase()}`;
-    }
-  }
-  return null;
-};

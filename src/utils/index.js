@@ -1,4 +1,4 @@
-import { fileDownload, batchDownload, calculateDownloadSize } from './download';
+import { fileDownload, batchDownload } from './download';
 import corsAnywhere from './corsAnywhere';
 
-export { fileDownload, batchDownload, calculateDownloadSize, corsAnywhere };
+export { fileDownload, batchDownload, corsAnywhere };

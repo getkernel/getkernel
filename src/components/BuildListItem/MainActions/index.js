@@ -15,7 +15,7 @@ import DownloadIcon from '@material-ui/icons/CloudDownload';
 import { saveAs } from 'file-saver';
 import { GlobalContext, GlobalDispatchContext } from '../../../contexts';
 import { showAlert } from '../../../actions';
-import { batchDownload, calculateDownloadSize } from '../../../utils';
+import { batchDownload } from '../../../utils';
 import BinaryUtils from '../../../utils/BinaryUtils';
 import styles from './styles';
 
@@ -68,7 +68,7 @@ const MainActions = ({
   };
 
   const getDownloadSize = () => {
-    const size = calculateDownloadSize(checkedBinaries);
+    const size = BinaryUtils.calculateDownloadSize(checkedBinaries);
     return size ? ` (${size})` : '';
   };
 

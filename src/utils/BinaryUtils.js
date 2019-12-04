@@ -44,6 +44,16 @@ export default class BinaryUtils {
   }
 
   /**
+   * Calculates total size for the given binaries.
+   * @param {Array<BinaryPackage>} binaries Array of BinaryPackage objects
+   */
+  static calculateDownloadSize(binaries) {
+    const sizes = binaries.map(({ fileSize }) => fileSize.kb);
+    const total = sizes.reduce((acc, current) => acc + current, 0);
+    return this.kbToString(total);
+  }
+
+  /**
    * Creates CHECKSUMS file for the given binaries.
    * @param {Array<BinaryPackage>} binaries Array of BinaryPackage objects
    * @param {String} version Version string

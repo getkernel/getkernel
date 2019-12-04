@@ -108,7 +108,7 @@ const BinaryList = ({
                     component="span"
                     className={classes.fileSize}
                   >
-                    ({fileSize})
+                    ({fileSize.text})
                   </Typography>
                 </span>
               }

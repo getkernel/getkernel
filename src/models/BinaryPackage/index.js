@@ -11,7 +11,7 @@ export default class BinaryPackage extends Checksum {
    * Creates a BinaryPackage object.
    * @param {String} fileName File name
    * @param {String} fileSize File size string
-   * @param {String} lastModified Last modified date
+   * @param {String} lastModified Last modified date ISO String
    * @param {String} sha1 SHA1 checksum of the file
    * @param {String} sha256 SHA256 checksum of the file
    */
