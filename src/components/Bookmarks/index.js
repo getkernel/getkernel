@@ -18,7 +18,7 @@ import BookmarksList from '../BookmarksList';
 import InfoPanel from '../InfoPanel';
 import BookmarkUtils from '../../utils/BookmarkUtils';
 import styles from './styles';
-import appConfig from '../../app.config';
+import { ORIGIN } from '../../constants';
 
 const useStyles = makeStyles(styles);
 
@@ -43,9 +43,7 @@ const Bookmarks = () => {
     globalDispatch(showSnackbar('Link copied to clipboard!'));
   };
 
-  const link = `${
-    process.browser ? window.location.origin : appConfig.baseUrl
-  }/b/${encoded}`;
+  const link = `${ORIGIN}/b/${encoded}`;
 
   return (
     <div className={classes.root}>
