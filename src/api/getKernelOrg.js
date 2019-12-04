@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-unfetch';
-import { corsAnywhere } from '../utils';
+import { corsAnywhere } from '../utils/DownloadUtils';
 import { KERNEL_ORG_RELEASES_URL } from '../constants';
 
 /**

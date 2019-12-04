@@ -45,3 +45,10 @@ export const batchDownload = (binaries, baseUrl) => {
   }));
   doBatchDownload(items);
 };
+
+/**
+ * Proxies the request through cors-anywhere service.
+ * @param {String} url URL
+ */
+export const corsAnywhere = (url) =>
+  `https://cors-anywhere.herokuapp.com/${url}`;

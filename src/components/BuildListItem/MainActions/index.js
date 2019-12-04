@@ -15,7 +15,7 @@ import DownloadIcon from '@material-ui/icons/CloudDownload';
 import { saveAs } from 'file-saver';
 import { GlobalContext, GlobalDispatchContext } from '../../../contexts';
 import { showAlert } from '../../../actions';
-import { batchDownload } from '../../../utils';
+import { batchDownload } from '../../../utils/DownloadUtils';
 import BinaryUtils from '../../../utils/BinaryUtils';
 import styles from './styles';
 

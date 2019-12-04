@@ -15,7 +15,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Checkbox from '@material-ui/core/Checkbox';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
-import { fileDownload } from '../../../utils';
+import { fileDownload } from '../../../utils/DownloadUtils';
 import { BUILD_VARIANT_ALL } from '../../../constants';
 import styles from './styles';
 
