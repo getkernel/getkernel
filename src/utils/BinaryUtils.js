@@ -1,9 +1,48 @@
 import { ORIGIN } from '../constants';
 
+const KB_BASED_UNIT_TABLE = {
+  t: 1024 * 1024 * 1024,
+  g: 1024 * 1024,
+  m: 1024,
+  k: 1,
+};
+
 /**
  * Utility methods for binary objects.
  */
 export default class BinaryUtils {
+  /**
+   * Returns KB based file size.
+   * @param {String} fileSize File size string
+   */
+  static stringToKb(fileSize) {
+    const [, sizeStr, unit] = fileSize.match(
+      /((?:[0-9]*\.)?[0-9]+)?([A-Z]+)?/i,
+    );
+
+    // Convert everything to KB.
+    const size = Number(sizeStr);
+    const sizeInKb = size * KB_BASED_UNIT_TABLE[unit.toLowerCase()];
+
+    return sizeInKb;
+  }
+
+  /**
+   * Returns the file size in user friendly format. (e.g. 10M)
+   * @param {Number} sizeInKb File size in KB
+   */
+  static kbToString(sizeInKb) {
+    for (let i = 0; i < Object.keys(KB_BASED_UNIT_TABLE).length; i += 1) {
+      const unit = Object.keys(KB_BASED_UNIT_TABLE)[i];
+      const threshold = KB_BASED_UNIT_TABLE[unit];
+      if (sizeInKb >= threshold) {
+        const fixed = Number.parseFloat(sizeInKb / threshold).toFixed(1);
+        return `${fixed}${unit.toUpperCase()}`;
+      }
+    }
+    return '';
+  }
+
   /**
    * Creates CHECKSUMS file for the given binaries.
    * @param {Array<BinaryPackage>} binaries Array of BinaryPackage objects
