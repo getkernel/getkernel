@@ -1,6 +1,6 @@
 import Version from '../models/Version';
 import Compare from './Compare';
-import { atob, btoa } from './base64';
+import { atob, btoa } from '../lib/base64';
 
 /**
  * Utility methods for encoding and decoding Bookmarks data.
@@ -13,7 +13,7 @@ export default class BookmarkUtils {
   static encode(bookmarksArray) {
     // Convert strings into Version objects, sort and join them.
     const versions = [...bookmarksArray]
-      .map((version) => new Version(version))
+      .map((versionStr) => new Version(versionStr))
       .sort(Compare.version('desc'))
       .map((versionObj) => versionObj.toString(false))
       .join('|');
