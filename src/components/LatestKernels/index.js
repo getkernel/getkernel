@@ -1,7 +1,7 @@
 /**
  * LatestKernels component.
  */
-import React, { useContext, useMemo, memo } from 'react';
+import React, { useCallback, useContext, useMemo, memo } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import PageContent from '../PageContent';
@@ -22,18 +22,20 @@ const LatestKernels = () => {
   } = useContext(KernelsContext);
   const { latestStable, releases } = kernelorg;
 
+  const compareVersions = useCallback((release) => ({ versionName }) =>
+    versionName ===
+    KernelOrgRelease.from(release)
+      .toVersion()
+      .toString(),
+  );
+
   const contents = useMemo(() => {
     return releases
       ? releases
           .filter((release) => release.moniker !== 'linux-next')
+          .filter((release) => items.some(compareVersions(release)))
           .map((release) => {
-            const item = items.find(
-              ({ versionName }) =>
-                versionName ===
-                KernelOrgRelease.from(release)
-                  .toVersion()
-                  .toString(),
-            );
+            const item = items.find(compareVersions(release));
             const itemVersion = ServerIndexObject.parse(item).toVersion();
             if (release.moniker === 'longterm') {
               itemVersion.lts = true;
