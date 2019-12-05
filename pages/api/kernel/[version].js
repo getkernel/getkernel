@@ -8,8 +8,8 @@ export default async (req, res) => {
 
   switch (method) {
     case 'GET': {
-      const results = await fetchKernel(version);
-      res.status(200).json(results);
+      const result = await fetchKernel(version);
+      res.status(result.statusCode).json(result);
       break;
     }
 

@@ -5,8 +5,8 @@ export default async (req, res) => {
 
   switch (method) {
     case 'GET': {
-      const results = await fetchIndex();
-      res.status(200).json(results);
+      const result = await fetchIndex();
+      res.status(result.statusCode).json(result);
       break;
     }
 
