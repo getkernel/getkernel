@@ -58,26 +58,37 @@ const KernelList = () => {
   const totalPages = Math.ceil(filteredVersions.length / itemsPerPage);
 
   const navigate = (page = null, versions = null, distros = null) => {
-    const queryString = new URLSearchParams(window.location.search);
+    const searchParams = new URLSearchParams(window.location.search);
 
     if (page) {
-      if (queryString.has('p')) queryString.set('p', page);
-      else queryString.append('p', page);
+      if (searchParams.has('p')) searchParams.set('p', page);
+      else searchParams.append('p', page);
     }
 
     if (versions) {
       const versionsStr = versions.join(',');
-      if (queryString.has('v')) queryString.set('v', versionsStr);
-      else queryString.append('v', versionsStr);
+      if (searchParams.has('v')) searchParams.set('v', versionsStr);
+      else searchParams.append('v', versionsStr);
     }
 
     if (distros) {
       const distrosStr = distros.join(',');
-      if (queryString.has('d')) queryString.set('d', distrosStr);
-      else queryString.append('d', distrosStr);
+      if (searchParams.has('d')) searchParams.set('d', distrosStr);
+      else searchParams.append('d', distrosStr);
     }
 
-    router.push(`/kernels?${queryString.toString()}`);
+    searchParams.sort();
+
+    // Remove unused params.
+    const entries = searchParams.entries();
+    let current = entries.next();
+    while (!current.done) {
+      const [key, value] = current.value;
+      if (!value) searchParams.delete(key);
+      current = entries.next();
+    }
+
+    router.push(`/kernels?${searchParams.toString()}`);
   };
 
   const pageContents = useMemo(() => {
