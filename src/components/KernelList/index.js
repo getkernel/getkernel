@@ -25,15 +25,17 @@ const KernelList = () => {
 
   const router = useRouter();
   const {
-    query: { p },
+    query: { p, v, d },
   } = router;
+
+  const currentPage = p ? Number(p) : 1;
+  const selectedVersions = v ? [null, ...v.split(',')] : [null];
+  const selectedDistros = d ? [null, ...d.split(',')] : [null];
 
   const {
     index: { items },
   } = useContext(KernelsContext);
-  const { selectedVersions, selectedDistros, releaseType } = useContext(
-    FiltersContext,
-  );
+  const { releaseType } = useContext(FiltersContext);
 
   const filteredVersions = useMemo(() => {
     const [, ...distrosRest] = selectedDistros;
@@ -52,12 +54,30 @@ const KernelList = () => {
     return filtered;
   }, [items, selectedVersions, selectedDistros, releaseType]);
 
-  const currentPage = p ? Number(p) : 1;
   const itemsPerPage = 36;
   const totalPages = Math.ceil(filteredVersions.length / itemsPerPage);
 
-  const goToPage = (page) => {
-    router.push(`/kernels?p=${page}`);
+  const navigate = (page = null, versions = null, distros = null) => {
+    const queryString = new URLSearchParams(window.location.search);
+
+    if (page) {
+      if (queryString.has('p')) queryString.set('p', page);
+      else queryString.append('p', page);
+    }
+
+    if (versions) {
+      const versionsStr = versions.join(',');
+      if (queryString.has('v')) queryString.set('v', versionsStr);
+      else queryString.append('v', versionsStr);
+    }
+
+    if (distros) {
+      const distrosStr = distros.join(',');
+      if (queryString.has('d')) queryString.set('d', distrosStr);
+      else queryString.append('d', distrosStr);
+    }
+
+    router.push(`/kernels?${queryString.toString()}`);
   };
 
   const pageContents = useMemo(() => {
@@ -68,13 +88,17 @@ const KernelList = () => {
 
   useEffect(() => {
     if ((currentPage - 1) * itemsPerPage > filteredVersions.length) {
-      goToPage(1);
+      navigate(1);
     }
   }, [filteredVersions.length, currentPage, itemsPerPage]);
 
   return (
     <div className={classes.root}>
-      <KernelListToolbar />
+      <KernelListToolbar
+        selectedVersions={selectedVersions}
+        selectedDistros={selectedDistros}
+        navigate={navigate}
+      />
       <PageContent>
         <Grid container spacing={3}>
           {pageContents.map((version, index) => (
@@ -89,7 +113,7 @@ const KernelList = () => {
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
-          goToPage={goToPage}
+          navigate={navigate}
         />
       </PageContent>
     </div>

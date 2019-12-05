@@ -2,6 +2,7 @@
  * KernelListToolbar component.
  */
 import React, { useContext } from 'react';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Fade from '@material-ui/core/Fade';
 import AppBar from '@material-ui/core/AppBar';
@@ -16,27 +17,19 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import Select from '@material-ui/core/Select';
 import Checkbox from '@material-ui/core/Checkbox';
 import { FiltersContext, FiltersDispatchContext } from '../../contexts';
-import {
-  setSelectedVersions,
-  setSelectedDistros,
-  setReleaseType,
-} from '../../actions';
+import { setReleaseType } from '../../actions';
 import { releaseTypes } from '../../reducers/filters/defaultState';
 import StringUtils from '../../utils/StringUtils';
 import styles from './styles';
 
 const useStyles = makeStyles(styles);
 
-const KernelListToolbar = () => {
+const KernelListToolbar = ({ selectedVersions, selectedDistros, navigate }) => {
   const classes = useStyles();
 
-  const {
-    availableVersions,
-    selectedVersions,
-    availableDistros,
-    selectedDistros,
-    releaseType,
-  } = useContext(FiltersContext);
+  const { availableVersions, availableDistros, releaseType } = useContext(
+    FiltersContext,
+  );
   const filtersDispatch = useContext(FiltersDispatchContext);
 
   const handleReleaseTypeChange = (e) => {
@@ -44,11 +37,11 @@ const KernelListToolbar = () => {
   };
 
   const handleVersionChange = (e) => {
-    filtersDispatch(setSelectedVersions(e.target.value));
+    navigate(null, [...e.target.value].slice(1));
   };
 
   const handleDistroChange = (e) => {
-    filtersDispatch(setSelectedDistros(e.target.value));
+    navigate(null, null, [...e.target.value].slice(1));
   };
 
   const disableVersionFilter = selectedDistros.length > 1;
@@ -161,6 +154,12 @@ const KernelListToolbar = () => {
       </AppBar>
     </Fade>
   );
+};
+
+KernelListToolbar.propTypes = {
+  selectedVersions: PropTypes.array.isRequired,
+  selectedDistros: PropTypes.array.isRequired,
+  navigate: PropTypes.func.isRequired,
 };
 
 export default KernelListToolbar;
