@@ -1,5 +1,5 @@
 import getKernels from './getKernels';
 import getKernel from './getKernel';
-import getKernelOrg from './getKernelOrg';
+import getReleases from './getReleases';
 
-export { getKernels, getKernel, getKernelOrg };
+export { getKernels, getKernel, getReleases };

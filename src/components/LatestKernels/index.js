@@ -7,7 +7,6 @@ import Grid from '@material-ui/core/Grid';
 import PageContent from '../PageContent';
 import KernelListItem from '../KernelListItem';
 import { KernelsContext } from '../../contexts';
-import KernelOrgResponse from '../../models/KernelOrgResponse';
 import KernelOrgRelease from '../../models/KernelOrgRelease';
 import ServerIndexObject from '../../models/ServerIndexObject';
 import styles from './styles';
@@ -21,7 +20,7 @@ const LatestKernels = () => {
     index: { items },
     kernelorg,
   } = useContext(KernelsContext);
-  const { latestStable, releases } = KernelOrgResponse.from(kernelorg);
+  const { latestStable, releases } = kernelorg;
 
   const contents = useMemo(() => {
     return releases

@@ -17,11 +17,13 @@ export default (state, action) => {
         },
       };
 
-    case 'HYDRATE_KERNEL_ORG_DATA':
+    case 'HYDRATE_KERNEL_ORG_DATA': {
+      const [data] = action.data.results;
       return {
         ...state,
-        kernelorg: action.data,
+        kernelorg: data,
       };
+    }
 
     case 'ADD_KERNEL_DATA': {
       const [kernel] = action.data.results;
