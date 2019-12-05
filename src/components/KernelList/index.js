@@ -14,9 +14,10 @@ import {
   distrosFilter,
   releaseTypeFilter,
 } from '../../selectors';
+import { useFilterNavigate } from '../../hooks';
 import ServerIndexObject from '../../models/ServerIndexObject';
-import styles from './styles';
 import Pagination from '../Pagination';
+import styles from './styles';
 
 const useStyles = makeStyles(styles);
 
@@ -24,13 +25,13 @@ const KernelList = () => {
   const classes = useStyles();
 
   const router = useRouter();
-  const {
-    query: { p, v, d },
-  } = router;
 
-  const currentPage = p ? Number(p) : 1;
-  const selectedVersions = v ? [null, ...v.split(',')] : [null];
-  const selectedDistros = d ? [null, ...d.split(',')] : [null];
+  const {
+    currentPage,
+    selectedVersions,
+    selectedDistros,
+    navigate,
+  } = useFilterNavigate(router);
 
   const {
     index: { items },
@@ -56,40 +57,6 @@ const KernelList = () => {
 
   const itemsPerPage = 36;
   const totalPages = Math.ceil(filteredVersions.length / itemsPerPage);
-
-  const navigate = (page = null, versions = null, distros = null) => {
-    const searchParams = new URLSearchParams(window.location.search);
-
-    if (page) {
-      if (searchParams.has('p')) searchParams.set('p', page);
-      else searchParams.append('p', page);
-    }
-
-    if (versions) {
-      const versionsStr = versions.join(',');
-      if (searchParams.has('v')) searchParams.set('v', versionsStr);
-      else searchParams.append('v', versionsStr);
-    }
-
-    if (distros) {
-      const distrosStr = distros.join(',');
-      if (searchParams.has('d')) searchParams.set('d', distrosStr);
-      else searchParams.append('d', distrosStr);
-    }
-
-    searchParams.sort();
-
-    // Remove unused params.
-    const entries = searchParams.entries();
-    let current = entries.next();
-    while (!current.done) {
-      const [key, value] = current.value;
-      if (!value) searchParams.delete(key);
-      current = entries.next();
-    }
-
-    router.push(`/kernels?${searchParams.toString()}`);
-  };
 
   const pageContents = useMemo(() => {
     const start = (currentPage - 1) * itemsPerPage;
