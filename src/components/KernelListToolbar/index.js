@@ -59,13 +59,13 @@ const KernelListToolbar = () => {
     });
   };
 
-  const disableVersionFilter = selectedDistros.length > 1;
+  const disableVersionFilter = selectedDistros.length > 0;
 
   const mainFilters = [
     {
       id: 'version-select',
       label: 'Version',
-      value: selectedVersions,
+      value: [null, ...selectedVersions],
       disabled: disableVersionFilter,
       onChange: handleVersionChange,
       options: availableVersions.map(({ major, count, minors }) => [
@@ -81,7 +81,7 @@ const KernelListToolbar = () => {
     {
       id: 'flavor-select',
       label: 'Flavor',
-      value: selectedDistros,
+      value: [null, ...selectedDistros],
       disabled: false,
       onChange: handleDistroChange,
       options: availableDistros.map(({ distro, count, minors }) => [

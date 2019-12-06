@@ -36,18 +36,15 @@ const KernelList = () => {
   } = useContext(KernelsContext);
 
   const filteredVersions = useMemo(() => {
-    const [, ...distrosRest] = selectedDistros;
-    const [, ...versionsRest] = selectedVersions;
-
     const filtered = items
       .map((entry) => ServerIndexObject.parse(entry).toVersion())
       .filter(releaseTypeFilter(releaseType));
 
-    if (distrosRest.length) {
-      return filtered.filter(distrosFilter(distrosRest));
+    if (selectedDistros.length) {
+      return filtered.filter(distrosFilter(selectedDistros));
     }
-    if (versionsRest.length) {
-      return filtered.filter(versionsFilter(versionsRest));
+    if (selectedVersions.length) {
+      return filtered.filter(versionsFilter(selectedVersions));
     }
     return filtered;
   }, [items, selectedVersions, selectedDistros, releaseType]);
