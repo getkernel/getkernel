@@ -20,7 +20,7 @@ const useFilterNavigate = () => {
   const order = o || 'desc';
 
   /**
-   * Navigates to the specified page and parses filters (if any).
+   * Navigates to the specified page using filters (if any).
    * @param {Number} page Page num to navigate to
    * @param {Object} param1 Additional param
    * @param {('versions'|'distros'|'releaseType'|'sortBy'|'order')} param1.key Param key
