@@ -15,7 +15,7 @@ const useFilterNavigate = () => {
   const currentPage = p ? Number(p) : 1;
   const selectedVersions = v ? [null, ...v.split(DELIMETER)] : [null];
   const selectedDistros = d ? [null, ...d.split(DELIMETER)] : [null];
-  const releaseType = r || '';
+  const releaseType = r || 'all';
   const sortBy = s || 'version';
   const order = o || 'desc';
 

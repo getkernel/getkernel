@@ -40,12 +40,6 @@ export default (state, action) => {
       };
     }
 
-    case 'SET_SELECTED_VERSIONS':
-      return {
-        ...state,
-        selectedVersions: action.filters,
-      };
-
     case 'SET_AVAILABLE_DISTROS': {
       const availableDistros = [];
       const versions = action.data.results
@@ -80,18 +74,6 @@ export default (state, action) => {
         availableDistros,
       };
     }
-
-    case 'SET_SELECTED_DISTROS':
-      return {
-        ...state,
-        selectedDistros: action.filters,
-      };
-
-    case 'SET_RELEASE_TYPE':
-      return {
-        ...state,
-        releaseType: action.filter,
-      };
 
     default:
       return state;

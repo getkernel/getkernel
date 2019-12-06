@@ -20,13 +20,7 @@ import {
   hydrateIndexData,
   hydrateKernelOrgData,
 } from './kernels';
-import {
-  setAvailableVersions,
-  setSelectedVersions,
-  setAvailableDistros,
-  setSelectedDistros,
-  setReleaseType,
-} from './filters';
+import { setAvailableVersions, setAvailableDistros } from './filters';
 
 export {
   toggleDrawer,
@@ -48,8 +42,5 @@ export {
   hydrateIndexData,
   hydrateKernelOrgData,
   setAvailableVersions,
-  setSelectedVersions,
   setAvailableDistros,
-  setSelectedDistros,
-  setReleaseType,
 };

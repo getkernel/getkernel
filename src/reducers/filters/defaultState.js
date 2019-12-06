@@ -28,9 +28,6 @@ export const sortByOptions = [
 ];
 
 export default {
-  releaseType: releaseTypes[0].value,
   availableVersions: [],
-  selectedVersions: [null],
   availableDistros: [],
-  selectedDistros: [null],
 };
