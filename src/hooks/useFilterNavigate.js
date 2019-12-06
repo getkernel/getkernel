@@ -7,7 +7,7 @@ const useFilterNavigate = (router) => {
     query: { p, v, d },
   } = router;
 
-  const DELIMETER = ',';
+  const DELIMETER = '-';
 
   const currentPage = p ? Number(p) : 1;
   const selectedVersions = v ? [null, ...v.split(DELIMETER)] : [null];
