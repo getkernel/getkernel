@@ -2,7 +2,6 @@
  * KernelListToolbar component.
  */
 import React, { useContext } from 'react';
-import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Fade from '@material-ui/core/Fade';
 import AppBar from '@material-ui/core/AppBar';
@@ -16,27 +15,34 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import Select from '@material-ui/core/Select';
 import Checkbox from '@material-ui/core/Checkbox';
-import { FiltersContext, FiltersDispatchContext } from '../../contexts';
-import { setReleaseType } from '../../actions';
+import { FiltersContext } from '../../contexts';
 import {
   releaseTypes,
   sortByOptions,
 } from '../../reducers/filters/defaultState';
+import { useFilterNavigate } from '../../hooks';
 import StringUtils from '../../utils/StringUtils';
 import styles from './styles';
 
 const useStyles = makeStyles(styles);
 
-const KernelListToolbar = ({ selectedVersions, selectedDistros, navigate }) => {
+const KernelListToolbar = () => {
   const classes = useStyles();
 
-  const { availableVersions, availableDistros, releaseType } = useContext(
-    FiltersContext,
-  );
-  const filtersDispatch = useContext(FiltersDispatchContext);
+  const {
+    selectedVersions,
+    selectedDistros,
+    releaseType,
+    navigate,
+  } = useFilterNavigate();
+
+  const { availableVersions, availableDistros } = useContext(FiltersContext);
 
   const handleReleaseTypeChange = (e) => {
-    filtersDispatch(setReleaseType(e.target.value));
+    navigate(null, {
+      key: 'releaseType',
+      value: e.target.value,
+    });
   };
 
   const handleVersionChange = (e) => {
@@ -182,10 +188,6 @@ const KernelListToolbar = ({ selectedVersions, selectedDistros, navigate }) => {
   );
 };
 
-KernelListToolbar.propTypes = {
-  selectedVersions: PropTypes.array.isRequired,
-  selectedDistros: PropTypes.array.isRequired,
-  navigate: PropTypes.func.isRequired,
-};
+KernelListToolbar.propTypes = {};
 
 export default KernelListToolbar;

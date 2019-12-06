@@ -1,8 +1,11 @@
+import { useRouter } from 'next/router';
+
 /**
  * Creates a hook that uses query params to filter kernels.
- * @param {NextRouter} router NextRouter object
  */
-const useFilterNavigate = (router) => {
+const useFilterNavigate = () => {
+  const router = useRouter();
+
   const {
     query: { p, v, d, r, s, o },
   } = router;
@@ -12,7 +15,7 @@ const useFilterNavigate = (router) => {
   const currentPage = p ? Number(p) : 1;
   const selectedVersions = v ? [null, ...v.split(DELIMETER)] : [null];
   const selectedDistros = d ? [null, ...d.split(DELIMETER)] : [null];
-  const releaseType = r || 'all';
+  const releaseType = r || '';
   const sortBy = s || 'version';
   const order = o || 'desc';
 

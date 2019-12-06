@@ -2,13 +2,12 @@
  * KernelList component.
  */
 import React, { useContext, useEffect, useMemo, memo } from 'react';
-import { useRouter } from 'next/router';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import PageContent from '../PageContent';
 import KernelListToolbar from '../KernelListToolbar';
 import KernelListItem from '../KernelListItem';
-import { KernelsContext, FiltersContext } from '../../contexts';
+import { KernelsContext } from '../../contexts';
 import {
   versionsFilter,
   distrosFilter,
@@ -24,19 +23,17 @@ const useStyles = makeStyles(styles);
 const KernelList = () => {
   const classes = useStyles();
 
-  const router = useRouter();
-
   const {
     currentPage,
     selectedVersions,
     selectedDistros,
+    releaseType,
     navigate,
-  } = useFilterNavigate(router);
+  } = useFilterNavigate();
 
   const {
     index: { items },
   } = useContext(KernelsContext);
-  const { releaseType } = useContext(FiltersContext);
 
   const filteredVersions = useMemo(() => {
     const [, ...distrosRest] = selectedDistros;
@@ -72,11 +69,7 @@ const KernelList = () => {
 
   return (
     <div className={classes.root}>
-      <KernelListToolbar
-        selectedVersions={selectedVersions}
-        selectedDistros={selectedDistros}
-        navigate={navigate}
-      />
+      <KernelListToolbar />
       <PageContent>
         <Grid container spacing={3}>
           {pageContents.map((version, index) => (
