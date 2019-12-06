@@ -16,6 +16,17 @@ export const releaseTypes = [
   },
 ];
 
+export const sortByOptions = [
+  {
+    text: 'Version',
+    value: 'version',
+  },
+  {
+    text: 'Date',
+    value: 'date',
+  },
+];
+
 export default {
   releaseType: releaseTypes[0].value,
   availableVersions: [],

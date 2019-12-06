@@ -4,7 +4,7 @@
  */
 const useFilterNavigate = (router) => {
   const {
-    query: { p, v, d },
+    query: { p, v, d, r, s, o },
   } = router;
 
   const DELIMETER = '-';
@@ -12,25 +12,36 @@ const useFilterNavigate = (router) => {
   const currentPage = p ? Number(p) : 1;
   const selectedVersions = v ? [null, ...v.split(DELIMETER)] : [null];
   const selectedDistros = d ? [null, ...d.split(DELIMETER)] : [null];
+  const releaseType = r || 'all';
+  const sortBy = s || 'version';
+  const order = o || 'desc';
 
-  const navigate = (page = null, versions = null, distros = null) => {
+  /**
+   * Navigates to the specified page and parses filters (if any).
+   * @param {Number} page Page num to navigate to
+   * @param {Object} param1 Additional param
+   * @param {('versions'|'distros'|'releaseType'|'sortBy'|'order')} param1.key Param key
+   * @param {Array|String} param1.value Param value
+   */
+  const navigate = (page = null, { key, value } = {}) => {
     const searchParams = new URLSearchParams(window.location.search);
 
+    const setQueryParam = (keyX, valX) => {
+      if (searchParams.has(keyX)) searchParams.set(keyX, valX);
+      else searchParams.append(keyX, valX);
+    };
+
     if (page) {
-      if (searchParams.has('p')) searchParams.set('p', page);
-      else searchParams.append('p', page);
+      setQueryParam('p', page);
     }
 
-    if (versions) {
-      const versionsStr = versions.join(DELIMETER);
-      if (searchParams.has('v')) searchParams.set('v', versionsStr);
-      else searchParams.append('v', versionsStr);
-    }
-
-    if (distros) {
-      const distrosStr = distros.join(DELIMETER);
-      if (searchParams.has('d')) searchParams.set('d', distrosStr);
-      else searchParams.append('d', distrosStr);
+    if (key && value) {
+      const keyStr = key[0].toLowerCase();
+      let valueStr = value;
+      if (Array.isArray(value)) {
+        valueStr = value.join(DELIMETER);
+      }
+      setQueryParam(keyStr, valueStr);
     }
 
     searchParams.sort();
@@ -39,15 +50,23 @@ const useFilterNavigate = (router) => {
     const entries = searchParams.entries();
     let current = entries.next();
     while (!current.done) {
-      const [key, value] = current.value;
-      if (!value) searchParams.delete(key);
+      const [keyY, valY] = current.value;
+      if (!valY) searchParams.delete(keyY);
       current = entries.next();
     }
 
     router.push(`/kernels?${searchParams.toString()}`);
   };
 
-  return { currentPage, selectedVersions, selectedDistros, navigate };
+  return {
+    currentPage,
+    selectedVersions,
+    selectedDistros,
+    releaseType,
+    sortBy,
+    order,
+    navigate,
+  };
 };
 
 export default useFilterNavigate;

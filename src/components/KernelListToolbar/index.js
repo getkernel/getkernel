@@ -18,7 +18,10 @@ import Select from '@material-ui/core/Select';
 import Checkbox from '@material-ui/core/Checkbox';
 import { FiltersContext, FiltersDispatchContext } from '../../contexts';
 import { setReleaseType } from '../../actions';
-import { releaseTypes } from '../../reducers/filters/defaultState';
+import {
+  releaseTypes,
+  sortByOptions,
+} from '../../reducers/filters/defaultState';
 import StringUtils from '../../utils/StringUtils';
 import styles from './styles';
 
@@ -37,11 +40,17 @@ const KernelListToolbar = ({ selectedVersions, selectedDistros, navigate }) => {
   };
 
   const handleVersionChange = (e) => {
-    navigate(null, [...e.target.value].slice(1));
+    navigate(null, {
+      key: 'versions',
+      value: [...e.target.value].slice(1),
+    });
   };
 
   const handleDistroChange = (e) => {
-    navigate(null, null, [...e.target.value].slice(1));
+    navigate(null, {
+      key: 'distros',
+      value: [...e.target.value].slice(1),
+    });
   };
 
   const disableVersionFilter = selectedDistros.length > 1;
@@ -144,6 +153,23 @@ const KernelListToolbar = ({ selectedVersions, selectedDistros, navigate }) => {
               >
                 {releaseTypes.map(({ value, text }) => (
                   <MenuItem value={value} key={`release-type-${value}`}>
+                    {text}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            {/* Sort by */}
+            <FormControl className={classes.formControl}>
+              <InputLabel id="sort-by-label">Sort by</InputLabel>
+              <Select
+                labelId="sort-by-label"
+                id="sort-by-select"
+                value="version"
+                onChange={() => {}}
+              >
+                {sortByOptions.map(({ value, text }) => (
+                  <MenuItem value={value} key={`sort-by-${value}`}>
                     {text}
                   </MenuItem>
                 ))}
