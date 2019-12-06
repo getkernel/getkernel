@@ -30,8 +30,9 @@ const useFilterNavigate = () => {
     const searchParams = new URLSearchParams(window.location.search);
 
     const setQueryParam = (keyX, valX) => {
-      if (searchParams.has(keyX)) searchParams.set(keyX, valX);
-      else searchParams.append(keyX, valX);
+      const keyInitial = keyX[0].toLowerCase();
+      if (searchParams.has(keyInitial)) searchParams.set(keyInitial, valX);
+      else searchParams.append(keyInitial, valX);
     };
 
     if (page) {
@@ -39,12 +40,11 @@ const useFilterNavigate = () => {
     }
 
     if (key && value) {
-      const keyStr = key[0].toLowerCase();
       let valueStr = value;
       if (Array.isArray(value)) {
         valueStr = value.join(DELIMETER);
       }
-      setQueryParam(keyStr, valueStr);
+      setQueryParam(key, valueStr);
     }
 
     searchParams.sort();
