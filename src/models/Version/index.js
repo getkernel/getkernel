@@ -16,11 +16,27 @@ export default class Version {
    */
   constructor(versionString, lastModified = '') {
     const regex = /^v?(\d+)\.(\d+)(?:\.(\d+))?(?:\.(\d+))?(?:\.(\d+))?(?:-(rc\d*|ckt\d*))?(?:-(.+))?/i;
-    let major, minor, build, patch, extra, rc, distro, error;
+    const rcCktRegex = /(?:rc|ckt)(\d*)/i;
+    let major, minor, build, patch, extra, rcCkt, distro, error, rc, ckt;
     try {
-      [, major, minor, build, patch, extra, rc, distro] = versionString.match(
-        regex,
-      );
+      [
+        ,
+        major,
+        minor,
+        build,
+        patch,
+        extra,
+        rcCkt,
+        distro,
+      ] = versionString.match(regex);
+
+      // Extract rc or ckt info.
+      if (rcCkt.toLowerCase().includes('rc')) {
+        [, rc] = rcCkt.match(rcCktRegex);
+      }
+      if (rcCkt.toLowerCase().includes('ckt')) {
+        [, ckt] = rcCkt.match(rcCktRegex);
+      }
     } catch (e) {
       error = e.message;
     }
@@ -31,7 +47,8 @@ export default class Version {
       build: build && Number(build),
       patch: patch && Number(patch),
       extra: extra && Number(extra),
-      rc,
+      rc: rc && Number(rc),
+      ckt: ckt && Number(ckt),
       distro,
       lastModified: lastModified
         ? moment(lastModified, SERVER_DATE_FORMAT)
@@ -78,12 +95,12 @@ export default class Version {
     return this._rc;
   }
 
-  get distro() {
-    return this._distro;
+  get ckt() {
+    return this._ckt;
   }
 
-  get ckt() {
-    return this._rc;
+  get distro() {
+    return this._distro;
   }
 
   get lts() {
@@ -117,7 +134,7 @@ export default class Version {
    * otherwise false.
    */
   isRC() {
-    return !!this.rc && this.rc.toLowerCase().includes('rc');
+    return !!this.rc;
   }
 
   /**
@@ -125,7 +142,7 @@ export default class Version {
    * marked as CKT, otherwise false.
    */
   isCKT() {
-    return !!this.rc && this.rc.toLowerCase().includes('ckt');
+    return !!this.ckt;
   }
 
   /**

@@ -37,7 +37,16 @@ export default class Compare {
    * @param {('asc'|'desc')} order Compare order. Asc by default.
    */
   static version(order = 'asc') {
-    const props = ['major', 'minor', 'build', 'patch', 'extra', 'rc', 'distro'];
+    const props = [
+      'major',
+      'minor',
+      'build',
+      'patch',
+      'extra',
+      'rc',
+      'ckt',
+      'distro',
+    ];
 
     const sort = {
       asc(verA, verB) {

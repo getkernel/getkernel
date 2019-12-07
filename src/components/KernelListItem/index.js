@@ -37,13 +37,13 @@ const KernelListItem = ({ version, index, animate }) => {
     }
     if (version.isCKT()) {
       array.push({
-        label: version.ckt.toUpperCase(),
-        title: version.ckt,
+        label: `CKT${version.ckt}`,
+        title: `CKT${version.ckt}`,
       });
     }
     if (version.isRC()) {
       array.push({
-        label: version.rc.toUpperCase(),
+        label: `RC${version.rc}`,
         title: 'Release Candidate',
         color: 'secondary',
       });
