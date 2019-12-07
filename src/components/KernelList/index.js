@@ -16,6 +16,7 @@ import {
 import { useFilterNavigate } from '../../hooks';
 import ServerIndexObject from '../../models/ServerIndexObject';
 import Pagination from '../Pagination';
+import Compare from '../../utils/Compare';
 import styles from './styles';
 
 const useStyles = makeStyles(styles);
@@ -28,6 +29,7 @@ const KernelList = () => {
     selectedVersions,
     selectedDistros,
     releaseType,
+    sortBy,
     navigate,
   } = useFilterNavigate();
 
@@ -46,6 +48,16 @@ const KernelList = () => {
     if (selectedVersions.length) {
       return filtered.filter(versionsFilter(selectedVersions));
     }
+
+    if (sortBy === 'version') {
+      filtered.sort(Compare.version('desc'));
+    }
+    if (sortBy === 'date') {
+      filtered.sort((a, b) =>
+        Compare.date('desc')(a.lastModified, b.lastModified),
+      );
+    }
+
     return filtered;
   }, [items, selectedVersions, selectedDistros, releaseType]);
 

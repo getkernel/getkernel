@@ -33,6 +33,7 @@ const KernelListToolbar = () => {
     selectedVersions,
     selectedDistros,
     releaseType,
+    sortBy,
     navigate,
   } = useFilterNavigate();
 
@@ -56,6 +57,13 @@ const KernelListToolbar = () => {
     navigate(null, {
       key: 'distros',
       value: [...e.target.value].slice(1),
+    });
+  };
+
+  const handleSortByChange = (e) => {
+    navigate(null, {
+      key: 'sortBy',
+      value: e.target.value,
     });
   };
 
@@ -171,8 +179,8 @@ const KernelListToolbar = () => {
               <Select
                 labelId="sort-by-label"
                 id="sort-by-select"
-                value="version"
-                onChange={() => {}}
+                value={sortBy}
+                onChange={handleSortByChange}
               >
                 {sortByOptions.map(({ value, text }) => (
                   <MenuItem value={value} key={`sort-by-${value}`}>
