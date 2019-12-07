@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-unfetch';
-import cheerio from 'cheerio';
+import extractTableData from './extractTableData';
 import Compare from '../utils/Compare';
 import ApiResponse from '../models/ApiResponse';
 import BinaryPackage from '../models/BinaryPackage';
@@ -24,7 +24,6 @@ const fetchKernel = async (version) => {
     // Fetch main html file.
     const resMain = await fetch(baseUrl);
     const bodyMain = await resMain.text();
-    const $ = cheerio.load(bodyMain);
 
     // Fetch and parse BUILT file.
     const resBuilt = await fetch(`${baseUrl}/BUILT`);
@@ -50,46 +49,27 @@ const fetchKernel = async (version) => {
       .filter((line) => line.includes('.deb'))
       .map((line) => Checksum.parseLine(line));
 
-    // Loop over table rows and extract necessary information.
-    $('table')
-      .find('tr')
-      .each((_, elem) => {
-        const tds = $(elem).find('td');
-        if (tds.length === 0) return true;
-
-        // Extract file name, file size, platform and last modified date.
-        const fileName = tds
-          .eq(1)
-          .text()
-          .trim();
-        const lastModified = tds
-          .eq(2)
-          .text()
-          .trim();
-        const fileSize = tds
-          .eq(3)
-          .text()
-          .trim();
-
-        if (!fileName.endsWith('.deb')) return true;
-
-        const [platform] = fileName
-          .substring(fileName.lastIndexOf('_') + 1)
+    extractTableData(bodyMain).forEach(({ entryName, lastModified, size }) => {
+      // Extract necessary information.
+      if (entryName.endsWith('.deb')) {
+        const [platform] = entryName
+          .substring(entryName.lastIndexOf('_') + 1)
           .split('.');
 
         if (!files[platform]) {
           files[platform] = [];
         }
 
-        // Grab checksums
-        const [c1, c2] = checksums.filter((c) => c.fileName === fileName);
+        // Grab checksums.
+        const [c1, c2] = checksums.filter((c) => c.fileName === entryName);
         const sha1 = c1.sha1 || null;
         const sha256 = c2.sha256 || null;
 
-        return files[platform].push(
-          new BinaryPackage(fileName, fileSize, lastModified, sha1, sha256),
+        files[platform].push(
+          new BinaryPackage(entryName, size, lastModified, sha1, sha256),
         );
-      });
+      }
+    });
 
     // Decide platforms data to use to generate files array.
     const platforms = builtInfo.length
