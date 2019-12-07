@@ -9,6 +9,7 @@ import KernelListItem from '../KernelListItem';
 import { KernelsContext } from '../../contexts';
 import KernelOrgRelease from '../../models/KernelOrgRelease';
 import ServerIndexObject from '../../models/ServerIndexObject';
+import Compare from '../../utils/Compare';
 import styles from './styles';
 
 const useStyles = makeStyles(styles);
@@ -45,6 +46,7 @@ const LatestReleases = () => {
             }
             return itemVersion;
           })
+          .sort(Compare.version('desc'))
       : [];
   }, [items, releases, latestStable]);
 
