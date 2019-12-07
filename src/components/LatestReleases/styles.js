@@ -1,5 +1,5 @@
 /**
- * LatestKernels styles.
+ * LatestReleases styles.
  */
 export default () => ({
   root: {

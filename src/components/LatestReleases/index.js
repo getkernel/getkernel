@@ -1,5 +1,5 @@
 /**
- * LatestKernels component.
+ * LatestReleases component.
  */
 import React, { useCallback, useContext, useMemo, memo } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
@@ -13,14 +13,13 @@ import styles from './styles';
 
 const useStyles = makeStyles(styles);
 
-const LatestKernels = () => {
+const LatestReleases = () => {
   const classes = useStyles();
 
   const {
     index: { items },
-    kernelorg,
+    kernelorg: { latestStable, releases },
   } = useContext(KernelsContext);
-  const { latestStable, releases } = kernelorg;
 
   const compareVersions = useCallback((release) => ({ versionName }) =>
     versionName ===
@@ -67,4 +66,4 @@ const LatestKernels = () => {
   );
 };
 
-export default memo(LatestKernels);
+export default memo(LatestReleases);

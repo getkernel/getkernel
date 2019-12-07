@@ -1,10 +1,10 @@
 import React from 'react';
 import MainLayout from '../src/layouts/MainLayout';
-import LatestKernels from '../src/components/LatestKernels';
+import LatestReleases from '../src/components/LatestReleases';
 
 const HomePage = () => (
-  <MainLayout contentTitle="Latest Kernels" showShadow={false}>
-    <LatestKernels />
+  <MainLayout contentTitle="Latest Releases">
+    <LatestReleases />
   </MainLayout>
 );
 
