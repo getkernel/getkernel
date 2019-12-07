@@ -1,11 +1,11 @@
 /**
  * Filters reducer.
  */
-import defaultState, { releaseTypes } from './defaultState';
+import defaultState from './defaultState';
 import Version from '../../models/Version';
 import Compare from '../../utils/Compare';
 
-export { defaultState, releaseTypes };
+export { defaultState };
 
 export default (state, action) => {
   switch (action.type) {

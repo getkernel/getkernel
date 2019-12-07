@@ -30,6 +30,7 @@ const KernelList = () => {
     selectedDistros,
     releaseType,
     sortBy,
+    order,
     navigate,
   } = useFilterNavigate();
 
@@ -42,20 +43,22 @@ const KernelList = () => {
       .map((entry) => ServerIndexObject.parse(entry).toVersion())
       .filter(releaseTypeFilter(releaseType));
 
+    // Apply sorting options.
+    if (sortBy === 'version') {
+      filtered.sort(Compare.version(order));
+    }
+    if (sortBy === 'date') {
+      filtered.sort((a, b) =>
+        Compare.date(order)(a.lastModified, b.lastModified),
+      );
+    }
+
+    // Apply filters.
     if (selectedDistros.length) {
       return filtered.filter(distrosFilter(selectedDistros));
     }
     if (selectedVersions.length) {
       return filtered.filter(versionsFilter(selectedVersions));
-    }
-
-    if (sortBy === 'version') {
-      filtered.sort(Compare.version('desc'));
-    }
-    if (sortBy === 'date') {
-      filtered.sort((a, b) =>
-        Compare.date('desc')(a.lastModified, b.lastModified),
-      );
     }
 
     return filtered;

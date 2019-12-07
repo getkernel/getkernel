@@ -16,10 +16,7 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import Select from '@material-ui/core/Select';
 import Checkbox from '@material-ui/core/Checkbox';
 import { FiltersContext } from '../../contexts';
-import {
-  releaseTypes,
-  sortByOptions,
-} from '../../reducers/filters/defaultState';
+import { releaseTypes, sortByOptions, orderOptions } from './options';
 import { useFilterNavigate } from '../../hooks';
 import StringUtils from '../../utils/StringUtils';
 import styles from './styles';
@@ -34,6 +31,7 @@ const KernelListToolbar = () => {
     selectedDistros,
     releaseType,
     sortBy,
+    order,
     navigate,
   } = useFilterNavigate();
 
@@ -63,6 +61,13 @@ const KernelListToolbar = () => {
   const handleSortByChange = (e) => {
     navigate(null, {
       key: 'sortBy',
+      value: e.target.value,
+    });
+  };
+
+  const handleOrderChange = (e) => {
+    navigate(null, {
+      key: 'order',
       value: e.target.value,
     });
   };
@@ -184,6 +189,23 @@ const KernelListToolbar = () => {
               >
                 {sortByOptions.map(({ value, text }) => (
                   <MenuItem value={value} key={`sort-by-${value}`}>
+                    {text}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            {/* Order */}
+            <FormControl className={classes.formControl}>
+              <InputLabel id="order-label">Order</InputLabel>
+              <Select
+                labelId="order-label"
+                id="order-select"
+                value={order}
+                onChange={handleOrderChange}
+              >
+                {orderOptions.map(({ value, text }) => (
+                  <MenuItem value={value} key={`order-${value}`}>
                     {text}
                   </MenuItem>
                 ))}
