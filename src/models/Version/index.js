@@ -160,9 +160,10 @@ export default class Version {
    * Defaults to true.
    */
   toString(withLeadingV = true) {
-    const { rc, distro } = this;
+    const { rc, ckt, distro } = this;
     let str = this.toFriendlyString(withLeadingV);
-    if (rc) str += `-${rc}`;
+    if (rc) str += `-rc${rc}`;
+    if (ckt) str += `-ckt${ckt}`;
     if (distro) str += `-${distro}`;
     return str;
   }
