@@ -37,39 +37,36 @@ const KernelListToolbar = () => {
 
   const { availableVersions, availableDistros } = useContext(FiltersContext);
 
-  const handleReleaseTypeChange = (e) => {
+  /**
+   * Generic change handler.
+   * @param {('versions'|'distros'|'releaseType'|'sortBy'|'order')} key Param key
+   * @param {Array|String} value Param value
+   */
+  const handleChange = (key, value) => {
     navigate(null, {
-      key: 'releaseType',
-      value: e.target.value,
+      key,
+      value,
     });
+  };
+
+  const handleReleaseTypeChange = (e) => {
+    handleChange('releaseType', e.target.value);
   };
 
   const handleVersionChange = (e) => {
-    navigate(null, {
-      key: 'versions',
-      value: [...e.target.value].slice(1),
-    });
+    handleChange('versions', [...e.target.value].slice(1));
   };
 
   const handleDistroChange = (e) => {
-    navigate(null, {
-      key: 'distros',
-      value: [...e.target.value].slice(1),
-    });
+    handleChange('distros', [...e.target.value].slice(1));
   };
 
   const handleSortByChange = (e) => {
-    navigate(null, {
-      key: 'sortBy',
-      value: e.target.value,
-    });
+    handleChange('sortBy', e.target.value);
   };
 
   const handleOrderChange = (e) => {
-    navigate(null, {
-      key: 'order',
-      value: e.target.value,
-    });
+    handleChange('order', e.target.value);
   };
 
   const disableVersionFilter = selectedDistros.length > 0;
