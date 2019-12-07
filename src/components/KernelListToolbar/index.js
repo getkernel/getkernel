@@ -49,26 +49,6 @@ const KernelListToolbar = () => {
     });
   };
 
-  const handleReleaseTypeChange = (e) => {
-    handleChange('releaseType', e.target.value);
-  };
-
-  const handleVersionChange = (e) => {
-    handleChange('versions', [...e.target.value].slice(1));
-  };
-
-  const handleDistroChange = (e) => {
-    handleChange('distros', [...e.target.value].slice(1));
-  };
-
-  const handleSortByChange = (e) => {
-    handleChange('sortBy', e.target.value);
-  };
-
-  const handleOrderChange = (e) => {
-    handleChange('order', e.target.value);
-  };
-
   const disableVersionFilter = selectedDistros.length > 0;
 
   const mainFilters = [
@@ -77,7 +57,9 @@ const KernelListToolbar = () => {
       label: 'Version',
       value: [null, ...selectedVersions],
       disabled: disableVersionFilter,
-      onChange: handleVersionChange,
+      onChange: (e) => {
+        handleChange('versions', [...e.target.value].slice(1));
+      },
       options: availableVersions.map(({ major, count, minors }) => [
         <ListSubheader>{`v${major} (${count} items)`}</ListSubheader>,
         minors.map((minor) => (
@@ -93,7 +75,9 @@ const KernelListToolbar = () => {
       label: 'Flavor',
       value: [null, ...selectedDistros],
       disabled: false,
-      onChange: handleDistroChange,
+      onChange: (e) => {
+        handleChange('distros', [...e.target.value].slice(1));
+      },
       options: availableDistros.map(({ distro, count, minors }) => [
         <ListSubheader>{`${StringUtils.toUpperFirst(
           distro,
@@ -108,6 +92,30 @@ const KernelListToolbar = () => {
           );
         }),
       ]),
+    },
+  ];
+
+  const secondaryFilters = [
+    {
+      id: 'release-type',
+      label: 'Release type',
+      value: releaseType,
+      onChange: (e) => handleChange('releaseType', e.target.value),
+      source: releaseTypes,
+    },
+    {
+      id: 'sort-by',
+      label: 'Sort by',
+      value: sortBy,
+      onChange: (e) => handleChange('sortBy', e.target.value),
+      source: sortByOptions,
+    },
+    {
+      id: 'order',
+      label: 'Order',
+      value: order,
+      onChange: (e) => handleChange('order', e.target.value),
+      source: orderOptions,
     },
   ];
 
@@ -158,56 +166,31 @@ const KernelListToolbar = () => {
               );
             })}
 
-            {/* Release type filter */}
-            <FormControl className={classes.formControl}>
-              <InputLabel id="release-type-label">Release Type</InputLabel>
-              <Select
-                labelId="release-type-label"
-                id="release-type-select"
-                value={releaseType}
-                onChange={handleReleaseTypeChange}
-              >
-                {releaseTypes.map(({ value, text }) => (
-                  <MenuItem value={value} key={`release-type-${value}`}>
-                    {text}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            {/* Secondary filters */}
+            {secondaryFilters.map((filterItem) => {
+              const { id, label, value, onChange, source } = filterItem;
 
-            {/* Sort by */}
-            <FormControl className={classes.formControl}>
-              <InputLabel id="sort-by-label">Sort by</InputLabel>
-              <Select
-                labelId="sort-by-label"
-                id="sort-by-select"
-                value={sortBy}
-                onChange={handleSortByChange}
-              >
-                {sortByOptions.map(({ value, text }) => (
-                  <MenuItem value={value} key={`sort-by-${value}`}>
-                    {text}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-
-            {/* Order */}
-            <FormControl className={classes.formControl}>
-              <InputLabel id="order-label">Order</InputLabel>
-              <Select
-                labelId="order-label"
-                id="order-select"
-                value={order}
-                onChange={handleOrderChange}
-              >
-                {orderOptions.map(({ value, text }) => (
-                  <MenuItem value={value} key={`order-${value}`}>
-                    {text}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+              return (
+                <FormControl
+                  key={`secondary-filter-${id}`}
+                  className={classes.formControl}
+                >
+                  <InputLabel id={`${id}-label`}>{label}</InputLabel>
+                  <Select
+                    labelId={`${id}-label`}
+                    id={`${id}-select`}
+                    value={value}
+                    onChange={onChange}
+                  >
+                    {source.map(({ value: val, text }) => (
+                      <MenuItem value={val} key={`${id}-${val}`}>
+                        {text}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              );
+            })}
           </FormGroup>
         </Toolbar>
       </AppBar>
