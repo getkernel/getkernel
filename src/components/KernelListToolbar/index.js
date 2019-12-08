@@ -3,10 +3,12 @@
  */
 import React, { useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import Box from '@material-ui/core/Box';
 import Fade from '@material-ui/core/Fade';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import FormGroup from '@material-ui/core/FormGroup';
+import IconButton from '@material-ui/core/IconButton';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -14,7 +16,9 @@ import FormControl from '@material-ui/core/FormControl';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import Select from '@material-ui/core/Select';
+import Tooltip from '@material-ui/core/Tooltip';
 import Checkbox from '@material-ui/core/Checkbox';
+import ClearIcon from '@material-ui/icons/Clear';
 import { FiltersContext } from '../../contexts';
 import { releaseTypes, sortByOptions, orderOptions } from './options';
 import { useFilterNavigate } from '../../hooks';
@@ -33,6 +37,8 @@ const KernelListToolbar = () => {
     sortBy,
     order,
     navigate,
+    isFiltersSet,
+    clearFilters,
   } = useFilterNavigate();
 
   const { availableVersions, availableDistros } = useContext(FiltersContext);
@@ -47,6 +53,10 @@ const KernelListToolbar = () => {
       key,
       value,
     });
+  };
+
+  const handleClearFilters = () => {
+    clearFilters();
   };
 
   const disableVersionFilter = selectedDistros.length > 0;
@@ -122,7 +132,7 @@ const KernelListToolbar = () => {
   return (
     <Fade in timeout={500}>
       <AppBar position="sticky" color="default">
-        <Toolbar>
+        <Toolbar className={classes.toolbar}>
           <FormGroup row>
             {/* Main filters */}
             {mainFilters.map((filterItem) => {
@@ -192,6 +202,15 @@ const KernelListToolbar = () => {
               );
             })}
           </FormGroup>
+          <Box>
+            {isFiltersSet() && (
+              <Tooltip title="Clear filters">
+                <IconButton onClick={handleClearFilters}>
+                  <ClearIcon />
+                </IconButton>
+              </Tooltip>
+            )}
+          </Box>
         </Toolbar>
       </AppBar>
     </Fade>

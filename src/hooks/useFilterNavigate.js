@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import { KERNELS } from '../routes';
 
 /**
  * Creates a hook that uses query params to filter kernels.
@@ -20,6 +21,58 @@ const useFilterNavigate = () => {
   const order = o || 'desc';
 
   /**
+   * Returns URLSearchParams object that contains query params for
+   * the current page.
+   */
+  const getSearchParams = () => {
+    return new URLSearchParams(process.browser ? window.location.search : '');
+  };
+
+  /**
+   * Loops over the entries of the given URLSearchParams object.
+   * @param {URLSearchParams} urlSearchParams URLSearchParams object.
+   * @param {Function} callback Callback function to call on every iteration.
+   */
+  const loopOverSearchParams = (urlSearchParams, callback) => {
+    const entries = urlSearchParams.entries();
+    let current = entries.next();
+    while (!current.done) {
+      const [key, value] = current.value;
+      if (typeof callback === 'function') {
+        callback(key, value);
+      }
+      current = entries.next();
+    }
+  };
+
+  /**
+   * Deletes query params that satisfy the given callback.
+   * @param {URLSearchParams} urlSearchParams URLSearchParams object.
+   * @param {Function} callback Comperator function to call on every iteration.
+   */
+  const deleteSearchParams = (urlSearchParams, callback) => {
+    const keysToDelete = [];
+    loopOverSearchParams(urlSearchParams, (key, value) => {
+      if (callback(key, value)) {
+        keysToDelete.push(key);
+      }
+    });
+    keysToDelete.forEach((k) => urlSearchParams.delete(k));
+  };
+
+  /**
+   * Sets a query parameter on the given URLSearchParams object.
+   * @param {URLSearchParams} urlSearchParams URLSearchParams object
+   * @param {String} key Query param key
+   * @param {String} value Query param value
+   */
+  const setQueryParam = (urlSearchParams, key, value) => {
+    const queryKey = key[0].toLowerCase();
+    if (urlSearchParams.has(queryKey)) urlSearchParams.set(queryKey, value);
+    else urlSearchParams.append(queryKey, value);
+  };
+
+  /**
    * Navigates to the specified page using filters (if any).
    * @param {Number} page Page num to navigate to
    * @param {Object} param1 Additional param
@@ -27,16 +80,10 @@ const useFilterNavigate = () => {
    * @param {Array|String} param1.value Param value
    */
   const navigate = (page = null, { key, value } = {}) => {
-    const searchParams = new URLSearchParams(window.location.search);
-
-    const setQueryParam = (keyX, valX) => {
-      const keyInitial = keyX[0].toLowerCase();
-      if (searchParams.has(keyInitial)) searchParams.set(keyInitial, valX);
-      else searchParams.append(keyInitial, valX);
-    };
+    const searchParams = getSearchParams();
 
     if (page) {
-      setQueryParam('p', page);
+      setQueryParam(searchParams, 'p', page);
     }
 
     if (key && value) {
@@ -44,21 +91,46 @@ const useFilterNavigate = () => {
       if (Array.isArray(value)) {
         valueStr = value.join(DELIMETER);
       }
-      setQueryParam(key, valueStr);
+      setQueryParam(searchParams, key, valueStr);
     }
 
     searchParams.sort();
 
     // Remove unused params.
-    const entries = searchParams.entries();
-    let current = entries.next();
-    while (!current.done) {
-      const [keyY, valY] = current.value;
-      if (!valY) searchParams.delete(keyY);
-      current = entries.next();
-    }
+    deleteSearchParams(searchParams, (_, val) => !val);
 
-    router.push(`/kernels?${searchParams.toString()}`);
+    router.push(`${KERNELS}?${searchParams.toString()}`);
+  };
+
+  /**
+   * Returns filters' state.
+   */
+  const isFiltersSet = () => {
+    const searchParams = getSearchParams();
+    const keys = [];
+    loopOverSearchParams(searchParams, (keyX) => {
+      keys.push(keyX);
+    });
+
+    if (keys.length > 0) {
+      if (keys.length === 1 && keys.includes('p')) {
+        return false;
+      }
+      return true;
+    }
+    return false;
+  };
+
+  /**
+   * Clears filters.
+   */
+  const clearFilters = () => {
+    const searchParams = getSearchParams();
+
+    // Remove search params except "p".
+    deleteSearchParams(searchParams, (key, val) => key !== 'p' || !val);
+
+    router.push(`${KERNELS}?${searchParams.toString()}`);
   };
 
   return {
@@ -69,6 +141,8 @@ const useFilterNavigate = () => {
     sortBy,
     order,
     navigate,
+    isFiltersSet,
+    clearFilters,
   };
 };
 
