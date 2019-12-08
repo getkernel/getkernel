@@ -108,8 +108,8 @@ const useFilterNavigate = () => {
   const isFiltersSet = () => {
     const searchParams = getSearchParams();
     const keys = [];
-    loopOverSearchParams(searchParams, (keyX) => {
-      keys.push(keyX);
+    loopOverSearchParams(searchParams, (key) => {
+      keys.push(key);
     });
 
     if (keys.length > 0) {
