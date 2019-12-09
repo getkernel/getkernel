@@ -7,11 +7,19 @@ import Checksum from '../models/Checksum';
 import Kernel from '../models/Kernel';
 import { BASE_URL } from '../constants';
 
-const fetchKernel = async (version) => {
-  const versionStr = version.toLowerCase().startsWith('v')
-    ? version
-    : `v${version}`;
-  const baseUrl = `${BASE_URL}/${versionStr}`;
+const fetchKernel = async (version, tip = null) => {
+  let versionStr;
+  let baseUrl;
+
+  if (tip) {
+    versionStr = version;
+    baseUrl = `${BASE_URL}/${tip}/${versionStr}`;
+  } else {
+    versionStr = version.toLowerCase().startsWith('v')
+      ? version
+      : `v${version}`;
+    baseUrl = `${BASE_URL}/${versionStr}`;
+  }
 
   const apiResponse = new ApiResponse(baseUrl);
   const kernel = new Kernel(versionStr, baseUrl);

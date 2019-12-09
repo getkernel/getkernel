@@ -2,13 +2,13 @@ import { fetchKernel } from '../../../src/controllers';
 
 export default async (req, res) => {
   const {
-    query: { version },
+    query: { version, tip },
     method,
   } = req;
 
   switch (method) {
     case 'GET': {
-      const result = await fetchKernel(version);
+      const result = await fetchKernel(version, tip);
       res.status(result.statusCode).json(result);
       break;
     }
