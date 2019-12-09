@@ -13,8 +13,11 @@ const fetchIndex = async () => {
     const bodyMain = await response.text();
 
     extractTableData(bodyMain).forEach(({ entryName, lastModified }) => {
-      const siObject = new ServerIndexObject(entryName, lastModified);
-      apiResponse.addData(siObject);
+      // Grab only the entries that start with the letter "v".
+      if (entryName.startsWith('v')) {
+        const siObject = new ServerIndexObject(entryName, lastModified);
+        apiResponse.addData(siObject);
+      }
     });
 
     if (apiResponse.hasData()) {

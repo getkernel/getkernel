@@ -11,9 +11,9 @@ export default (state, action) => {
   switch (action.type) {
     case 'SET_AVAILABLE_VERSIONS': {
       const availableVersions = [];
-      const versions = action.data.results
-        .filter(({ versionName }) => versionName.startsWith('v'))
-        .map(({ versionName }) => new Version(versionName));
+      const versions = action.data.results.map(
+        ({ versionName }) => new Version(versionName),
+      );
 
       versions.forEach((version) => {
         if (!availableVersions.some(({ major }) => major === version.major)) {
@@ -42,9 +42,9 @@ export default (state, action) => {
 
     case 'SET_AVAILABLE_DISTROS': {
       const availableDistros = [];
-      const versions = action.data.results
-        .filter(({ versionName }) => versionName.startsWith('v'))
-        .map(({ versionName }) => new Version(versionName));
+      const versions = action.data.results.map(
+        ({ versionName }) => new Version(versionName),
+      );
 
       versions.forEach((version) => {
         if (version.distro && version.distro.toLowerCase() !== 'unstable') {
