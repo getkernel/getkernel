@@ -22,7 +22,7 @@ import styles from './styles';
 
 const useStyles = makeStyles(styles);
 
-const KernelVersion = ({ version, tip }) => {
+const KernelVersion = ({ version, tag }) => {
   const classes = useStyles();
 
   const { kernels } = useContext(KernelsContext);
@@ -35,7 +35,7 @@ const KernelVersion = ({ version, tip }) => {
 
   useEffect(() => {
     const getKernelData = async () => {
-      const { success, data } = await getKernel(version, tip);
+      const { success, data } = await getKernel(version, tag);
 
       if (success) {
         kernelsDispatch(addKernelData(data));
@@ -88,12 +88,12 @@ const KernelVersion = ({ version, tip }) => {
 };
 
 KernelVersion.defaultProps = {
-  tip: null,
+  tag: null,
 };
 
 KernelVersion.propTypes = {
   version: PropTypes.string.isRequired,
-  tip: PropTypes.string,
+  tag: PropTypes.string,
 };
 
 export default KernelVersion;

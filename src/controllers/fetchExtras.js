@@ -5,7 +5,7 @@ import Compare from '../utils/Compare';
 import { BASE_URL } from '../constants';
 
 const fetchExtras = async () => {
-  const EXTRA_DIRS = [
+  const TAGS = [
     'daily',
     'drm-intel-next',
     'drm-intel-nightly',
@@ -15,16 +15,16 @@ const fetchExtras = async () => {
 
   const apiResponse = new ApiResponse(`${BASE_URL}/`);
 
-  const getTipUrl = (tip) => `${BASE_URL}/${tip}/`;
+  const getTagUrl = (tag) => `${BASE_URL}/${tag}/`;
 
   try {
-    const promises = EXTRA_DIRS.map((tip) => {
+    const promises = TAGS.map((tag) => {
       return new Promise((resolve, reject) => {
-        fetch(getTipUrl(tip))
+        fetch(getTagUrl(tag))
           .then((data) => data.text())
           .then((body) => {
             resolve({
-              tip,
+              tag,
               body,
             });
           })
@@ -36,22 +36,22 @@ const fetchExtras = async () => {
 
     const results = await Promise.all(promises);
 
-    results.forEach(({ tip, body }) => {
-      const tipData = {
-        tip,
-        tipUrl: getTipUrl(tip),
+    results.forEach(({ tag, body }) => {
+      const tagData = {
+        tag,
+        tagUrl: getTagUrl(tag),
         items: [],
       };
       extractTableData(body).forEach(({ entryName, lastModified }) => {
         if (entryName.toLowerCase() !== 'current') {
-          tipData.items.push({ itemName: entryName, lastModified });
+          tagData.items.push({ itemName: entryName, lastModified });
         }
       });
       // Sort items by date - desc.
-      tipData.items.sort((a, b) =>
+      tagData.items.sort((a, b) =>
         Compare.date('desc')(a.lastModified, b.lastModified),
       );
-      apiResponse.addData(tipData);
+      apiResponse.addData(tagData);
     });
 
     if (apiResponse.hasData()) {

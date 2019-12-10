@@ -7,13 +7,13 @@ import Checksum from '../models/Checksum';
 import Kernel from '../models/Kernel';
 import { BASE_URL } from '../constants';
 
-const fetchKernel = async (version, tip = null) => {
+const fetchKernel = async (version, tag = null) => {
   let versionStr;
   let baseUrl;
 
-  if (tip) {
+  if (tag) {
     versionStr = version;
-    baseUrl = `${BASE_URL}/${tip}/${versionStr}`;
+    baseUrl = `${BASE_URL}/${tag}/${versionStr}`;
   } else {
     versionStr = version.toLowerCase().startsWith('v')
       ? version
