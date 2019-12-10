@@ -11,17 +11,17 @@ const KernelVersionPage = ({ version, tag }) => {
 
   return (
     <MainLayout pageTitle={pageTitle} contentTitle={contentTitle}>
-      <KernelVersion version={version} tip={tag} />
+      <KernelVersion version={version} tag={tag} />
     </MainLayout>
   );
 };
 
 KernelVersionPage.getInitialProps = (context) => {
   const {
-    query: { version, tip },
+    query: { version, tag },
   } = context;
 
-  return { version, tip };
+  return { version, tag };
 };
 
 KernelVersionPage.defaultProps = {
