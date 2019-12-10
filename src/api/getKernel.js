@@ -4,7 +4,7 @@ import { ORIGIN } from '../constants';
 /**
  * Fetches kernel data for the specified version from API.
  * @param {String} versionStr Version string
- * @param {String} tag The tag that the version belongs to (optional).
+ * @param {String} tag The tag that the build belongs to (optional).
  * @returns {ApiResponse} ApiResponse object
  */
 const getKernel = async (versionStr, tag = null) => {
