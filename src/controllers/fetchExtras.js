@@ -43,7 +43,9 @@ const fetchExtras = async () => {
         items: [],
       };
       extractTableData(body).forEach(({ entryName, lastModified }) => {
-        tipData.items.push({ itemName: entryName, lastModified });
+        if (entryName.toLowerCase() !== 'current') {
+          tipData.items.push({ itemName: entryName, lastModified });
+        }
       });
       // Sort items by date - desc.
       tipData.items.sort((a, b) =>
