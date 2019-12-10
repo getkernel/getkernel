@@ -1,6 +1,7 @@
 import fetch from 'isomorphic-unfetch';
 import extractTableData from './extractTableData';
 import ApiResponse from '../models/ApiResponse';
+import ServerIndexObject from '../models/ServerIndexObject';
 import Compare from '../utils/Compare';
 import { BASE_URL } from '../constants';
 
@@ -44,7 +45,8 @@ const fetchExtras = async () => {
       };
       extractTableData(body).forEach(({ entryName, lastModified }) => {
         if (entryName.toLowerCase() !== 'current') {
-          tagData.items.push({ itemName: entryName, lastModified });
+          const siObject = new ServerIndexObject(entryName, lastModified);
+          tagData.items.push(siObject);
         }
       });
       // Sort items by date - desc.
