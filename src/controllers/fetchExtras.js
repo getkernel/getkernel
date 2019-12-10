@@ -55,7 +55,7 @@ const fetchExtras = async () => {
     });
 
     if (apiResponse.hasData()) {
-      apiResponse.sortData((a, b) => Compare.string('asc')(a.tip, b.tip));
+      apiResponse.sortData((a, b) => Compare.string('asc')(a.tag, b.tag));
     } else {
       // Set response as failed.
       apiResponse.setFailed('Unable to get data', 400);

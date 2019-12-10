@@ -10,11 +10,13 @@ export default class Kernel {
    * Creates a new Kernel instance.
    * @param {String} version Version string
    * @param {String} kernelUrl The url of the kernel
+   * @param {String} tag The tag that the kernel belongs to (optional).
    * @param {Array<BuildObject>} builds Array of BuildObject objects
    */
-  constructor(version, kernelUrl, builds) {
+  constructor(version, kernelUrl, tag, builds) {
     this.version = version;
     this.kernelUrl = kernelUrl;
+    this.tag = tag;
     this.urls = {
       changes: `${kernelUrl}/CHANGES`,
       checksums: `${kernelUrl}/CHECKSUMS`,
@@ -28,8 +30,8 @@ export default class Kernel {
    * @param {Object} param0 Source object
    * @returns {Kernel} Kernel instance
    */
-  static parse({ version, kernelUrl, builds }) {
-    return new this(version, kernelUrl, builds);
+  static parse({ version, kernelUrl, tag, builds }) {
+    return new this(version, kernelUrl, tag, builds);
   }
 
   /**

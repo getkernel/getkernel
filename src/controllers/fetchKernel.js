@@ -22,7 +22,7 @@ const fetchKernel = async (version, tag = null) => {
   }
 
   const apiResponse = new ApiResponse(baseUrl);
-  const kernel = new Kernel(versionStr, baseUrl);
+  const kernel = new Kernel(versionStr, baseUrl, tag);
 
   const files = {};
   let builtInfo = [];
