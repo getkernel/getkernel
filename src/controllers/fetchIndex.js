@@ -1,5 +1,4 @@
-import fetch from 'isomorphic-unfetch';
-import extractTableData from './extractTableData';
+import { getTableData } from './helpers';
 import ApiResponse from '../models/ApiResponse';
 import ServerIndexObject from '../models/ServerIndexObject';
 import Compare from '../utils/Compare';
@@ -9,10 +8,9 @@ const fetchIndex = async () => {
   const apiResponse = new ApiResponse(`${BASE_URL}/`);
 
   try {
-    const response = await fetch(BASE_URL);
-    const bodyMain = await response.text();
+    const mainData = await getTableData(BASE_URL);
 
-    extractTableData(bodyMain).forEach(({ entryName, lastModified }) => {
+    mainData.forEach(({ entryName, lastModified }) => {
       // Grab only the entries that start with the letter "v".
       if (entryName.startsWith('v')) {
         const siObject = new ServerIndexObject(entryName, lastModified);

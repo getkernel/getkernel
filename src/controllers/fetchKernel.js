@@ -1,11 +1,8 @@
-import fetch from 'isomorphic-unfetch';
-import extractTableData from './extractTableData';
-import Compare from '../utils/Compare';
+import { getTableData, getBuiltInfo, getChecksumData } from './helpers';
 import ApiResponse from '../models/ApiResponse';
-import BinaryPackage from '../models/BinaryPackage';
-import Checksum from '../models/Checksum';
 import Kernel from '../models/Kernel';
-import StringUtils from '../utils/StringUtils';
+import BinaryPackage from '../models/BinaryPackage';
+import Compare from '../utils/Compare';
 import { BASE_URL } from '../constants';
 
 const fetchKernel = async (version, tag = null) => {
@@ -26,40 +23,16 @@ const fetchKernel = async (version, tag = null) => {
   const kernel = new Kernel(versionStr, baseUrl, tag);
 
   const files = {};
-  let builtInfo = [];
-  let checksums = [];
 
   try {
-    // Fetch main html file.
-    const resMain = await fetch(baseUrl);
-    const bodyMain = await resMain.text();
+    const mainData = await getTableData(baseUrl);
+    const builtInfo = await getBuiltInfo(baseUrl);
+    const checksums = await getChecksumData(baseUrl);
 
-    // Fetch and parse BUILT file.
-    const resBuilt = await fetch(`${baseUrl}/BUILT`);
-    const bodyBuilt = await resBuilt.text();
-    builtInfo = StringUtils.splitText(bodyBuilt)
-      .map((line) => line.toLowerCase())
-      .filter((line) => line.includes('status'))
-      .map((line) => {
-        const [, token] = line.split(':').map((l) => l.trim());
-        const [platform, status] = token.split(' ');
-        return {
-          platform,
-          status: status === '0',
-        };
-      });
-
-    // Fetch and parse CHECKSUMS file.
-    const resChecksums = await fetch(`${baseUrl}/CHECKSUMS`);
-    const bodyChecksums = await resChecksums.text();
-    checksums = StringUtils.splitText(bodyChecksums)
-      .filter((line) => line.includes('.deb'))
-      .map((line) => Checksum.parseLine(line));
-
-    extractTableData(bodyMain).forEach(({ entryName, lastModified, size }) => {
+    // Extract necessary information.
+    mainData.forEach(({ entryName, lastModified, size }) => {
       if (!entryName.endsWith('.deb')) return false;
 
-      // Extract necessary information.
       const [platform] = entryName
         .substring(entryName.lastIndexOf('_') + 1)
         .split('.');

@@ -1,7 +1,15 @@
+import fetch from 'isomorphic-unfetch';
 import cheerio from 'cheerio';
 
-const extractTableData = (htmlText) => {
-  const $ = cheerio.load(htmlText);
+/**
+ * Fetches and parses main html file.
+ * @param {String} baseUrl Base url
+ */
+const getTableData = async (baseUrl) => {
+  const response = await fetch(baseUrl);
+  const body = await response.text();
+
+  const $ = cheerio.load(body);
   const entries = [];
 
   $('table')
@@ -44,4 +52,4 @@ const extractTableData = (htmlText) => {
   return entries;
 };
 
-export default extractTableData;
+export default getTableData;

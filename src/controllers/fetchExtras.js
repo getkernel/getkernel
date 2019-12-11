@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-unfetch';
-import extractTableData from './extractTableData';
+import { getTableData } from './helpers';
 import ApiResponse from '../models/ApiResponse';
 import ServerIndexObject from '../models/ServerIndexObject';
 import Compare from '../utils/Compare';
@@ -43,7 +43,7 @@ const fetchExtras = async () => {
         tagUrl: getTagUrl(tag),
         items: [],
       };
-      extractTableData(body).forEach(({ entryName, lastModified }) => {
+      getTableData(body).forEach(({ entryName, lastModified }) => {
         if (entryName.toLowerCase() !== 'current') {
           const siObject = new ServerIndexObject(entryName, lastModified);
           tagData.items.push(siObject);
