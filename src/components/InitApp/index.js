@@ -14,13 +14,14 @@ import {
 } from '../../contexts';
 import {
   hydrateIndexData,
+  hydrateExtrasData,
   hydrateKernelOrgData,
   setAvailableVersions,
   setAvailableDistros,
   setBoolState,
   setIsLoading,
 } from '../../actions';
-import { getKernels, getReleases } from '../../api';
+import { getKernels, getExtras, getReleases } from '../../api';
 
 const InitApp = () => {
   const router = useRouter();
@@ -33,13 +34,15 @@ const InitApp = () => {
 
   const getInitialData = useCallback(async () => {
     const { success, data } = await getKernels();
-    const latestReleases = await getReleases();
+    const extrasResult = await getExtras();
+    const releasesResult = await getReleases();
 
     if (success) {
       kernelsDispatch(hydrateIndexData(data));
+      kernelsDispatch(hydrateExtrasData(extrasResult.data));
+      kernelsDispatch(hydrateKernelOrgData(releasesResult.data));
       filtersDispatch(setAvailableVersions(data));
       filtersDispatch(setAvailableDistros(data));
-      kernelsDispatch(hydrateKernelOrgData(latestReleases.data));
       globalDispatch(setIsLoading(false));
       globalDispatch(setBoolState('isInitialized', true));
 

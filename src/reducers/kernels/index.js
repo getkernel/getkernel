@@ -15,6 +15,12 @@ export default (state, action) => {
         },
       };
 
+    case 'HYDRATE_EXTRAS_DATA':
+      return {
+        ...state,
+        extras: action.data.results,
+      };
+
     case 'HYDRATE_KERNEL_ORG_DATA': {
       const [data] = action.data.results;
       return {

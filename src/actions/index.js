@@ -18,6 +18,7 @@ import {
 import {
   addKernelData,
   hydrateIndexData,
+  hydrateExtrasData,
   hydrateKernelOrgData,
 } from './kernels';
 import { setAvailableVersions, setAvailableDistros } from './filters';
@@ -40,6 +41,7 @@ export {
   removeDoNotAskItem,
   addKernelData,
   hydrateIndexData,
+  hydrateExtrasData,
   hydrateKernelOrgData,
   setAvailableVersions,
   setAvailableDistros,
