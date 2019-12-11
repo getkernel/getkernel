@@ -58,12 +58,30 @@ export default class BinaryUtils {
    * @param {Array<Checksum>|Array<BinaryPackage>} files Files array
    */
   static extractTokens(files) {
-    const base = files.find(({ fileName }) => fileName.endsWith('_all.deb'));
-    const rest = files.filter(({ fileName }) => fileName !== base.fileName);
+    const startsWith = 'linux-headers-';
 
-    const tokenBase = base.fileName
-      .replace('linux-headers-', '')
-      .replace('_all.deb', '');
+    const getBase = (searchTerm) =>
+      files.find(
+        ({ fileName }) =>
+          fileName.startsWith(startsWith) && fileName.includes(searchTerm),
+      );
+
+    let searchFor = 'all';
+    let base = getBase(searchFor);
+    let rest;
+
+    if (base) {
+      rest = files.filter(({ fileName }) => fileName !== base.fileName);
+    } else {
+      searchFor = '-generic';
+      base = getBase(searchFor);
+      rest = [...files];
+    }
+
+    let tokenBase = base.fileName
+      .replace(startsWith, '')
+      .replace(searchFor, '');
+    tokenBase = tokenBase.substring(0, tokenBase.lastIndexOf('_'));
 
     const [tokenStart, tokenFinish] = tokenBase.split('_');
     return { base, rest, tokenStart, tokenFinish };
