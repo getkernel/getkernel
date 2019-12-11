@@ -46,10 +46,9 @@ const fetchKernel = async (version, tag = null) => {
       const sha1 = c1.sha1 || null;
       const sha256 = c2.sha256 || null;
 
-      files[platform].push(
+      return files[platform].push(
         new BinaryPackage(entryName, size, lastModified, sha1, sha256),
       );
-      return true;
     });
 
     // Decide platforms data to use to generate files array.

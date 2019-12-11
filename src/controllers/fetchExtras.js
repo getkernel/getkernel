@@ -1,8 +1,8 @@
-import fetch from 'isomorphic-unfetch';
-import { getTableData } from './helpers';
+import { getTableData, getChecksumData } from './helpers';
 import ApiResponse from '../models/ApiResponse';
-import ServerIndexObject from '../models/ServerIndexObject';
+import ExtraIndexObject from '../models/ExtraIndexObject';
 import Compare from '../utils/Compare';
+import BinaryUtils from '../utils/BinaryUtils';
 import { BASE_URL } from '../constants';
 
 const fetchExtras = async () => {
@@ -21,12 +21,11 @@ const fetchExtras = async () => {
   try {
     const promises = TAGS.map((tag) => {
       return new Promise((resolve, reject) => {
-        fetch(getTagUrl(tag))
-          .then((data) => data.text())
-          .then((body) => {
+        getTableData(getTagUrl(tag))
+          .then((data) => {
             resolve({
               tag,
-              body,
+              data,
             });
           })
           .catch((error) => {
@@ -37,22 +36,52 @@ const fetchExtras = async () => {
 
     const results = await Promise.all(promises);
 
-    results.forEach(({ tag, body }) => {
+    const versionPromises = results.map(({ tag, data }) => {
+      return new Promise((resolve, reject) => {
+        // Extract version info for every entry in the list.
+        const inner = data
+          .filter(({ entryName }) => entryName.toLowerCase() !== 'current')
+          .map(({ entryName, entrySlug, lastModified }) => {
+            return new Promise((res, rej) => {
+              getChecksumData(`${getTagUrl(tag)}${entryName}`)
+                .then((checksums) => {
+                  const { tokenStart } = BinaryUtils.extractTokens(checksums);
+
+                  const obj = new ExtraIndexObject(
+                    `v${tokenStart}`,
+                    entrySlug,
+                    lastModified,
+                  );
+                  res(obj);
+                })
+                .catch((e) => rej(e));
+            });
+          });
+
+        return Promise.all(inner)
+          .then((items) => {
+            // Sort items by date - desc.
+            items.sort((a, b) =>
+              Compare.date('desc')(a.lastModified, b.lastModified),
+            );
+
+            resolve({
+              tag,
+              items,
+            });
+          })
+          .catch((e) => reject(e));
+      });
+    });
+
+    const resFinal = await Promise.all(versionPromises);
+
+    resFinal.forEach(({ tag, items }) => {
       const tagData = {
         tag,
         tagUrl: getTagUrl(tag),
-        items: [],
+        items,
       };
-      getTableData(body).forEach(({ entryName, lastModified }) => {
-        if (entryName.toLowerCase() !== 'current') {
-          const siObject = new ServerIndexObject(entryName, lastModified);
-          tagData.items.push(siObject);
-        }
-      });
-      // Sort items by date - desc.
-      tagData.items.sort((a, b) =>
-        Compare.date('desc')(a.lastModified, b.lastModified),
-      );
       apiResponse.addData(tagData);
     });
 
