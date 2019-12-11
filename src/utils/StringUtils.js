@@ -9,4 +9,13 @@ export default class StringUtils {
   static toUpperFirst(str) {
     return str[0].toUpperCase() + str.slice(1).toLowerCase();
   }
+
+  /**
+   * Splits text into lines of data.
+   * @param {String} text Source text
+   * @param {String} token Token to split by. Defaults to "\n".
+   */
+  static splitText(text, token = '\n') {
+    return text.split(token);
+  }
 }
