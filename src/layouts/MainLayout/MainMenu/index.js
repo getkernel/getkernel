@@ -13,6 +13,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import HomeIcon from '@material-ui/icons/Home';
 import DynamicFeedIcon from '@material-ui/icons/DynamicFeedSharp';
+import LayersIcon from '@material-ui/icons/Layers';
 import BookmarksIcon from '@material-ui/icons/Bookmarks';
 import BugReportIcon from '@material-ui/icons/BugReport';
 import InfoIcon from '@material-ui/icons/Info';
@@ -32,8 +33,13 @@ const MainMenu = ({ bookmarks, themeIcon, handleToggleTheme }) => {
       },
       {
         text: 'All Kernels',
-        icon: DynamicFeedIcon,
+        icon: LayersIcon,
         handler: () => Router.push('/kernels'),
+      },
+      {
+        text: 'Extra Builds',
+        icon: DynamicFeedIcon,
+        handler: () => Router.push('/extras'),
       },
       {
         text: 'Bookmarks',
