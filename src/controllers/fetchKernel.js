@@ -5,6 +5,7 @@ import ApiResponse from '../models/ApiResponse';
 import BinaryPackage from '../models/BinaryPackage';
 import Checksum from '../models/Checksum';
 import Kernel from '../models/Kernel';
+import StringUtils from '../utils/StringUtils';
 import { BASE_URL } from '../constants';
 
 const fetchKernel = async (version, tag = null) => {
@@ -36,8 +37,7 @@ const fetchKernel = async (version, tag = null) => {
     // Fetch and parse BUILT file.
     const resBuilt = await fetch(`${baseUrl}/BUILT`);
     const bodyBuilt = await resBuilt.text();
-    builtInfo = bodyBuilt
-      .split('\n')
+    builtInfo = StringUtils.splitText(bodyBuilt)
       .map((line) => line.toLowerCase())
       .filter((line) => line.includes('status'))
       .map((line) => {
@@ -52,31 +52,31 @@ const fetchKernel = async (version, tag = null) => {
     // Fetch and parse CHECKSUMS file.
     const resChecksums = await fetch(`${baseUrl}/CHECKSUMS`);
     const bodyChecksums = await resChecksums.text();
-    checksums = bodyChecksums
-      .split('\n')
+    checksums = StringUtils.splitText(bodyChecksums)
       .filter((line) => line.includes('.deb'))
       .map((line) => Checksum.parseLine(line));
 
     extractTableData(bodyMain).forEach(({ entryName, lastModified, size }) => {
+      if (!entryName.endsWith('.deb')) return false;
+
       // Extract necessary information.
-      if (entryName.endsWith('.deb')) {
-        const [platform] = entryName
-          .substring(entryName.lastIndexOf('_') + 1)
-          .split('.');
+      const [platform] = entryName
+        .substring(entryName.lastIndexOf('_') + 1)
+        .split('.');
 
-        if (!files[platform]) {
-          files[platform] = [];
-        }
-
-        // Grab checksums.
-        const [c1, c2] = checksums.filter((c) => c.fileName === entryName);
-        const sha1 = c1.sha1 || null;
-        const sha256 = c2.sha256 || null;
-
-        files[platform].push(
-          new BinaryPackage(entryName, size, lastModified, sha1, sha256),
-        );
+      if (!files[platform]) {
+        files[platform] = [];
       }
+
+      // Grab checksums.
+      const [c1, c2] = checksums.filter((c) => c.fileName === entryName);
+      const sha1 = c1.sha1 || null;
+      const sha256 = c2.sha256 || null;
+
+      files[platform].push(
+        new BinaryPackage(entryName, size, lastModified, sha1, sha256),
+      );
+      return true;
     });
 
     // Decide platforms data to use to generate files array.
