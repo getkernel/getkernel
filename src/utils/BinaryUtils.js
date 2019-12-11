@@ -54,6 +54,22 @@ export default class BinaryUtils {
   }
 
   /**
+   * Extracts tokens info from given files.
+   * @param {Array<Checksum>|Array<BinaryPackage>} files Files array
+   */
+  static extractTokens(files) {
+    const base = files.find(({ fileName }) => fileName.endsWith('_all.deb'));
+    const rest = files.filter(({ fileName }) => fileName !== base.fileName);
+
+    const tokenBase = base.fileName
+      .replace('linux-headers-', '')
+      .replace('_all.deb', '');
+
+    const [tokenStart, tokenFinish] = tokenBase.split('_');
+    return { base, rest, tokenStart, tokenFinish };
+  }
+
+  /**
    * Creates CHECKSUMS file for the given binaries.
    * @param {Array<BinaryPackage>} binaries Array of BinaryPackage objects
    * @param {String} version Version string

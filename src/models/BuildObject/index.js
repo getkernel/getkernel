@@ -1,5 +1,6 @@
 import './typedef';
 import Compare from '../../utils/Compare';
+import BinaryUtils from '../../utils/BinaryUtils';
 import { BUILD_VARIANT_ALL } from '../../constants';
 
 /**
@@ -32,20 +33,11 @@ export default class BuildObject {
    * Returns build variants. (e.g. generic, lowlatency)
    */
   get variants() {
-    const base = this.binaries.find(({ fileName }) =>
-      fileName.endsWith('_all.deb'),
-    );
-    const rest = this.binaries.filter(
-      ({ fileName }) => fileName !== base.fileName,
+    const { rest, tokenStart, tokenFinish } = BinaryUtils.extractTokens(
+      this.binaries,
     );
 
     const variants = new Set();
-
-    const tokenBase = base.fileName
-      .replace('linux-headers-', '')
-      .replace('_all.deb', '');
-
-    const [tokenStart, tokenFinish] = tokenBase.split('_');
 
     rest.forEach(({ fileName }) => {
       const variant = fileName.substring(
