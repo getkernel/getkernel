@@ -36,6 +36,7 @@ const extractTableData = (htmlText) => {
 
       return entries.push({
         entryName,
+        entrySlug,
         lastModified,
         size: size !== '-' ? size : null,
       });
