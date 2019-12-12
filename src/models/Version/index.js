@@ -13,8 +13,15 @@ export default class Version {
    * Creates a Version object from a Version string and a last modified date (optional).
    * @param {String} versionString Version string
    * @param {String} lastModified Last modified date
+   * @param {String} versionSlug Version slug
+   * @param {String} tag Version tag
    */
-  constructor(versionString, lastModified = '') {
+  constructor(
+    versionString,
+    lastModified = '',
+    versionSlug = null,
+    tag = null,
+  ) {
     const regex = /^v?(\d+)\.(\d+)(?:\.(\d+))?(?:\.(\d+))?(?:\.(\d+))?(?:-(rc\d*|ckt\d*))?(?:-(.+))?/i;
     const rcCktRegex = /(?:rc|ckt)(\d*)/i;
     let major, minor, build, patch, extra, rcCkt, distro, error, rc, ckt;
@@ -53,6 +60,8 @@ export default class Version {
       lastModified: lastModified
         ? moment(lastModified, SERVER_DATE_FORMAT)
         : moment(0),
+      versionSlug,
+      tag,
       error,
     };
 
@@ -121,6 +130,21 @@ export default class Version {
     } else {
       this._lastModified = moment(value, SERVER_DATE_FORMAT);
     }
+  }
+
+  get versionSlug() {
+    return this._versionSlug;
+  }
+
+  get tag() {
+    return this._tag;
+  }
+
+  get slug() {
+    if (this.versionSlug && this.tag) {
+      return this.versionSlug;
+    }
+    return this.toString();
   }
 
   get error() {

@@ -1,5 +1,6 @@
 import './typedef';
 import ServerIndexObject from '../ServerIndexObject';
+import Version from '../Version';
 
 /**
  * Object definition for extra builds listing.
@@ -8,12 +9,14 @@ export default class ExtraIndexObject extends ServerIndexObject {
   /**
    * Creates a new instance.
    * @param {String} versionName Version string
-   * @param {String} versionSlug Version slug
    * @param {String} lastModified Last modified date
+   * @param {String} versionSlug Version slug
+   * @param {String} tag Version tag
    */
-  constructor(versionName, versionSlug, lastModified) {
+  constructor(versionName, lastModified, versionSlug, tag) {
     super(versionName, lastModified);
     this.versionSlug = versionSlug;
+    this.tag = tag;
   }
 
   /**
@@ -21,7 +24,20 @@ export default class ExtraIndexObject extends ServerIndexObject {
    * @param {Object} param0 Source object
    * @returns {ExtraIndexObject} ExtraIndexObject instance
    */
-  static parse({ versionName, versionSlug, lastModified } = {}) {
-    return new this(versionName, versionSlug, lastModified);
+  static parse({ versionName, lastModified, versionSlug, tag } = {}) {
+    return new this(versionName, lastModified, versionSlug, tag);
+  }
+
+  /**
+   * Returns the Version representation of the object.
+   * @returns {Version} Version instance
+   */
+  toVersion() {
+    return new Version(
+      this.versionName,
+      this.lastModified,
+      this.versionSlug,
+      this.tag,
+    );
   }
 }

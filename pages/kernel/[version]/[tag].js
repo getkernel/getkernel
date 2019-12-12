@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import MainLayout from '../../src/layouts/MainLayout';
-import KernelVersion from '../../src/components/KernelVersion';
-import StringUtils from '../../src/utils/StringUtils';
+import MainLayout from '../../../src/layouts/MainLayout';
+import KernelVersion from '../../../src/components/KernelVersion';
+import StringUtils from '../../../src/utils/StringUtils';
 
 const KernelVersionPage = ({ version, tag }) => {
   const tagStr = tag ? `${StringUtils.toUpperFirst(tag)}/` : '';

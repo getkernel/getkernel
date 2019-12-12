@@ -49,8 +49,9 @@ const fetchExtras = async () => {
 
                   const obj = new ExtraIndexObject(
                     `v${tokenStart}`,
-                    entrySlug,
                     lastModified,
+                    entrySlug,
+                    tag,
                   );
                   res(obj);
                 })
