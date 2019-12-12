@@ -1,13 +1,25 @@
 /**
  * ExtrasList component.
  */
-import React, { Fragment, useContext, memo } from 'react';
+import React, {
+  Fragment,
+  useCallback,
+  useContext,
+  useEffect,
+  memo,
+} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import PageContent from '../PageContent';
 import KernelListItem from '../KernelListItem';
-import { KernelsContext } from '../../contexts';
+import {
+  KernelsContext,
+  KernelsDispatchContext,
+  GlobalDispatchContext,
+} from '../../contexts';
 import ExtraIndexObject from '../../models/ExtraIndexObject';
+import { getExtras } from '../../api';
+import { hydrateExtrasData, setIsLoading } from '../../actions';
 import styles from './styles';
 
 const useStyles = makeStyles(styles);
@@ -16,6 +28,24 @@ const ExtrasList = () => {
   const classes = useStyles();
 
   const { extras } = useContext(KernelsContext);
+  const globalDispatch = useContext(GlobalDispatchContext);
+  const kernelsDispatch = useContext(KernelsDispatchContext);
+
+  const getInitialData = useCallback(async () => {
+    const { success, data } = await getExtras();
+
+    if (success) {
+      kernelsDispatch(hydrateExtrasData(data));
+      globalDispatch(setIsLoading(false));
+    }
+  });
+
+  useEffect(() => {
+    if (!extras.length) {
+      getInitialData();
+      globalDispatch(setIsLoading(true));
+    }
+  }, [extras.length]);
 
   return (
     <div className={classes.root}>
