@@ -1,15 +1,11 @@
 /**
  * ExtrasList component.
  */
-import React, {
-  Fragment,
-  useCallback,
-  useContext,
-  useEffect,
-  memo,
-} from 'react';
+import React, { useCallback, useContext, useEffect, memo } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 import PageContent from '../PageContent';
 import KernelListItem from '../KernelListItem';
 import {
@@ -51,8 +47,10 @@ const ExtrasList = () => {
     <div className={classes.root}>
       <PageContent>
         {extras.map(({ tag, items }) => (
-          <Fragment key={tag}>
-            <h1>{tag}</h1>
+          <Box key={tag} className={classes.tagContents}>
+            <Typography variant="h5" gutterBottom>
+              {tag}
+            </Typography>
             <Grid container spacing={3}>
               {items
                 .map((item) => ExtraIndexObject.parse(item).toVersion())
@@ -65,7 +63,7 @@ const ExtrasList = () => {
                   />
                 ))}
             </Grid>
-          </Fragment>
+          </Box>
         ))}
       </PageContent>
     </div>
