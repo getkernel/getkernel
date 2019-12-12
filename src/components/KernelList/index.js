@@ -86,7 +86,7 @@ const KernelList = () => {
         <Grid container spacing={3}>
           {pageContents.map((version, index) => (
             <KernelListItem
-              key={version.toString()}
+              key={version.key}
               version={version}
               index={index}
               animate

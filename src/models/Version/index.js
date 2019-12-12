@@ -127,6 +127,10 @@ export default class Version {
     return this._error;
   }
 
+  get key() {
+    return `${this.toString()}_${this.toFormattedLastModified('')}`;
+  }
+
   /* eslint-enable no-underscore-dangle, one-var-declaration-per-line, one-var */
 
   /**
