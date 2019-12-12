@@ -15,4 +15,13 @@ export default class ExtraIndexObject extends ServerIndexObject {
     super(versionName, lastModified);
     this.versionSlug = versionSlug;
   }
+
+  /**
+   * Creates a new instance by parsing an object.
+   * @param {Object} param0 Source object
+   * @returns {ExtraIndexObject} ExtraIndexObject instance
+   */
+  static parse({ versionName, versionSlug, lastModified } = {}) {
+    return new this(versionName, versionSlug, lastModified);
+  }
 }
