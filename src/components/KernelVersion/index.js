@@ -42,7 +42,11 @@ const KernelVersion = ({ version, tag }) => {
       }
     };
 
-    const kernelItem = version && kernels.find((k) => k.version === version);
+    const kernelItem =
+      version &&
+      kernels.find(
+        (k) => k.version === version && (tag ? k.tag === tag : true),
+      );
 
     if (version && !kernelItem) {
       getKernelData();
@@ -53,7 +57,7 @@ const KernelVersion = ({ version, tag }) => {
       setSelectedKernel(Kernel.parse(kernelItem));
       globalDispatch(setIsLoading(false));
     }
-  }, [kernels, kernelsDispatch, version]);
+  }, [kernels, kernelsDispatch, version, tag]);
 
   const handleShowWebViewer = useCallback((url, title) => {
     globalDispatch(showWebViewer(url, title));
