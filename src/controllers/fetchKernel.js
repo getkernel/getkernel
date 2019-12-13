@@ -3,24 +3,25 @@ import ApiResponse from '../models/ApiResponse';
 import Kernel from '../models/Kernel';
 import BinaryPackage from '../models/BinaryPackage';
 import Compare from '../utils/Compare';
+import BinaryUtils from '../utils/BinaryUtils';
 import { BASE_URL } from '../constants';
 
-const fetchKernel = async (version, tag = null) => {
-  let versionStr;
+const fetchKernel = async (versionStr, tag = null) => {
+  let versionName;
   let baseUrl;
 
   if (tag) {
-    versionStr = version;
-    baseUrl = `${BASE_URL}/${tag}/${versionStr}`;
+    versionName = versionStr;
+    baseUrl = `${BASE_URL}/${tag}/${versionName}`;
   } else {
-    versionStr = version.toLowerCase().startsWith('v')
-      ? version
-      : `v${version}`;
-    baseUrl = `${BASE_URL}/${versionStr}`;
+    versionName = versionStr.toLowerCase().startsWith('v')
+      ? versionStr
+      : `v${versionStr}`;
+    baseUrl = `${BASE_URL}/${versionName}`;
   }
 
   const apiResponse = new ApiResponse(baseUrl);
-  const kernel = new Kernel(versionStr, baseUrl, tag);
+  const kernel = new Kernel(versionName, versionName, baseUrl, tag);
 
   const files = {};
 
@@ -28,6 +29,12 @@ const fetchKernel = async (version, tag = null) => {
     const mainData = await getTableData(baseUrl);
     const builtInfo = await getBuiltInfo(baseUrl);
     const checksums = await getChecksumData(baseUrl);
+
+    if (tag) {
+      // Extract version name from checksums.
+      const { tokenStart } = BinaryUtils.extractTokens(checksums);
+      kernel.versionName = `v${tokenStart}`;
+    }
 
     // Extract necessary information.
     mainData.forEach(({ entryName, lastModified, size }) => {
