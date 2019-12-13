@@ -22,7 +22,7 @@ import styles from './styles';
 
 const useStyles = makeStyles(styles);
 
-const KernelVersion = ({ version, tag }) => {
+const KernelVersion = ({ versionStr, tag }) => {
   const classes = useStyles();
 
   const { kernels } = useContext(KernelsContext);
@@ -31,11 +31,11 @@ const KernelVersion = ({ version, tag }) => {
 
   const [selectedKernel, setSelectedKernel] = useState(new Kernel());
 
-  const versionObj = new Version(version);
+  const version = new Version(versionStr);
 
   useEffect(() => {
     const getKernelData = async () => {
-      const { success, data } = await getKernel(version, tag);
+      const { success, data } = await getKernel(versionStr, tag);
 
       if (success) {
         kernelsDispatch(addKernelData(data));
@@ -43,12 +43,12 @@ const KernelVersion = ({ version, tag }) => {
     };
 
     const kernelItem =
-      version &&
+      versionStr &&
       kernels.find(
-        (k) => k.version === version && (tag ? k.tag === tag : true),
+        (k) => k.version === versionStr && (tag ? k.tag === tag : true),
       );
 
-    if (version && !kernelItem) {
+    if (versionStr && !kernelItem) {
       getKernelData();
       globalDispatch(setIsLoading(true));
     }
@@ -57,7 +57,7 @@ const KernelVersion = ({ version, tag }) => {
       setSelectedKernel(Kernel.parse(kernelItem));
       globalDispatch(setIsLoading(false));
     }
-  }, [kernels, kernelsDispatch, version, tag]);
+  }, [kernels, kernelsDispatch, versionStr, tag]);
 
   const handleShowWebViewer = useCallback((url, title) => {
     globalDispatch(showWebViewer(url, title));
@@ -69,7 +69,7 @@ const KernelVersion = ({ version, tag }) => {
     <div className={classes.root}>
       <KernelVersionToolbar
         kernel={selectedKernel}
-        version={versionObj}
+        version={version}
         handleShowWebViewer={handleShowWebViewer}
       />
       <PageContent>
@@ -79,7 +79,7 @@ const KernelVersion = ({ version, tag }) => {
               <BuildListItem
                 key={build.platform}
                 build={BuildObject.parse(build)}
-                version={version}
+                version={versionStr}
                 kernelUrl={kernelUrl}
                 index={index}
                 handleShowWebViewer={handleShowWebViewer}
@@ -96,7 +96,7 @@ KernelVersion.defaultProps = {
 };
 
 KernelVersion.propTypes = {
-  version: PropTypes.string.isRequired,
+  versionStr: PropTypes.string.isRequired,
   tag: PropTypes.string,
 };
 

@@ -11,7 +11,7 @@ const KernelVersionPage = ({ version, tag }) => {
 
   return (
     <MainLayout pageTitle={pageTitle} contentTitle={contentTitle}>
-      <KernelVersion version={version} tag={tag} />
+      <KernelVersion versionStr={version} tag={tag} />
     </MainLayout>
   );
 };

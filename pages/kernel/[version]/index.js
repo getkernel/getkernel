@@ -9,7 +9,7 @@ const KernelVersionPage = ({ version }) => {
 
   return (
     <MainLayout pageTitle={pageTitle} contentTitle={contentTitle}>
-      <KernelVersion version={version} />
+      <KernelVersion versionStr={version} />
     </MainLayout>
   );
 };
