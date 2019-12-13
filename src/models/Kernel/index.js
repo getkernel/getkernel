@@ -8,13 +8,15 @@ import BuildObject from '../BuildObject';
 export default class Kernel {
   /**
    * Creates a new Kernel instance.
-   * @param {String} version Version string
+   * @param {String} versionName Version string
+   * @param {String} versionSlug Version slug
    * @param {String} kernelUrl The url of the kernel
-   * @param {String} tag The tag that the kernel belongs to (optional).
+   * @param {String} tag The tag that the kernel belongs to.
    * @param {Array<BuildObject>} builds Array of BuildObject objects
    */
-  constructor(version, kernelUrl, tag, builds) {
-    this.version = version;
+  constructor(versionName, versionSlug, kernelUrl, tag, builds) {
+    this.versionName = versionName;
+    this.versionSlug = versionSlug;
     this.kernelUrl = kernelUrl;
     this.tag = tag;
     this.urls = {
@@ -30,8 +32,8 @@ export default class Kernel {
    * @param {Object} param0 Source object
    * @returns {Kernel} Kernel instance
    */
-  static parse({ version, kernelUrl, tag, builds }) {
-    return new this(version, kernelUrl, tag, builds);
+  static parse({ versionName, versionSlug, kernelUrl, tag, builds }) {
+    return new this(versionName, versionSlug, kernelUrl, tag, builds);
   }
 
   /**
@@ -52,6 +54,6 @@ export default class Kernel {
   }
 
   getVersion() {
-    return new Version(this.version);
+    return new Version(this.versionName, null, this.versionSlug, this.tag);
   }
 }
