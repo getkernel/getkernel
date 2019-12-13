@@ -129,7 +129,6 @@ export default class BinaryUtils {
       .join('\n');
     addLine(sha256Part);
 
-    // TODO: fix the situation with extra builds
     addComment(`${ORIGIN}/kernel/${version.slug}`, 1);
 
     return {
