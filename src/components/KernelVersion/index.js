@@ -45,7 +45,7 @@ const KernelVersion = ({ versionStr, tag }) => {
     const kernelItem =
       versionStr &&
       kernels.find(
-        (k) => k.version === versionStr && (tag ? k.tag === tag : true),
+        (k) => k.versionSlug === versionStr && (tag ? k.tag === tag : true),
       );
 
     if (versionStr && !kernelItem) {
