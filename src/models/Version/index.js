@@ -12,7 +12,7 @@ export default class Version {
   /**
    * Creates a Version object from a Version string and a last modified date (optional).
    * @param {String} versionString Version string
-   * @param {String} lastModified Last modified date
+   * @param {String} lastModified Last modified date ISO string
    * @param {String} versionSlug Version slug
    * @param {String} tag Version tag
    */
@@ -140,6 +140,13 @@ export default class Version {
 
   get key() {
     return `${this.toString()}_${this.toFormattedLastModified('')}`;
+  }
+
+  get bookmark() {
+    if (this.versionSlug && this.tag) {
+      return `${this.versionSlug}@${this.tag}`;
+    }
+    return this.toString();
   }
 
   /* eslint-enable no-underscore-dangle, one-var-declaration-per-line, one-var */

@@ -1,13 +1,14 @@
 /**
- * @typedef {Object} Version
- * @property {Number} major
- * @property {Number} minor
- * @property {Number} patch
- * @property {Number} extra
- * @property {String} rc
- * @property {String} distro
- * @property {Moment} lastModified
- * @property {String} tag
- * @property {String} slug
- * @property {String} error
+ * @typedef {Object} Version Version object
+ * @property {Number} major Major number
+ * @property {Number} minor Minor number
+ * @property {Number} patch Patch number
+ * @property {Number} extra Extra number
+ * @property {String} rc RC number
+ * @property {String} distro Distro name
+ * @property {Moment} lastModified Last modified date ISO string
+ * @property {String} tag Version tag (if any)
+ * @property {String} slug Version slug
+ * @property {String} bookmark Bookmark string
+ * @property {String} error Error (if any)
  */
