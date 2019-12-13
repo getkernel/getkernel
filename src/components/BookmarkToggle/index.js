@@ -20,7 +20,7 @@ const BookmarkToggle = ({ version, size }) => {
   const globalDispatch = useContext(GlobalDispatchContext);
 
   const isBookmarked =
-    bookmarks && bookmarks.some((b) => b === version.toString());
+    bookmarks && bookmarks.some((b) => b === version.bookmark);
 
   // Disable on saved bookmarks page.
   const disableBookmark = router.pathname === '/b/[encoded]';
@@ -28,22 +28,22 @@ const BookmarkToggle = ({ version, size }) => {
   let BookmarkButtonIcon = isBookmarked ? BookmarkIcon : BookmarkBorderIcon;
   if (disableBookmark) BookmarkButtonIcon = CheckIcon;
 
-  const handleAddBookmark = useCallback((versionStr) => {
-    globalDispatch(addBookmark(versionStr));
-    globalDispatch(showSnackbar(`${versionStr} added to bookmarks.`));
+  const handleAddBookmark = useCallback((bookmark) => {
+    globalDispatch(addBookmark(bookmark));
+    globalDispatch(showSnackbar(`${bookmark} added to bookmarks.`));
   });
 
-  const handleRemoveBookmark = useCallback((versionStr) => {
-    globalDispatch(removeBookmark(versionStr));
-    globalDispatch(showSnackbar(`${versionStr} removed from bookmarks.`));
+  const handleRemoveBookmark = useCallback((bookmark) => {
+    globalDispatch(removeBookmark(bookmark));
+    globalDispatch(showSnackbar(`${bookmark} removed from bookmarks.`));
   });
 
   const handleBookmarkClick = useCallback(() => {
-    const versionStr = version.toString();
+    const { bookmark } = version;
     if (isBookmarked) {
-      handleRemoveBookmark(versionStr);
+      handleRemoveBookmark(bookmark);
     } else {
-      handleAddBookmark(versionStr);
+      handleAddBookmark(bookmark);
     }
   });
 
