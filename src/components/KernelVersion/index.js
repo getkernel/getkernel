@@ -31,7 +31,7 @@ const KernelVersion = ({ versionStr, tag }) => {
 
   const [selectedKernel, setSelectedKernel] = useState(new Kernel());
 
-  const version = new Version(versionStr);
+  const version = new Version(versionStr, null, null, tag);
 
   useEffect(() => {
     const getKernelData = async () => {
@@ -79,7 +79,7 @@ const KernelVersion = ({ versionStr, tag }) => {
               <BuildListItem
                 key={build.platform}
                 build={BuildObject.parse(build)}
-                version={versionStr}
+                version={version}
                 kernelUrl={kernelUrl}
                 index={index}
                 handleShowWebViewer={handleShowWebViewer}

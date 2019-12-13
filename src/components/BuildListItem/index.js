@@ -20,6 +20,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import BinaryList from './BinaryList';
 import MainActions from './MainActions';
 import BuildObject from '../../models/BuildObject';
+import Version from '../../models/Version';
 import styles from './styles';
 
 const useStyles = makeStyles(styles);
@@ -128,7 +129,7 @@ BuildListItem.defaultProps = {
 };
 
 BuildListItem.propTypes = {
-  version: PropTypes.string.isRequired,
+  version: PropTypes.instanceOf(Version).isRequired,
   kernelUrl: PropTypes.string.isRequired,
   build: PropTypes.instanceOf(BuildObject).isRequired,
   index: PropTypes.number.isRequired,

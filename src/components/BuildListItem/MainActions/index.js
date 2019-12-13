@@ -1,6 +1,6 @@
 /**
  * MainActions component.
- * Rendered by PlatformListItem.
+ * Rendered by BuildListItem.
  */
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
@@ -17,6 +17,7 @@ import { GlobalContext, GlobalDispatchContext } from '../../../contexts';
 import { showAlert } from '../../../actions';
 import { batchDownload } from '../../../utils/DownloadUtils';
 import BinaryUtils from '../../../utils/BinaryUtils';
+import Version from '../../../models/Version';
 import styles from './styles';
 
 const useStyles = makeStyles(styles);
@@ -150,7 +151,7 @@ MainActions.defaultProps = {
 };
 
 MainActions.propTypes = {
-  version: PropTypes.string.isRequired,
+  version: PropTypes.instanceOf(Version).isRequired,
   kernelUrl: PropTypes.string.isRequired,
   platform: PropTypes.string.isRequired,
   buildStatus: PropTypes.bool.isRequired,

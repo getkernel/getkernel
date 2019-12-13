@@ -90,7 +90,7 @@ export default class BinaryUtils {
   /**
    * Creates CHECKSUMS file for the given binaries.
    * @param {Array<BinaryPackage>} binaries Array of BinaryPackage objects
-   * @param {String} version Version string
+   * @param {Version} version Version object
    * @param {String} platform Platform string
    */
   static buildChecksums(binaries, version, platform) {
@@ -129,7 +129,8 @@ export default class BinaryUtils {
       .join('\n');
     addLine(sha256Part);
 
-    addComment(`${ORIGIN}/kernel/${version}`, 1);
+    // TODO: fix the situation with extra builds
+    addComment(`${ORIGIN}/kernel/${version.slug}`, 1);
 
     return {
       fileName,
