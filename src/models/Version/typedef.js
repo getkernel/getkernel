@@ -7,5 +7,7 @@
  * @property {String} rc
  * @property {String} distro
  * @property {Moment} lastModified
+ * @property {String} tag
+ * @property {String} slug
  * @property {String} error
  */

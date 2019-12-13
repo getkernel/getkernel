@@ -142,7 +142,7 @@ export default class Version {
 
   get slug() {
     if (this.versionSlug && this.tag) {
-      return this.versionSlug;
+      return `${this.versionSlug}/${this.tag}`;
     }
     return this.toString();
   }
