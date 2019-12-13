@@ -53,6 +53,9 @@ export default class Kernel {
     return this.builds.length > 0;
   }
 
+  /**
+   * Returns the Version representation of the kernel.
+   */
   getVersion() {
     return new Version(this.versionName, null, this.versionSlug, this.tag);
   }
