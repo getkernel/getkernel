@@ -12,8 +12,8 @@ export default class BinaryPackage extends Checksum {
    * @param {String} fileName File name
    * @param {String} fileSize File size string
    * @param {String} lastModified Last modified date ISO String
-   * @param {String} sha1 SHA1 checksum of the file
-   * @param {String} sha256 SHA256 checksum of the file
+   * @param {String} sha1 SHA1 hash of the file
+   * @param {String} sha256 SHA256 hash of the file
    */
   constructor(fileName, fileSize, lastModified, sha1, sha256) {
     super(fileName, sha1, sha256);

@@ -7,8 +7,8 @@ export default class Checksum {
   /**
    * Creates a checksum object.
    * @param {String} fileName File name
-   * @param {String} sha1 SHA1 checksum of the file
-   * @param {String} sha256 SHA256 checksum of the file
+   * @param {String} sha1 SHA1 hash of the file
+   * @param {String} sha256 SHA256 hash of the file
    */
   constructor(fileName, sha1, sha256) {
     this.fileName = fileName || '';
@@ -24,11 +24,11 @@ export default class Checksum {
   static parseLine(line) {
     let sha1 = null;
     let sha256 = null;
-    const [, sum, fileName] = line.match(
+    const [, hash, fileName] = line.match(
       /^(\b[a-f0-9]{40,64}\b)(?:\s+)(\b.*\b)/i,
     );
-    if (sum.length === 40) sha1 = sum;
-    if (sum.length === 64) sha256 = sum;
+    if (hash.length === 40) sha1 = hash;
+    if (hash.length === 64) sha256 = hash;
     return new this(fileName, sha1, sha256);
   }
 }
