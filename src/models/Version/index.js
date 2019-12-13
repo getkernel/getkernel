@@ -16,26 +16,13 @@ export default class Version {
    * @param {String} versionSlug Version slug
    * @param {String} tag Version tag
    */
-  constructor(
-    versionString,
-    lastModified = '',
-    versionSlug = null,
-    tag = null,
-  ) {
+  constructor(versionString, lastModified, versionSlug = null, tag = null) {
     const regex = /^v?(\d+)\.(\d+)(?:\.(\d+))?(?:\.(\d+))?(?:\.(\d+))?(?:-(rc\d*|ckt\d*))?(?:-(.+))?/i;
     const rcCktRegex = /(?:rc|ckt)(\d*)/i;
     let major, minor, build, patch, extra, rcCkt, distro, error, rc, ckt;
     try {
-      [
-        ,
-        major,
-        minor,
-        build,
-        patch,
-        extra,
-        rcCkt,
-        distro,
-      ] = versionString.match(regex);
+      const matches = versionString.match(regex);
+      [, major, minor, build, patch, extra, rcCkt, distro] = matches;
 
       // Extract rc or ckt info.
       if (rcCkt.toLowerCase().includes('rc')) {
@@ -76,8 +63,8 @@ export default class Version {
    * @param {Object} param0 Source object
    * @returns {Version} Version instance
    */
-  static parse({ versionString, lastModified } = {}) {
-    return new this(versionString, lastModified);
+  static parse({ versionString, lastModified, versionSlug, tag } = {}) {
+    return new this(versionString, lastModified, versionSlug, tag);
   }
 
   get major() {
