@@ -24,13 +24,9 @@ KernelVersionPage.getInitialProps = (context) => {
   return { version, tag };
 };
 
-KernelVersionPage.defaultProps = {
-  tag: null,
-};
-
 KernelVersionPage.propTypes = {
   version: PropTypes.string.isRequired,
-  tag: PropTypes.string,
+  tag: PropTypes.string.isRequired,
 };
 
 export default KernelVersionPage;

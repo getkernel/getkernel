@@ -16,10 +16,10 @@ const KernelVersionPage = ({ version }) => {
 
 KernelVersionPage.getInitialProps = (context) => {
   const {
-    query: { version, tag },
+    query: { version },
   } = context;
 
-  return { version, tag };
+  return { version };
 };
 
 KernelVersionPage.propTypes = {
