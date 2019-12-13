@@ -59,11 +59,7 @@ const KernelListItem = ({ version, index, animate }) => {
         <Card>
           <Link
             href={version.tag ? '/kernel/[version]/[tag]' : '/kernel/[version]'}
-            as={
-              version.tag
-                ? `/kernel/${version.slug}/${version.tag}`
-                : `/kernel/${version.slug}`
-            }
+            as={`/kernel/${version.slug}`}
           >
             <CardActionArea title={versionStr}>
               <div className={classes.card}>
