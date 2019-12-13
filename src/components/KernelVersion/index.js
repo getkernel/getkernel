@@ -30,8 +30,7 @@ const KernelVersion = ({ versionStr, tag }) => {
   const globalDispatch = useContext(GlobalDispatchContext);
 
   const [selectedKernel, setSelectedKernel] = useState(new Kernel());
-
-  const version = new Version(versionStr, null, null, tag);
+  const [version, setVersion] = useState(new Version());
 
   useEffect(() => {
     const getKernelData = async () => {
@@ -54,7 +53,9 @@ const KernelVersion = ({ versionStr, tag }) => {
     }
 
     if (kernelItem) {
-      setSelectedKernel(Kernel.parse(kernelItem));
+      const kernelObj = Kernel.parse(kernelItem);
+      setSelectedKernel(kernelObj);
+      setVersion(kernelObj.getVersion());
       globalDispatch(setIsLoading(false));
     }
   }, [kernels, kernelsDispatch, versionStr, tag]);
