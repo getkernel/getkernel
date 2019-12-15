@@ -1,5 +1,4 @@
 import { useRouter } from 'next/router';
-import { KERNELS } from '../routes';
 
 /**
  * Creates a hook that uses query params to filter kernels.
@@ -9,6 +8,7 @@ const useFilterNavigate = () => {
 
   const {
     query: { p, v, d, r, s, o },
+    route,
   } = router;
 
   const DELIMETER = '-';
@@ -99,7 +99,7 @@ const useFilterNavigate = () => {
     // Remove unused params.
     deleteSearchParams(searchParams, (_, val) => !val);
 
-    router.push(`${KERNELS}?${searchParams.toString()}`);
+    router.push(`${route}?${searchParams.toString()}`);
   };
 
   /**
@@ -130,7 +130,7 @@ const useFilterNavigate = () => {
     // Remove search params except "p".
     deleteSearchParams(searchParams, (key, val) => key !== 'p' || !val);
 
-    router.push(`${KERNELS}?${searchParams.toString()}`);
+    router.push(`${route}?${searchParams.toString()}`);
   };
 
   return {
