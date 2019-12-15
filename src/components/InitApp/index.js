@@ -53,7 +53,7 @@ const InitApp = () => {
       getInitialData();
       globalDispatch(setIsLoading(true));
     }
-  }, [isInitialized, router]);
+  }, [isInitialized]);
 
   return null;
 };
