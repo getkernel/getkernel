@@ -2,13 +2,11 @@
  * InitApp component.
  */
 import { useContext, useEffect, useCallback } from 'react';
-import { useRouter } from 'next/router';
 import {
   GlobalContext,
   GlobalDispatchContext,
   KernelsDispatchContext,
   FiltersDispatchContext,
-  KernelsProvider,
   FiltersProvider,
   withProvider,
 } from '../../contexts';
@@ -23,8 +21,6 @@ import {
 import { getKernels, getReleases } from '../../api';
 
 const InitApp = () => {
-  const router = useRouter();
-
   const { isInitialized } = useContext(GlobalContext);
 
   const globalDispatch = useContext(GlobalDispatchContext);
@@ -42,9 +38,6 @@ const InitApp = () => {
       filtersDispatch(setAvailableDistros(data));
       globalDispatch(setIsLoading(false));
       globalDispatch(setBoolState('isInitialized', true));
-
-      // TODO: FIX THIS!!!
-      router.reload();
     }
   });
 
@@ -58,7 +51,4 @@ const InitApp = () => {
   return null;
 };
 
-const withFiltersProvider = withProvider(FiltersProvider)(InitApp);
-const withKernelsProvider = withProvider(KernelsProvider)(withFiltersProvider);
-
-export default withKernelsProvider;
+export default withProvider(FiltersProvider)(InitApp);
