@@ -56,7 +56,7 @@ const LatestReleases = () => {
         <Grid container spacing={3}>
           {contents.map((version, index) => (
             <KernelListItem
-              key={version.toString()}
+              key={version.key}
               version={version}
               index={index}
               animate
