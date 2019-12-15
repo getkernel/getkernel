@@ -48,9 +48,7 @@ const ExtrasList = () => {
       <PageContent>
         {extras.map(({ tag, items }) => (
           <Box key={tag} className={classes.tagContents}>
-            <Typography variant="h5" gutterBottom>
-              {tag}
-            </Typography>
+            <Typography variant="button">{tag}</Typography>
             <Grid container spacing={3}>
               {items
                 .map((item) => ExtraIndexObject.parse(item).toVersion())

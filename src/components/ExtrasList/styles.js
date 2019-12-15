@@ -6,6 +6,10 @@ export default (theme) => ({
     flexGrow: 1,
   },
   tagContents: {
-    marginBottom: theme.spacing(4),
+    marginBottom: theme.spacing(5),
+    '& > span': {
+      display: 'inline-block',
+      marginBottom: theme.spacing(1),
+    },
   },
 });
