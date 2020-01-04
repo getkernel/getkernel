@@ -7,12 +7,10 @@ import { ORIGIN } from '../constants';
  * @param {String} tag The tag that the kernel belongs to (optional).
  * @returns {ApiResponse} ApiResponse object
  */
-const getKernel = async (versionStr, tag = null) => {
+export const getKernel = async (versionStr, tag = null) => {
   let url = `${ORIGIN}/api/kernel/${versionStr}`;
   if (tag) url += `?tag=${tag}`;
   const res = await fetch(url);
   const json = await res.json();
   return json;
 };
-
-export default getKernel;

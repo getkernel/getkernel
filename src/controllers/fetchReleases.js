@@ -3,7 +3,7 @@ import ApiResponse from '../models/ApiResponse';
 import KernelOrgResponse from '../models/KernelOrgResponse';
 import { KERNEL_ORG_RELEASES_URL } from '../constants';
 
-const fetchReleases = async () => {
+export const fetchReleases = async () => {
   const apiResponse = new ApiResponse(KERNEL_ORG_RELEASES_URL);
 
   try {
@@ -22,5 +22,3 @@ const fetchReleases = async () => {
 
   return apiResponse;
 };
-
-export default fetchReleases;

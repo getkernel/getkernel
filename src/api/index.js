@@ -1,6 +1,4 @@
-import getKernels from './getKernels';
-import getExtras from './getExtras';
-import getKernel from './getKernel';
-import getReleases from './getReleases';
-
-export { getKernels, getExtras, getKernel, getReleases };
+export * from './getKernels';
+export * from './getKernel';
+export * from './getExtras';
+export * from './getReleases';

@@ -6,7 +6,7 @@ import Compare from '../utils/Compare';
 import BinaryUtils from '../utils/BinaryUtils';
 import { BASE_URL } from '../constants';
 
-const fetchKernel = async (versionStr, tag = null) => {
+export const fetchKernel = async (versionStr, tag = null) => {
   let versionName;
   let baseUrl;
 
@@ -91,5 +91,3 @@ const fetchKernel = async (versionStr, tag = null) => {
 
   return apiResponse;
 };
-
-export default fetchKernel;

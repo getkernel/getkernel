@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 /**
  * Creates a hook that uses query params to filter kernels.
  */
-const useFilterNavigate = () => {
+export const useFilterNavigate = () => {
   const router = useRouter();
 
   const {
@@ -145,5 +145,3 @@ const useFilterNavigate = () => {
     clearFilters,
   };
 };
-
-export default useFilterNavigate;

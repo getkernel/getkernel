@@ -1,6 +1,6 @@
-export default (distrosFilter) => (version) => {
+export const distrosFilter = (filter) => (version) => {
   if (!version.distro) return false;
 
   const filterToken = `${version.distro}@${version.toShortString()}`;
-  return distrosFilter.includes(filterToken);
+  return filter.includes(filterToken);
 };

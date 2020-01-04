@@ -4,7 +4,7 @@ import ServerIndexObject from '../models/ServerIndexObject';
 import Compare from '../utils/Compare';
 import { BASE_URL } from '../constants';
 
-const fetchIndex = async () => {
+export const fetchIndex = async () => {
   const apiResponse = new ApiResponse(`${BASE_URL}/`);
 
   try {
@@ -33,5 +33,3 @@ const fetchIndex = async () => {
 
   return apiResponse;
 };
-
-export default fetchIndex;

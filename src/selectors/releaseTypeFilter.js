@@ -1,4 +1,4 @@
-export default (releaseType) => (version) => {
+export const releaseTypeFilter = (releaseType) => (version) => {
   switch (releaseType) {
     case 'all':
       return true;

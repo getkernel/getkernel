@@ -5,7 +5,7 @@ import Compare from '../utils/Compare';
 import BinaryUtils from '../utils/BinaryUtils';
 import { BASE_URL } from '../constants';
 
-const fetchExtras = async () => {
+export const fetchExtras = async () => {
   const TAGS = [
     'daily',
     'drm-intel-next',
@@ -98,5 +98,3 @@ const fetchExtras = async () => {
 
   return apiResponse;
 };
-
-export default fetchExtras;

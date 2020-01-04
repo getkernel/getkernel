@@ -1,6 +1,6 @@
 import { useReducer, useEffect } from 'react';
 
-export default (key, defaultValue, reducer) => {
+export const useLocalStorageReducer = (key, defaultValue, reducer) => {
   const [state, dispatch] = useReducer(reducer, defaultValue, () => {
     let value;
     try {

@@ -1,3 +1,3 @@
-export default (versionsFilter) => (version) => {
-  return versionsFilter.includes(version.toShortString());
+export const versionsFilter = (filter) => (version) => {
+  return filter.includes(version.toShortString());
 };
