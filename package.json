@@ -2,6 +2,18 @@
   "name": "getkernel.sh",
   "version": "0.1.0",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/getkernel/getkernel.sh.git"
+  },
+  "homepage": "https://github.com/getkernel/getkernel.sh",
+  "bugs": {
+    "url": "https://github.com/getkernel/getkernel.sh/issues"
+  },
+  "author": {
+    "name": "Caglar Turali",
+    "url": "https://caglarturali.com/"
+  },
   "scripts": {
     "dev": "nodemon src/server.js",
     "build": "next build",
