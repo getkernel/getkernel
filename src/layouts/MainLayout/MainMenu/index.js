@@ -18,6 +18,7 @@ import BookmarksIcon from '@material-ui/icons/Bookmarks';
 import BugReportIcon from '@material-ui/icons/BugReport';
 import InfoIcon from '@material-ui/icons/Info';
 import styles from './styles';
+import packageJSON from '../../../../package.json';
 
 const useStyles = makeStyles(styles);
 
@@ -63,7 +64,13 @@ const MainMenu = ({ bookmarks, themeIcon, handleToggleTheme }) => {
       {
         text: 'Report a Problem',
         icon: BugReportIcon,
-        handler: () => {},
+        handler: () => {
+          const link = document.createElement('a');
+          link.href = `${packageJSON.bugs.url}/new`;
+          link.target = '_blank';
+          link.click();
+          link.remove();
+        },
       },
       {
         text: 'About',
