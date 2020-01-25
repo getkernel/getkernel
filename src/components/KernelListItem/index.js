@@ -20,7 +20,7 @@ import styles from './styles';
 
 const useStyles = makeStyles(styles);
 
-const KernelListItem = ({ version, index, animate }) => {
+const KernelListItem = ({ version, index, bookmarkable, animate }) => {
   const classes = useStyles();
 
   const versionStr = version.toString();
@@ -92,7 +92,7 @@ const KernelListItem = ({ version, index, animate }) => {
             </CardActionArea>
           </Link>
           <CardActions disableSpacing className={classes.actions}>
-            <BookmarkToggle version={version} />
+            <BookmarkToggle version={version} bookmarkable={bookmarkable} />
             <div>
               {chips &&
                 chips.map(({ label, title, color }) => (
@@ -114,12 +114,14 @@ const KernelListItem = ({ version, index, animate }) => {
 };
 
 KernelListItem.defaultProps = {
+  bookmarkable: true,
   animate: true,
 };
 
 KernelListItem.propTypes = {
   version: PropTypes.instanceOf(Version).isRequired,
   index: PropTypes.number.isRequired,
+  bookmarkable: PropTypes.bool,
   animate: PropTypes.bool,
 };
 

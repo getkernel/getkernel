@@ -13,7 +13,7 @@ import { GlobalContext, GlobalDispatchContext } from '../../contexts';
 import { addBookmark, removeBookmark, showSnackbar } from '../../actions';
 import Version from '../../models/Version';
 
-const BookmarkToggle = ({ version, size }) => {
+const BookmarkToggle = ({ version, size, bookmarkable }) => {
   const router = useRouter();
 
   const { bookmarks } = useContext(GlobalContext);
@@ -47,6 +47,10 @@ const BookmarkToggle = ({ version, size }) => {
     }
   });
 
+  if (!bookmarkable) {
+    return <div />;
+  }
+
   return (
     <Tooltip
       title={isBookmarked ? 'Remove from bookmarks' : 'Add to bookmarks'}
@@ -70,11 +74,13 @@ const BookmarkToggle = ({ version, size }) => {
 };
 
 BookmarkToggle.defaultProps = {
+  bookmarkable: true,
   size: 'small',
 };
 
 BookmarkToggle.propTypes = {
   version: PropTypes.instanceOf(Version).isRequired,
+  bookmarkable: PropTypes.bool,
   size: PropTypes.oneOf(['small', 'medium']),
 };
 

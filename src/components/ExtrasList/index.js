@@ -57,6 +57,7 @@ const ExtrasList = () => {
                     key={version.key}
                     version={version}
                     index={index}
+                    bookmarkable={false}
                     animate
                   />
                 ))}
