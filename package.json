@@ -4,11 +4,11 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/getkernel/getkernel.sh.git"
+    "url": "git@github.com:getkernel/getkernel.git"
   },
-  "homepage": "https://github.com/getkernel/getkernel.sh",
+  "homepage": "git@github.com:getkernel/getkernel.git",
   "bugs": {
-    "url": "https://github.com/getkernel/getkernel.sh/issues"
+    "url": "git@github.com:getkernel/getkernel/issues"
   },
   "author": {
     "name": "Caglar Turali",
