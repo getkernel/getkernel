@@ -22,6 +22,14 @@ import packageJSON from '../../../../package.json';
 
 const useStyles = makeStyles(styles);
 
+const linkHandler = (href, target) => {
+  const link = document.createElement('a');
+  link.href = href;
+  link.target = target;
+  link.click();
+  link.remove();
+};
+
 const MainMenu = ({ bookmarks, themeIcon, handleToggleTheme }) => {
   const classes = useStyles();
 
@@ -65,17 +73,15 @@ const MainMenu = ({ bookmarks, themeIcon, handleToggleTheme }) => {
         text: 'Report a Problem',
         icon: BugReportIcon,
         handler: () => {
-          const link = document.createElement('a');
-          link.href = `${packageJSON.bugs.url}/new`;
-          link.target = '_blank';
-          link.click();
-          link.remove();
+          linkHandler(`${packageJSON.bugs.url}/new`, '_blank');
         },
       },
       {
         text: 'About',
         icon: InfoIcon,
-        handler: () => {},
+        handler: () => {
+          linkHandler(packageJSON.homepage);
+        },
       },
     ],
   ];
