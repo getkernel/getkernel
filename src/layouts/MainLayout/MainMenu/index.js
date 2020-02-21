@@ -12,7 +12,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import HomeIcon from '@material-ui/icons/Home';
-import DynamicFeedIcon from '@material-ui/icons/DynamicFeedSharp';
+// import DynamicFeedIcon from '@material-ui/icons/DynamicFeedSharp';
 import LayersIcon from '@material-ui/icons/Layers';
 import BookmarksIcon from '@material-ui/icons/Bookmarks';
 import BugReportIcon from '@material-ui/icons/BugReport';
@@ -37,11 +37,11 @@ const MainMenu = ({ bookmarks, themeIcon, handleToggleTheme }) => {
         icon: LayersIcon,
         handler: () => Router.push('/kernels'),
       },
-      {
-        text: 'Extra Builds',
-        icon: DynamicFeedIcon,
-        handler: () => Router.push('/extras'),
-      },
+      // {
+      //   text: 'Extra Builds',
+      //   icon: DynamicFeedIcon,
+      //   handler: () => Router.push('/extras'),
+      // },
       {
         text: 'Bookmarks',
         icon: BookmarksIcon,
