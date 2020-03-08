@@ -36,9 +36,10 @@ const InitApp = () => {
       kernelsDispatch(hydrateKernelOrgData(releasesResult.data));
       filtersDispatch(setAvailableVersions(data));
       filtersDispatch(setAvailableDistros(data));
-      globalDispatch(setIsLoading(false));
       globalDispatch(setBoolState('isInitialized', true));
     }
+
+    globalDispatch(setIsLoading(false));
   });
 
   useEffect(() => {

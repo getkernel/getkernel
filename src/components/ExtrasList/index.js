@@ -32,8 +32,9 @@ const ExtrasList = () => {
 
     if (success) {
       kernelsDispatch(hydrateExtrasData(data));
-      globalDispatch(setIsLoading(false));
     }
+
+    globalDispatch(setIsLoading(false));
   });
 
   useEffect(() => {
