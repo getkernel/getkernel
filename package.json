@@ -10,24 +10,15 @@
   "bugs": {
     "url": "https://github.com/getkernel/getkernel/issues"
   },
-  "author": {
-    "name": "Caglar Turali",
-    "url": "https://caglarturali.com/"
-  },
+  "author": "Caglar Turali",
   "scripts": {
-    "dev": "nodemon src/server.js",
+    "dev": "next",
     "build": "next build",
-    "start": "NODE_ENV=production node src/server.js",
+    "start": "next start",
     "test": "jest --config=jest.config.js",
     "test:watch": "npm run test -- --watch",
     "lint": "eslint \"pages/**/*.js\" \"src/**/*.js\"",
     "lint:fix": "npm run lint -- --fix"
-  },
-  "nodemonConfig": {
-    "watch": [
-      "src/server.js",
-      "src/controllers/*"
-    ]
   },
   "husky": {
     "hooks": {
@@ -42,7 +33,6 @@
     "@material-ui/lab": "^4.0.0-alpha.34",
     "cheerio": "^1.0.0-rc.3",
     "clsx": "^1.0.4",
-    "express": "^4.17.1",
     "file-saver": "^2.0.2",
     "isomorphic-unfetch": "^3.0.0",
     "moment": "^2.24.0",
@@ -73,7 +63,6 @@
     "eslint-plugin-react-hooks": "^1.7.0",
     "husky": "^3.1.0",
     "jest": "^24.9.0",
-    "nodemon": "^2.0.1",
     "prettier": "^1.19.1",
     "react-test-renderer": "^16.12.0"
   }
